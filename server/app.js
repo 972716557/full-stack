@@ -13,9 +13,11 @@ mongoose.Promise = Promise;
 mongoose.connect(uri)
 mongoose.connection.on("error", console.error.bind(console, "connection error:"));
 
+
 // 中间件
 app.use(cors()); // 允许跨域请求
 app.use(express.json()); // 解析JSON请求体
+
 
 // 统一前缀，之后接口都调用这个
 app.use("/users", usersRouter);

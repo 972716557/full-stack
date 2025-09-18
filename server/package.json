@@ -3,7 +3,7 @@
   "version": "0.0.0",
   "private": true,
   "scripts": {
-    "dev": "nodemon -r esbuild-register app.js",
+    "dev": "nodemon -r esbuild-register ./bin/www",
     "start": "node start"
   },
   "dependencies": {
