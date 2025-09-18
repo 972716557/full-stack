@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "module": "node16",
+    // 或 "Node16"
+    "moduleResolution": "node16",
+    // 与 module 保持一致
+    "baseUrl": ".",
+    "paths": {
+      "*": ["*", "*.ts", "*.tsx"]
+      // 自动匹配 ts 后缀
+    }
+  }
+}

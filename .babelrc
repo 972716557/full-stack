@@ -1,0 +1,19 @@
+{
+  "presets": [
+    [
+      "@babel/preset-env",
+      {
+        "targets": { "node": "current" },
+        "modules": true // 保留 ESM 格式
+      }
+    ]
+  ],
+  "plugins": [
+    [
+      "module-resolver",
+      {
+        "extensions": [".js", ".ts", ".json"] // 自动补全的后缀
+      }
+    ]
+  ]
+}
