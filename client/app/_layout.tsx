@@ -1,4 +1,4 @@
-import { Link, Stack, Tabs } from "expo-router";
+import { Stack, Tabs, Link } from "expo-router";
 import { Image } from "expo-image";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
