@@ -1,4 +1,4 @@
-import * as express from "express";
+import express from "express";
 import { authentication, random } from "../helpers";
 import { createUser, getUserByEmail } from "../models/user";
 import jwt from "jsonwebtoken";
