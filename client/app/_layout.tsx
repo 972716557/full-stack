@@ -2,6 +2,7 @@ import { Stack, Tabs, Link } from "expo-router";
 import { Image } from "expo-image";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
+import Button from "./components/button";
 const Logo = () => {
   return (
     <Image
@@ -16,7 +17,7 @@ const HeaderLeft = () => {
   return (
     <Link asChild href={"/detail/1"}>
       <TouchableOpacity>
-        <SimpleLineIcons size={20} color="#1f99b0" name="bell" />
+        <SimpleLineIcons size={16} color="#1f99b0" name="arrow-left" />
       </TouchableOpacity>
     </Link>
   );
@@ -25,7 +26,7 @@ const HeaderRight = () => {
   return (
     <Link asChild href={"/search"}>
       <TouchableOpacity>
-        <SimpleLineIcons size={20} color="#1f99b0" name="options" />
+        <SimpleLineIcons size={16} color="#1f99b0" name="options" />
       </TouchableOpacity>
     </Link>
   );
@@ -40,9 +41,9 @@ const Layout = () => {
         headerTitleAlign: "center",
         animation: "slide_from_right",
         // 在这里可以给所有页面添加统一的header样式
-        headerStyle: {
-          backgroundColor: "#e29447",
-        },
+        // headerStyle: {
+        //   backgroundColor: "#e29447",
+        // },
         headerTintColor: "#fff",
         headerTitleStyle: {
           fontWeight: "bold",
@@ -63,6 +64,13 @@ const Layout = () => {
         name="detail/[id]"
         options={({ route }) => ({
           title: route.params.title || "详情页",
+          headerLeft: () => <Button name="arrow-left" />,
+          headerRight: () => <Button name="options" />,
+          headerStyle: {
+            backgroundColor: "#f5f5f5",
+            color: "#1f99b0",
+            shadowColor: "transparent",
+          },
         })}
       />
     </Stack>

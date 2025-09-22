@@ -1,8 +1,9 @@
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import { Image } from "expo-image";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import defaultImage from "../../assets/location.png";
+import { Link } from "expo-router";
 
 const styles = StyleSheet.create({
   container: {
@@ -62,11 +63,16 @@ const Card = (props: CardProps) => {
             <Text style={styles.location}>{location}</Text>
           </View>
         </View>
-        <View>
-          <LinearGradient style={styles.button} colors={["#F05A22", "#F78E48"]}>
-            <SimpleLineIcons name="arrow-right" size={8} color="#fff" />
-          </LinearGradient>
-        </View>
+        <Link href="/detail/1">
+          <View>
+            <LinearGradient
+              style={styles.button}
+              colors={["#F05A22", "#F78E48"]}
+            >
+              <SimpleLineIcons name="arrow-right" size={8} color="#fff" />
+            </LinearGradient>
+          </View>
+        </Link>
       </View>
     </View>
   );

@@ -52,14 +52,28 @@ const TabLayout = () => {
       <Tabs.Screen
         name="index"
         options={{
-          title: "配置",
-          tabBarIcon: ({ color }) => <TabButton name="compass" color={color} />,
+          title: "",
+          tabBarIcon: ({ color }) => <TabButton name="home" color={color} />,
         }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name="video"
+        name="notification"
         options={{
-          title: "视频",
+          title: "",
+          tabBarIcon: ({ color }) => <TabButton name="bell" color={color} />,
+        }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="heart"
+        options={{
+          title: "",
+          tabBarIcon: ({ color }) => <TabButton name="heart" color={color} />,
+        }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="user"
+        options={{
+          title: "",
           tabBarIcon: ({ color }) => <TabButton name="user" color={color} />,
         }}
       ></Tabs.Screen>

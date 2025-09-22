@@ -1,13 +1,30 @@
 import { Link, useLocalSearchParams, useNavigation } from "expo-router";
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  View,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
+import { SimpleLineIcons } from "@expo/vector-icons";
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: "#fff",
+    alignItems: "center",
+    justifyContent: "center",
+  },
+});
 
 export default function App() {
   const { id } = useLocalSearchParams();
   const navigation = useNavigation();
   return (
-    <>
-      <View style={styles.container}>
+    <ScrollView>
+      <Text>详情{id}</Text>
+      {/* <View style={styles.container}>
         <Text>Open up App.js to start working on your app!</Text>
         <Link href="/detail" asChild>
           <Text style={styles.title}>{id}</Text>
@@ -20,20 +37,7 @@ export default function App() {
         >
           <Text>修改标题</Text>
         </TouchableOpacity>
-      </View>
-    </>
+      </View> */}
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    color: "#f2f3ff",
-  },
-});
