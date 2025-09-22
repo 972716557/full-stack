@@ -9,6 +9,17 @@ import {
 } from "react-native";
 import request from "../../utils/request";
 
+const styles = StyleSheet.create({
+  input: {
+    fontSize: 20,
+    color: "yellow",
+  },
+  title: {
+    fontSize: 20,
+    color: "yellow",
+  },
+});
+
 export default function App() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -29,7 +40,7 @@ export default function App() {
   };
   return (
     <>
-      <View style={styles.container}>
+      <View>
         <TextInput
           placeholder="请输入邮箱"
           style={styles.input}
@@ -51,16 +62,3 @@ export default function App() {
     </>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  title: {
-    fontSize: 20,
-    color: "yellow",
-  },
-});

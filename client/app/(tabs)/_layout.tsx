@@ -28,15 +28,16 @@ const TabLayout = () => {
   return (
     <Tabs
       screenOptions={{
-        headerTitleAlign: "center",
-        headerTitle: () => <Logo />,
-        headerLeft: () => <HeaderButton name="bell" href="/articles" />,
-        headerRight: () => (
-          <>
-            <HeaderButton name="magnifier" href="/search" />
-            <HeaderButton name="options" href="/video" />
-          </>
-        ),
+        headerTitle: "",
+        // headerTitleAlign: "center",
+        // headerTitle: () => <Logo />,
+        // headerLeft: () => <HeaderButton name="bell" href="/articles" />,
+        // headerRight: () => (
+        //   <>
+        //     <HeaderButton name="magnifier" href="/search" />
+        //     <HeaderButton name="options" href="/video" />
+        //   </>
+        // ),
         tabBarActiveTintColor: "#1f99b0",
         // 去除安卓手机切换tab的波纹样式
         tabBarButton: (props) => (

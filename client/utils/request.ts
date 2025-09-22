@@ -1,7 +1,16 @@
 import urlcat from "urlcat";
+import { useRouter } from "expo-router";
+import { getToken } from "./token";
 
-const request = async (url, { method = "GET", params, body = {} }) => {
-  const token = localStorage.getItem("token");
+interface RequestOptions {
+  method?: "GET" | "POST" | "PUT" | "DELETE";
+  params?: Record<string, string | number>;
+  body?: Record<string, any>;
+}
+
+const request = async (url: string, options: RequestOptions) => {
+  const { method = "GET", params, body } = options;
+  const token = await getToken();
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const requestUrl = urlcat(apiUrl, url, params);
   const headers = {
@@ -16,7 +25,13 @@ const request = async (url, { method = "GET", params, body = {} }) => {
   };
   const response = await fetch(requestUrl, config);
   if (!response.ok) {
-    const { message, errors } = await response.json();
+    const { message, code } = await response.json();
+    if (code === 401) {
+      // token 过期或者无效，跳转到登录页面
+      const router = useRouter();
+      router.push("/login");
+      return;
+    }
     const error = new Error(message);
     throw error;
   }

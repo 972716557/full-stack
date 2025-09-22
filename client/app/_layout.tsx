@@ -51,14 +51,14 @@ const Layout = () => {
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       {/* 在这里统一配置页面标题 */}
-      <Stack.Screen
+      {/* <Stack.Screen
         name="index"
         options={{
           headerTitle: (props) => <Logo {...props} />,
           headerLeft: () => <HeaderLeft />,
           headerRight: () => <HeaderRight />,
         }}
-      />
+      /> */}
       <Stack.Screen
         name="detail/[id]"
         options={({ route }) => ({
