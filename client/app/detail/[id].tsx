@@ -1,6 +1,5 @@
 import { Link, useLocalSearchParams, useNavigation } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import { Image } from "expo-image";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 import {
   StyleSheet,
   Text,
@@ -11,6 +10,8 @@ import {
 import { SimpleLineIcons } from "@expo/vector-icons";
 import src from "../../assets/location.png";
 import { useState } from "react";
+import ImageGroup from "../components/image-group";
+import ImagePreview from "../components/image-preview";
 
 const styles = StyleSheet.create({
   image: {
@@ -39,16 +40,7 @@ const styles = StyleSheet.create({
     padding: 14,
     backgroundColor: "#F5F5F5",
   },
-  imageGroup: {
-    marginTop: 12,
-    flexDirection: "row",
-    justifyContent: "space-between",
-  },
-  imageGroupItem: {
-    width: 50,
-    height: 50,
-    borderRadius: "50%",
-  },
+
   buttons: {
     flexDirection: "row",
     gap: 12,
@@ -146,7 +138,7 @@ export default function App() {
       <ScrollView contentContainerStyle={styles.contentContainerStyle}>
         <View style={styles.content}>
           <View style={styles.imageContent}>
-            <Image style={styles.image} source={src} />
+            <ImagePreview imgStyle={styles.image} source={src} />
             <View style={styles.titleContent}>
               <Text style={styles.title}>Location Title</Text>
               <View style={styles.description}>
@@ -155,12 +147,7 @@ export default function App() {
               </View>
             </View>
           </View>
-          <View style={styles.imageGroup}>
-            <Image style={styles.imageGroupItem} source={src} />
-            <Image style={styles.imageGroupItem} source={src} />
-            <Image style={styles.imageGroupItem} source={src} />
-            <Image style={styles.imageGroupItem} source={src} />
-          </View>
+          <ImageGroup />
           <View style={styles.buttons}>
             <TouchableOpacity
               onPress={() => {

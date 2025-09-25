@@ -3,7 +3,7 @@ import { Image } from "expo-image";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import defaultImage from "../../assets/location.png";
-import ImageGroup from "./image-groups";
+import ImageGroup from "./image-stack";
 
 const styles = StyleSheet.create({
   container: {

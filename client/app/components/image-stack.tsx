@@ -33,7 +33,7 @@ export interface CardProps {
   overlap?: number;
 }
 
-const ImageGroup = (props: CardProps) => {
+const ImageStack = (props: CardProps) => {
   const {
     images = [defaultImage, defaultImage, defaultImage, defaultImage],
     size = 30,
@@ -80,4 +80,4 @@ const ImageGroup = (props: CardProps) => {
     </View>
   );
 };
-export default ImageGroup;
+export default ImageStack;
