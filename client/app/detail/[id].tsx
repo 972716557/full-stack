@@ -36,9 +36,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
   },
   content: {
-    padding: 20,
+    padding: 14,
     backgroundColor: "#F5F5F5",
-    paddingTop: 10,
   },
   imageGroup: {
     marginTop: 12,
@@ -87,7 +86,7 @@ const styles = StyleSheet.create({
   footer: {
     flexShrink: 0,
     paddingVertical: 16,
-    paddingHorizontal: 40,
+    paddingHorizontal: 34,
     alignItems: "center",
     justifyContent: "space-between",
     flexDirection: "row",
@@ -107,6 +106,10 @@ const styles = StyleSheet.create({
     backgroundColor: "#F05A22",
     paddingHorizontal: 30,
     borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "row",
+    gap: 4,
     shadowColor: "#F05A22", // 阴影颜色
     shadowOffset: {
       width: 2, // 水平偏移
@@ -224,7 +227,12 @@ export default function App() {
           <Text>/person</Text>
         </View>
         <View style={styles.footerButton}>
-          <Text style={styles.footerButtonLabel}>continue</Text>
+          <View>
+            <Text style={styles.footerButtonLabel}>continue</Text>
+          </View>
+          <View>
+            <SimpleLineIcons name="arrow-right" color="#fff" />
+          </View>
         </View>
       </View>
     </View>

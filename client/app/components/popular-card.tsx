@@ -3,6 +3,7 @@ import { Image } from "expo-image";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import defaultImage from "../../assets/location.png";
+import ImageGroup from "./image-groups";
 
 const styles = StyleSheet.create({
   container: {
@@ -13,7 +14,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   image: {
-    height: 75,
+    height: "100%",
     width: 115,
     objectFit: "contain",
     borderRadius: 16,
@@ -22,6 +23,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 500,
     fontSize: 18,
+    maxWidth: 150,
   },
   content: {
     justifyContent: "space-between",
@@ -38,6 +40,9 @@ const styles = StyleSheet.create({
     marginTop: 2,
   },
   avatars: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 4,
     marginTop: 10,
   },
   label: {
@@ -62,12 +67,17 @@ const PopularCard = (props: CardProps) => {
     <View style={styles.container}>
       <Image style={styles.image} source={src} />
       <View>
-        <Text style={styles.title}>{title}</Text>
+        <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+          {title}
+        </Text>
         <View style={styles.row}>
           <SimpleLineIcons name="location-pin" color="#F05A22" />
-          <Text style={styles.location}>{location}</Text>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.location}>
+            {location}
+          </Text>
         </View>
         <View style={styles.avatars}>
+          <ImageGroup />
           <Text style={styles.label}>52 reviews</Text>
         </View>
       </View>

@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
   title: {
     fontWeight: 500,
     fontSize: 18,
+    width: "100%",
   },
   button: {
     width: 25,
@@ -33,6 +34,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     marginTop: 10,
     alignItems: "flex-end",
+    width: 220,
   },
   row: {
     flexDirection: "row",
@@ -51,28 +53,36 @@ export interface CardProps {
 }
 
 const Card = (props: CardProps) => {
-  const { src = defaultImage, title = "标题", location = "加拿大" } = props;
+  const {
+    src = defaultImage,
+    title = "标题标题标题标题标题标题标题标题标题标题标题标题",
+    location = "加拿大",
+  } = props;
   return (
     <View style={styles.container}>
       <Image style={styles.image} source={src} />
       <View style={[styles.content, styles.row]}>
-        <View>
-          <Text style={styles.title}>{title}</Text>
+        <View style={[{ flex: 1 }]}>
+          <Text numberOfLines={1} ellipsizeMode="tail" style={styles.title}>
+            {title}
+          </Text>
           <View style={styles.row}>
             <SimpleLineIcons name="location-pin" color="#F05A22" />
             <Text style={styles.location}>{location}</Text>
           </View>
         </View>
-        <Link href="/detail/1">
-          <View>
-            <LinearGradient
-              style={styles.button}
-              colors={["#F05A22", "#F78E48"]}
-            >
-              <SimpleLineIcons name="arrow-right" size={8} color="#fff" />
-            </LinearGradient>
-          </View>
-        </Link>
+        <View>
+          <Link href="/detail/1">
+            <View>
+              <LinearGradient
+                style={styles.button}
+                colors={["#F05A22", "#F78E48"]}
+              >
+                <SimpleLineIcons name="arrow-right" size={8} color="#fff" />
+              </LinearGradient>
+            </View>
+          </Link>
+        </View>
       </View>
     </View>
   );
