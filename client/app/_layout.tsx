@@ -60,6 +60,14 @@ const Layout = () => {
           headerRight: () => <Button name="options" />,
         })}
       />
+      <Stack.Screen
+        name="login"
+        options={() => ({
+          header: null,
+          title: "",
+          headerShadowVisible: false,
+        })}
+      />
     </Stack>
   );
 };

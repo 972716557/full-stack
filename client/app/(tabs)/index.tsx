@@ -14,6 +14,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import Card from "../components/card";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import PopularCard from "../components/popular-card";
+import { Link } from "expo-router";
 
 // import { TabView, SceneMap } from "react-native-tab-view";
 
@@ -197,6 +198,9 @@ export default function TabViewExample() {
         <Text style={styles.headerTitle}>Popular</Text>
         <Text style={styles.headerViewAll}>View All</Text>
       </View>
+      <Link href={"/login"}>
+        <Text>登陆页面</Text>
+      </Link>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}
