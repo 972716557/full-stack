@@ -42,7 +42,7 @@ const styles = StyleSheet.create({
     width: 36,
     height: 36,
     borderRadius: "50%",
-    boxShadow: "0 3px 6px #f05a221f",
+    boxShadow: "0 3 6 #f05a221f",
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",

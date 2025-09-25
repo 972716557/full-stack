@@ -29,6 +29,12 @@ const TabLayout = () => {
     <Tabs
       screenOptions={{
         headerTitle: "",
+        headerStyle: {
+          backgroundColor: "#f5f5f5",
+          borderBottomWidth: 0,
+          shadowOpacity: 0, // 对于iOS，如果需要移除阴影，也可以设置此项
+          elevation: 0, // 对于Android，移除阴影
+        },
         // headerTitleAlign: "center",
         // headerTitle: () => <Logo />,
         // headerLeft: () => <HeaderButton name="bell" href="/articles" />,

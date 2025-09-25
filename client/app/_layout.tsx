@@ -1,4 +1,4 @@
-import { Stack, Tabs, Link } from "expo-router";
+import { Stack, Tabs, Link, router } from "expo-router";
 import { Image } from "expo-image";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
@@ -33,44 +33,31 @@ const HeaderRight = () => {
 };
 
 const Layout = () => {
-  // 用来管理页面堆栈，添加页面切换效果，并增加标题
   return (
     <Stack
       // 兼容安卓动画
       screenOptions={{
         headerTitleAlign: "center",
         animation: "slide_from_right",
-        // 在这里可以给所有页面添加统一的header样式
-        // headerStyle: {
-        //   backgroundColor: "#e29447",
-        // },
-        headerTintColor: "#fff",
+        headerStyle: {
+          backgroundColor: "#f5f5f5",
+        },
+        headerTintColor: "#292931",
         headerTitleStyle: {
           fontWeight: "bold",
         },
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      {/* 在这里统一配置页面标题 */}
-      {/* <Stack.Screen
-        name="index"
-        options={{
-          headerTitle: (props) => <Logo {...props} />,
-          headerLeft: () => <HeaderLeft />,
-          headerRight: () => <HeaderRight />,
-        }}
-      /> */}
       <Stack.Screen
         name="detail/[id]"
         options={({ route }) => ({
+          headerShadowVisible: false,
           title: route.params.title || "详情页",
-          headerLeft: () => <Button name="arrow-left" />,
+          headerLeft: () => (
+            <Button name="arrow-left" onPress={() => router.back()} />
+          ),
           headerRight: () => <Button name="options" />,
-          headerStyle: {
-            backgroundColor: "#f5f5f5",
-            color: "#1f99b0",
-            shadowColor: "transparent",
-          },
         })}
       />
     </Stack>
