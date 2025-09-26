@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/register", async (req, res) => {
   const { username, password, email } = req.body;
-  if (!username || !password || !email) {
+  if (!password || !email) {
     return res.status(400).json({
       message: "Invalid request",
     });
@@ -23,7 +23,6 @@ router.post("/register", async (req, res) => {
   const salt = random();
   await createUser({
     email,
-    username,
     password,
     authentication: authentication(salt, password),
   });
