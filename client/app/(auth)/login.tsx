@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 500,
-    marginTop: 32,
     color: "#101827",
   },
   content: {
@@ -40,9 +39,9 @@ const styles = StyleSheet.create({
     padding: 20,
     borderBlockColor: "#fff",
     borderRadius: 10,
-    margin: 20,
     justifyContent: "center",
     alignItems: "center",
+    gap: 20,
   },
   image: {
     width: 40,
@@ -52,20 +51,16 @@ const styles = StyleSheet.create({
   whole: {
     flex: 1,
     backgroundColor: "transparent",
+    justifyContent: "center",
+    padding: 20,
   },
   message: {
-    color: "gray",
+    color: "#6c7278",
     fontSize: 10,
-    marginTop: 12,
-    marginBottom: 32,
-  },
-  mt6: {
-    marginTop: 12,
   },
   between: {
     justifyContent: "space-between",
     flexDirection: "row",
-    marginTop: 16,
     width: "100%",
   },
   remember: {
@@ -82,7 +77,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "100%",
     backgroundColor: "#1D61E7",
-    marginTop: 32,
   },
   loginText: {
     color: "#fff",
@@ -104,7 +98,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   orLogin: {
-    marginVertical: 36,
     flexDirection: "row",
     gap: 20,
     alignItems: "center",
@@ -149,21 +142,21 @@ export default function App() {
   };
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={styles.whole}>
-        <LinearGradient
-          // 渐变颜色：左上角浅黄色 -> 右下角浅紫色
-          colors={["#FFFACD", "#E6E6FA"]}
-          // 渐变起点：左上角 (0,0)
-          start={{ x: 0, y: 0 }}
-          // 渐变终点：右下角 (1,1)
-          end={{ x: 1, y: 1 }}
-          style={styles.container}
-        >
+      <LinearGradient
+        // 渐变颜色：左上角浅黄色 -> 右下角浅紫色
+        colors={["#FFFACD", "#E6E6FA"]}
+        // 渐变起点：左上角 (0,0)
+        start={{ x: 0, y: 0 }}
+        // 渐变终点：右下角 (1,1)
+        end={{ x: 1, y: 1 }}
+        style={styles.container}
+      >
+        <SafeAreaView style={styles.whole} edges={["top", "left", "right"]}>
           <View style={styles.content}>
             <Image source={src} style={styles.image} />
             <Text style={styles.title}>Login</Text>
             <Text style={styles.message}>
-              Enter your email and password to log in{" "}
+              Enter your email and password to log in
             </Text>
             <TextInput
               placeholder="请输入邮箱"
@@ -173,7 +166,7 @@ export default function App() {
             />
             <TextInput
               placeholder="请输入密码"
-              style={[styles.input, styles.mt6]}
+              style={styles.input}
               value={password}
               onChangeText={setPassword}
               secureTextEntry
@@ -221,7 +214,6 @@ export default function App() {
                 flexDirection: "row",
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: 30,
                 gap: 8,
               }}
             >
@@ -231,8 +223,8 @@ export default function App() {
               </Link>
             </View>
           </View>
-        </LinearGradient>
-      </SafeAreaView>
+        </SafeAreaView>
+      </LinearGradient>
     </SafeAreaProvider>
   );
 }

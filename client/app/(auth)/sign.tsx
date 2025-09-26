@@ -38,6 +38,8 @@ const styles = StyleSheet.create({
   },
   whole: {
     padding: 20,
+    justifyContent: "center",
+    flex: 1,
   },
   mb6: {
     marginBottom: 6,
@@ -123,17 +125,16 @@ export default function Sign() {
         end={{ x: 0, y: 1 }}
         style={{ flex: 1 }}
       >
-        <SafeAreaView style={styles.whole}>
+        <SafeAreaView style={styles.whole} edges={["top", "left", "right"]}>
           <View style={styles.content}>
-            <View>
-              <TouchableOpacity
-                onPress={() => {
-                  router.back();
-                }}
-              >
-                <SimpleLineIcons name="arrow-left" size={20} />
-              </TouchableOpacity>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                router.back();
+              }}
+              style={{ alignSelf: "flex-start" }}
+            >
+              <SimpleLineIcons name="arrow-left" size={20} />
+            </TouchableOpacity>
             <View>
               <GradientText
                 colors={["#4983F6", "#C175F5", "#FBACB7"]} // 你的三种颜色

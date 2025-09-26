@@ -49,6 +49,7 @@ const Layout = () => {
       }}
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <Stack.Screen name="(auth)" options={{ headerShown: false }} />
       <Stack.Screen
         name="detail/[id]"
         options={({ route }) => ({
@@ -58,13 +59,6 @@ const Layout = () => {
             <Button name="arrow-left" onPress={() => router.back()} />
           ),
           headerRight: () => <Button name="options" />,
-        })}
-      />
-      <Stack.Screen
-        name="login"
-        options={() => ({
-          headerShown: false,
-          title: "",
         })}
       />
     </Stack>
