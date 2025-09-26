@@ -250,7 +250,6 @@ export default function App() {
                 </>
               )}
             </Formik>
-
             <View style={styles.orLogin}>
               <View style={styles.line}></View>
               <Text style={styles.orLoginText}>Or login with</Text>

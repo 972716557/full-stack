@@ -5,16 +5,20 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { LinearGradient } from "expo-linear-gradient";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import { router } from "expo-router";
 import DatePicker from "@react-native-community/datetimepicker";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 import request from "../../utils/request";
 import { Link } from "expo-router";
 import GradientText from "../components/gradient-text";
+import FormErrorText from "../components/form-error-text";
 
 const styles = StyleSheet.create({
   flex: {
@@ -91,26 +95,36 @@ const styles = StyleSheet.create({
 });
 
 export default function Sign() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [isPasswordVisible, setIsPasswordVisible] = useState(false);
   const togglePasswordVisibility = () => {
     setIsPasswordVisible(!isPasswordVisible);
   };
-  const register = async () => {
+
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("邮箱地址格式不正确") // 内置的邮箱格式验证
+      .required("请输入邮箱地址"), // 定义为必填项
+    password: Yup.string()
+      .min(6, "密码长度至少为6位") // 定义最小长度
+      .required("请输入密码"),
+    firstName: Yup.string().required("请输入姓"),
+    lastName: Yup.string().required("请输入名"),
+    phone: Yup.string().required("请输入电话"),
+  });
+
+  const register = async ({ email, password }) => {
     try {
-      const data = await request("/auth/login", {
+      await request("/auth/register", {
         method: "POST",
         body: {
           email: email,
           password: password,
         },
       });
-      const { token } = data;
+      router.replace("/login");
     } catch (error) {
-      console.log(error);
+      Alert.alert("注册失败");
     }
   };
   return (
@@ -159,73 +173,152 @@ export default function Sign() {
                 <Text style={styles.blue}>Login</Text>
               </Link>
             </View>
-            <View style={styles.name}>
-              <View style={styles.flex}>
-                <Text style={[styles.mb6, styles.textColor]}>First Name</Text>
-                <TextInput style={styles.input} />
-              </View>
-              <View style={styles.flex}>
-                <Text style={[styles.mb6, styles.textColor]}>Last Name</Text>
-                <TextInput style={styles.input} />
-              </View>
-            </View>
-            <View style={styles.inputContent}>
-              <Text style={[styles.mb6, styles.textColor]}>Email</Text>
-              <TextInput style={styles.input} />
-            </View>
-            <View style={styles.inputContent}>
-              <Text style={[styles.mb6, styles.textColor]}>Birth of Date</Text>
-              <DatePicker
-                style={{ width: "100%" }}
-                value={selectedDate}
-                mode="date"
-                placeholder="选择日期"
-                format="YYYY-MM-DD"
-                minDate="1900-01-01"
-                maxDate="2057-12-31"
-                confirmBtnText="确定"
-                cancelBtnText="取消"
-                customStyles={{
-                  dateInput: {
-                    borderWidth: 0,
-                    alignItems: "flex-start",
-                  },
-                }}
-                onDateChange={(date) => setSelectedDate(date)}
-              />
-            </View>
-            <View style={styles.inputContent}>
-              <Text style={[styles.mb6, styles.textColor]}>Phone Number</Text>
-              <TextInput style={[styles.input]} />
-            </View>
-            <View style={styles.inputContent}>
-              <Text style={[styles.mb6, styles.textColor]}>Set Password</Text>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  position: "relative",
-                }}
-              >
-                <TextInput
-                  style={[styles.input]}
-                  secureTextEntry={!isPasswordVisible}
-                />
-                <TouchableOpacity
-                  onPress={togglePasswordVisibility}
-                  style={styles.iconButton}
-                >
-                  <SimpleLineIcons name={isPasswordVisible ? "eye" : "lock"} />
-                </TouchableOpacity>
-              </View>
-            </View>
-            <TouchableOpacity onPress={register}>
-              <View style={styles.loginButton}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.loginText}>register</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+            <Formik
+              initialValues={{
+                email: "",
+                password: "",
+                firstName: "",
+                lastName: "",
+                date: new Date(),
+                phone: "",
+              }} // 设置初始值
+              validationSchema={LoginSchema} // 绑定验证规则
+              onSubmit={(values) => {
+                register(values);
+              }}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+              }) => (
+                <>
+                  <View style={styles.name}>
+                    <View style={styles.flex}>
+                      <Text style={[styles.mb6, styles.textColor]}>
+                        First Name
+                      </Text>
+                      <TextInput
+                        style={styles.input}
+                        value={values.firstName}
+                        onChangeText={handleChange("firstName")} // Formik 处理值变更
+                        onBlur={handleBlur("firstName")} // 处理失焦事件，标记为已触摸过
+                      />
+                      {touched.firstName && errors.firstName && (
+                        <FormErrorText>{errors.firstName}</FormErrorText>
+                      )}
+                    </View>
+                    <View style={styles.flex}>
+                      <Text style={[styles.mb6, styles.textColor]}>
+                        Last Name
+                      </Text>
+                      <TextInput
+                        style={styles.input}
+                        value={values.lastName}
+                        onChangeText={handleChange("lastName")} // Formik 处理值变更
+                        onBlur={handleBlur("lastName")} // 处理失焦事件，标记为已触摸过
+                      />
+                      {touched.lastName && errors.lastName && (
+                        <FormErrorText>{errors.lastName}</FormErrorText>
+                      )}
+                    </View>
+                  </View>
+                  <View style={styles.inputContent}>
+                    <Text style={[styles.mb6, styles.textColor]}>Email</Text>
+                    <TextInput
+                      value={values.email}
+                      onChangeText={handleChange("email")} // Formik 处理值变更
+                      onBlur={handleBlur("email")} // 处理失焦事件，标记为已触摸过
+                      style={styles.input}
+                    />
+                    {touched.email && errors.email && (
+                      <FormErrorText>{errors.email}</FormErrorText>
+                    )}
+                  </View>
+                  <View style={styles.inputContent}>
+                    <Text style={[styles.mb6, styles.textColor]}>
+                      Birth of Date
+                    </Text>
+                    <DatePicker
+                      style={{ width: "100%" }}
+                      onBlur={handleBlur("date")} // 处理失焦事件，标记为已触摸过
+                      value={values.date}
+                      mode="date"
+                      placeholder="选择日期"
+                      format="YYYY-MM-DD"
+                      minDate="1900-01-01"
+                      maxDate="2057-12-31"
+                      confirmBtnText="确定"
+                      cancelBtnText="取消"
+                      customStyles={{
+                        dateInput: {
+                          borderWidth: 0,
+                          alignItems: "flex-start",
+                        },
+                      }}
+                      onDateChange={(date) => setSelectedDate(date)}
+                    />
+                    {selectedDate && <FormErrorText>请选择日期</FormErrorText>}
+                  </View>
+                  <View style={styles.inputContent}>
+                    <Text style={[styles.mb6, styles.textColor]}>
+                      Phone Number
+                    </Text>
+                    <TextInput
+                      style={[styles.input]}
+                      value={values.phone}
+                      onChangeText={handleChange("phone")} // Formik 处理值变更
+                      onBlur={handleBlur("phone")} // 处理失焦事件，标记为已触摸过
+                    />
+                    {touched.phone && errors.phone && (
+                      <FormErrorText>{errors.phone}</FormErrorText>
+                    )}
+                  </View>
+                  <View style={styles.inputContent}>
+                    <Text style={[styles.mb6, styles.textColor]}>
+                      Set Password
+                    </Text>
+                    <View
+                      style={{
+                        flexDirection: "row",
+                        alignItems: "center",
+                        position: "relative",
+                      }}
+                    >
+                      <TextInput
+                        style={[styles.input]}
+                        secureTextEntry={!isPasswordVisible}
+                        value={values.password}
+                        onChangeText={handleChange("password")} // Formik 处理值变更
+                        onBlur={handleBlur("password")} // 处理失焦事件，标记为已触摸过
+                      />
+
+                      <TouchableOpacity
+                        onPress={togglePasswordVisibility}
+                        style={styles.iconButton}
+                      >
+                        <SimpleLineIcons
+                          name={isPasswordVisible ? "eye" : "lock"}
+                        />
+                      </TouchableOpacity>
+                    </View>
+                    {touched.password && errors.password && (
+                      <FormErrorText>{errors.password}</FormErrorText>
+                    )}
+                  </View>
+                  <TouchableOpacity onPress={handleSubmit}>
+                    <View style={styles.loginButton}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.loginText}>register</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </>
+              )}
+            </Formik>
           </View>
         </SafeAreaView>
       </LinearGradient>
