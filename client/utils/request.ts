@@ -8,8 +8,8 @@ interface RequestOptions {
   body?: Record<string, any>;
 }
 
-const request = async (url: string, options: RequestOptions) => {
-  const { method = "GET", params, body } = options;
+const request = async (url: string, options?: RequestOptions) => {
+  const { method = "GET", params = {}, body = {} } = options;
   const token = await getToken();
   const apiUrl = process.env.EXPO_PUBLIC_API_URL;
   const requestUrl = urlcat(apiUrl, url, params);

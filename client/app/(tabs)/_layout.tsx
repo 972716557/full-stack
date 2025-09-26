@@ -53,6 +53,7 @@ const TabLayout = () => {
       <Tabs.Screen
         name="user"
         options={{
+          headerShown: false,
           title: "",
           tabBarIcon: ({ color }) => <TabButton name="user" color={color} />,
         }}
