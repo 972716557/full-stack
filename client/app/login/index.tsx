@@ -1,4 +1,3 @@
-import { StatusBar } from "expo-status-bar";
 import { useState } from "react";
 import {
   StyleSheet,
@@ -196,14 +195,7 @@ export default function App() {
               </View>
             </View>
             <TouchableOpacity onPress={login}>
-              <View
-                // colors={["#FFF", "#1D61E7"]}
-                // // 渐变起点：左上角 (0,0)
-                // start={{ x: 0, y: 0.1 }}
-                // // 渐变终点：右下角 (1,1)
-                // end={{ x: 0, y: 1 }}
-                style={styles.loginButton}
-              >
+              <View style={styles.loginButton}>
                 <View style={{ flex: 1 }}>
                   <Text style={styles.loginText}>登陆</Text>
                 </View>
@@ -234,7 +226,7 @@ export default function App() {
               }}
             >
               <Text style={{ color: "#6c7278" }}>Don’t have an account?</Text>
-              <Link href={"/register"}>
+              <Link href={"/sign"}>
                 <Text style={{ color: "#1D61E7" }}>Sign Up</Text>
               </Link>
             </View>

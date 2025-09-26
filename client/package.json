@@ -11,6 +11,8 @@
     "web": "expo start --web"
   },
   "dependencies": {
+    "@react-native-community/datetimepicker": "^8.4.5",
+    "@react-native-masked-view/masked-view": "^0.3.2",
     "expo": "~54.0.0-preview.16",
     "expo-checkbox": "^5.0.7",
     "expo-constants": "~18.0.7",

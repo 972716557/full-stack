@@ -63,9 +63,8 @@ const Layout = () => {
       <Stack.Screen
         name="login"
         options={() => ({
-          header: null,
+          headerShown: false,
           title: "",
-          headerShadowVisible: false,
         })}
       />
     </Stack>
