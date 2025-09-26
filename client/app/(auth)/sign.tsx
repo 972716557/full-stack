@@ -109,7 +109,6 @@ export default function Sign() {
         },
       });
       const { token } = data;
-      localStorage.setItem("token", token);
     } catch (error) {
       console.log(error);
     }

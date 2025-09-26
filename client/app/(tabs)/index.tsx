@@ -198,9 +198,6 @@ export default function TabViewExample() {
         <Text style={styles.headerTitle}>Popular</Text>
         <Text style={styles.headerViewAll}>View All</Text>
       </View>
-      <Link href={"/login"}>
-        <Text>登陆页面</Text>
-      </Link>
       <ScrollView
         horizontal
         showsHorizontalScrollIndicator={false}

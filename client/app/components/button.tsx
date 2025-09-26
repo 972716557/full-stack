@@ -1,12 +1,4 @@
-import { Link, useLocalSearchParams, useNavigation } from "expo-router";
-import { StatusBar } from "expo-status-bar";
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
 
 const styles = StyleSheet.create({

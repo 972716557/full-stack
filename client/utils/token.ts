@@ -1,36 +1,38 @@
-import Keychain from "react-native-keychain";
+import * as SecureStore from "expo-secure-store";
 
-// 保存 Token
-const saveToken = async (token) => {
+// 保存Token
+export const saveToken = async (token) => {
   try {
-    await Keychain.setGenericPassword("userToken", token);
-    console.log("Token saved successfully");
+    await SecureStore.setItemAsync("userToken", token);
+    console.log("Token 保存成功");
   } catch (error) {
-    console.error("Error saving token:", error);
+    console.error("Token 保存失败:", error);
   }
 };
 
-// 获取 Token
-const getToken = async () => {
+// 读取Token
+export const getToken = async () => {
   try {
-    const credentials = await Keychain.getGenericPassword();
-    if (credentials) {
-      return credentials.password;
+    const token = await SecureStore.getItemAsync("userToken");
+    if (token) {
+      console.log("Token 读取成功");
+      return token;
+    } else {
+      console.log("没有存储的Token");
+      return null;
     }
   } catch (error) {
-    console.error("Error getting token:", error);
+    console.error("Token 读取失败:", error);
+    return null;
   }
-  return null;
 };
 
-// 删除 Token
-const deleteToken = async () => {
+// 删除Token
+export const deleteToken = async () => {
   try {
-    await Keychain.resetGenericPassword();
-    console.log("Token deleted successfully");
+    await SecureStore.deleteItemAsync("userToken");
+    console.log("Token 删除成功");
   } catch (error) {
-    console.error("Error deleting token:", error);
+    console.error("Token 删除失败:", error);
   }
 };
-
-export { saveToken, getToken, deleteToken };

@@ -5,16 +5,21 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  Alert,
 } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import src from "../../assets/avatar.jpg";
 import { Image } from "expo-image";
 import { LinearGradient } from "expo-linear-gradient";
 import { SimpleLineIcons } from "@expo/vector-icons";
 import Checkbox from "expo-checkbox";
+import { Link, router } from "expo-router";
+import { Formik } from "formik";
+import * as Yup from "yup";
 
 import request from "../../utils/request";
-import { Link } from "expo-router";
+import src from "../../assets/avatar.jpg";
+import { saveToken } from "../../utils/token";
+import FormErrorText from "../components/form-error-text";
 
 const styles = StyleSheet.create({
   container: {
@@ -121,11 +126,23 @@ const styles = StyleSheet.create({
 });
 
 export default function App() {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [isChecked, setIsChecked] = useState(false);
 
-  const login = async () => {
+  const LoginSchema = Yup.object().shape({
+    email: Yup.string()
+      .email("邮箱地址格式不正确") // 内置的邮箱格式验证
+      .required("请输入邮箱地址"), // 定义为必填项
+    password: Yup.string()
+      .min(6, "密码长度至少为6位") // 定义最小长度
+      .required("请输入密码"),
+  });
+  const login = async ({
+    email,
+    password,
+  }: {
+    email: string;
+    password: string;
+  }) => {
     try {
       const data = await request("/auth/login", {
         method: "POST",
@@ -135,9 +152,12 @@ export default function App() {
         },
       });
       const { token } = data;
-      localStorage.setItem("token", token);
+      if (token) {
+        saveToken(token);
+        router.replace("/");
+      }
     } catch (error) {
-      console.log(error);
+      Alert.alert("登陆失败");
     }
   };
   return (
@@ -158,42 +178,79 @@ export default function App() {
             <Text style={styles.message}>
               Enter your email and password to log in
             </Text>
-            <TextInput
-              placeholder="请输入邮箱"
-              style={styles.input}
-              value={email}
-              onChangeText={setEmail}
-            />
-            <TextInput
-              placeholder="请输入密码"
-              style={styles.input}
-              value={password}
-              onChangeText={setPassword}
-              secureTextEntry
-            />
-            <View style={styles.between}>
-              <View style={styles.row}>
-                <Checkbox
-                  value={isChecked}
-                  onValueChange={setIsChecked}
-                  color={isChecked ? "#2196f3" : undefined} // 选中颜色
-                  style={styles.checkbox}
-                />
-                <Text style={styles.remember}>Remember me</Text>
-              </View>
-              <View>
-                <Link href={"/forgot"}>
-                  <Text style={styles.forgot}>Forgot Password ?</Text>
-                </Link>
-              </View>
-            </View>
-            <TouchableOpacity onPress={login}>
-              <View style={styles.loginButton}>
-                <View style={{ flex: 1 }}>
-                  <Text style={styles.loginText}>登陆</Text>
-                </View>
-              </View>
-            </TouchableOpacity>
+            <Formik
+              initialValues={{ email: "", password: "" }} // 设置初始值
+              validationSchema={LoginSchema} // 绑定验证规则
+              onSubmit={(values) => {
+                login(values);
+              }}
+            >
+              {({
+                handleChange,
+                handleBlur,
+                handleSubmit,
+                values,
+                errors,
+                touched,
+              }) => (
+                <>
+                  <View style={{ width: "100%" }}>
+                    <TextInput
+                      placeholder="邮箱"
+                      style={styles.input}
+                      onChangeText={handleChange("email")} // Formik 处理值变更
+                      onBlur={handleBlur("email")} // 处理失焦事件，标记为已触摸过
+                      value={values.email}
+                    />
+
+                    {/* 错误提示：只在用户接触过此输入框且内容错误时显示 */}
+                    {touched.email && errors.email && (
+                      <FormErrorText>{errors.email}</FormErrorText>
+                    )}
+                  </View>
+
+                  {/* 密码输入框 */}
+                  <View style={{ width: "100%" }}>
+                    <TextInput
+                      placeholder="密码"
+                      secureTextEntry
+                      onChangeText={handleChange("password")}
+                      onBlur={handleBlur("password")}
+                      value={values.password}
+                      style={styles.input}
+                    />
+                    {touched.password && errors.password && (
+                      <FormErrorText>{errors.password}</FormErrorText>
+                    )}
+                  </View>
+
+                  <View style={styles.between}>
+                    <View style={styles.row}>
+                      <Checkbox
+                        value={isChecked}
+                        onValueChange={setIsChecked}
+                        color={isChecked ? "#2196f3" : undefined} // 选中颜色
+                        style={styles.checkbox}
+                      />
+                      <Text style={styles.remember}>Remember me</Text>
+                    </View>
+                    <View>
+                      <Link href={"/forgot"}>
+                        <Text style={styles.forgot}>Forgot Password ?</Text>
+                      </Link>
+                    </View>
+                  </View>
+                  <TouchableOpacity onPress={handleSubmit}>
+                    <View style={styles.loginButton}>
+                      <View style={{ flex: 1 }}>
+                        <Text style={styles.loginText}>登陆</Text>
+                      </View>
+                    </View>
+                  </TouchableOpacity>
+                </>
+              )}
+            </Formik>
+
             <View style={styles.orLogin}>
               <View style={styles.line}></View>
               <Text style={styles.orLoginText}>Or login with</Text>
