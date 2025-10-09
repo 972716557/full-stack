@@ -7,13 +7,14 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 20,
     color: "#181C2E",
-    fontWeight: 600,
+    fontWeight: 500,
   },
   image: {
     width: "100%",
     height: 140,
     borderRadius: 16,
     marginBottom: 8,
+    objectFit: "fill",
   },
   desc: {
     fontSize: 14,

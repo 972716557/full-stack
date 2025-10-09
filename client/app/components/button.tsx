@@ -1,25 +1,26 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
+import IconFont from "./iconfont";
 
 const styles = StyleSheet.create({
   button: {
-    width: 28,
-    height: 28,
+    width: 36,
+    height: 36,
     borderRadius: "50%",
     justifyContent: "center",
     alignItems: "center",
-    boxShadow: "0 3px 6px #f05a221f",
+    backgroundColor: "#ECF0F4",
   },
 });
 
 export interface ButtonProps {
   onPress?: () => void;
-  name?: (typeof SimpleLineIcons)["name"];
+  name: React.ComponentProps<typeof IconFont>["name"];
 }
 const Button = ({ onPress, name }: ButtonProps) => {
   return (
     <TouchableOpacity style={styles.button} onPress={onPress}>
-      <SimpleLineIcons name={name} size={8} />
+      <IconFont name={name} size={10} />
     </TouchableOpacity>
   );
 };

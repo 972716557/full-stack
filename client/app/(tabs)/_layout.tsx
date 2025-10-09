@@ -8,6 +8,7 @@ const TabButton = (props) => {
 };
 
 const TabLayout = () => {
+  return <></>;
   return (
     <Tabs
       screenOptions={{

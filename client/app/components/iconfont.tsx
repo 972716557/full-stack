@@ -26,6 +26,9 @@ export const IconMap = {
   logout: "\ue60e", // 退出图标
   map: "\ue7f3",
   bankcard: "\ue693",
+  setting: "\ue87e",
+  review: "\ue602",
+  // 例子：
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）

@@ -7,10 +7,11 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import IconFont from "../components/iconfont";
+import IconFont from "./components/iconfont";
 import { Image } from "expo-image";
-import src from "../../assets/humber.png";
-import RestaurantCard from "../components/restaurant";
+import src from "../assets/humber.png";
+import RestaurantCard from "./components/restaurant";
+import { router } from "expo-router";
 
 const styles = StyleSheet.create({
   container: {
@@ -111,12 +112,18 @@ const Card = ({ title }) => {
   );
 };
 const Home = () => {
+  const onTouchConfig = () => {
+    router.push("/config");
+  };
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView style={styles.container}>
         <View style={styles.header}>
           <View style={styles.common}>
-            <View style={[styles.headerButton, styles.headerButtonConfig]}>
+            <View
+              style={[styles.headerButton, styles.headerButtonConfig]}
+              onTouchEnd={onTouchConfig}
+            >
               <IconFont name="menu" />
             </View>
             <View>
