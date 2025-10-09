@@ -1,224 +1,180 @@
-import { Image } from "expo-image";
-import * as React from "react";
 import {
-  View,
-  useWindowDimensions,
-  Text,
-  StyleSheet,
-  TextInput,
   ScrollView,
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  Platform,
 } from "react-native";
-import src from "../../assets/avatar.jpg";
-import { SimpleLineIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import Card from "../components/card";
-import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
-import PopularCard from "../components/popular-card";
-import { Link } from "expo-router";
+import { SafeAreaView } from "react-native-safe-area-context";
+import IconFont from "../components/iconfont";
+import { Image } from "expo-image";
+import src from "../../assets/humber.png";
+import RestaurantCard from "../components/restaurant";
 
-// import { TabView, SceneMap } from "react-native-tab-view";
-
-// tab样式
-// const renderScene = SceneMap({
-//   first: () => (
-//     <View>
-//       <Text>这是首页</Text>
-//     </View>
-//   ),
-//   second: () => (
-//     <View>
-//       <Text>这是首页</Text>
-//     </View>
-//   ),
-// });
-
-// const routes = [
-//   { key: "first", title: "First" },
-//   { key: "second", title: "Second" },
-// ];
 const styles = StyleSheet.create({
-  whole: {
+  container: {
     paddingHorizontal: 20,
-    paddingVertical: 10,
-    backgroundColor: "#F5F5F5",
-  },
-  name: {
-    fontSize: 20,
-    color: "#263238",
-    fontWeight: 500,
-  },
-  image: {
-    width: 40,
-    height: 40,
-    borderRadius: "50%",
-    marginRight: 12,
-  },
-  icon: {
-    width: 36,
-    height: 36,
-    borderRadius: "50%",
-    boxShadow: "0 3px 6px #f05a221f",
     backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  content: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-
-    // 安卓阴影
-    elevation: 4,
-    // ios阴影
-  },
-  internalContent: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  title: {
-    fontSize: 24,
-    fontWeight: "bold",
-    color: "#2D2D2D",
-    marginTop: 20,
-  },
-  input: {
-    height: 36,
-    width: 200,
-    boxShadow: "0 3px 6px #f05a221f",
-    backgroundColor: "#fff",
-    borderRadius: 12,
-    paddingHorizontal: 15,
-    flex: 1,
-  },
-  inputButton: {
-    width: 36,
-    height: 35,
-    borderRadius: 10,
-    color: "#fff",
-    flexShrink: 0,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  inputContent: {
-    flexDirection: "row",
-    gap: 20,
-    marginTop: 4,
-    alignItems: "center",
-  },
-  locationImage: {
-    width: 50,
-    height: 50,
-    borderRadius: 50,
-  },
-  locationText: {
-    color: "#595959",
-    fontWeight: "500",
-    marginTop: 4,
-  },
-  locationContent: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    marginTop: 20,
-  },
-  location: {
-    justifyContent: "center",
+    height: "100%",
   },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
-    alignItems: "flex-end",
-    marginTop: 20,
+    alignItems: "center",
+    marginBottom: 20,
   },
-  headerTitle: {
-    fontWeight: 500,
-    fontSize: 24,
+  headerButton: {
+    width: 45,
+    height: 45,
+    borderRadius: 22.5,
+    justifyContent: "center",
+    alignItems: "center",
   },
-  headerViewAll: {
-    color: "#F05A22",
-    fontSize: 16,
+  headerButtonConfig: {
+    backgroundColor: "#ECF0F4",
+  },
+  headerButtonCart: {
+    backgroundColor: "#181C2E",
+  },
+  common: {
+    flexDirection: "row",
+    alignItems: "center",
+    gap: 12,
+    justifyContent: "center",
+  },
+  deliverTo: {
+    color: "#FC6E2A",
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  mb16: {
+    marginBottom: 16,
+  },
+  input: {
+    height: 62,
+    borderRadius: 12,
+    backgroundColor: "#F6F6F6",
+    paddingLeft: 16,
   },
   card: {
-    paddingVertical: 12,
+    width: 120,
+    height: 120,
+    borderRadius: 12,
+    overflow: "hidden",
+    padding: 20,
+    ...Platform.select({
+      ios: {
+        shadowColor: "#000", // 阴影颜色（深色更立体）
+        shadowOffset: { width: 0, height: 4 }, // 阴影偏移（向下4px，增强悬浮感）
+        shadowOpacity: 0.15, // 阴影透明度（0.1-0.3 较自然）
+        shadowRadius: 8, // 阴影模糊半径（值越大越柔和）
+      },
+      android: {
+        // Android 原生阴影（elevation 值越大，阴影越明显）
+        elevation: 8,
+        // 可选：Android 10+ 支持通过 outline 微调阴影（需配合 borderRadius）
+        outlineStyle: "none",
+      },
+    }),
   },
-  item: {
-    marginRight: 10,
+  cardImg: {
+    width: "100%",
+    height: "100%",
+    borderRadius: 12,
+    objectFit: "fill",
+    backgroundColor: "#98A8B8",
+  },
+  cardTitle: {
+    fontSize: 18,
+    fontWeight: 500,
   },
 });
-
-export default function TabViewExample() {
+const Card = ({ title }) => {
   return (
-    <ScrollView style={styles.whole}>
-      <View style={styles.content}>
-        <View style={styles.internalContent}>
-          <Image style={styles.image} source={src} />
-          <Text>
-            hello,<Text style={styles.name}>yuchen</Text>
-          </Text>
-        </View>
-        <View style={styles.icon}>
-          <Text>
-            <SimpleLineIcons name="bell" />
-          </Text>
-        </View>
+    <View
+      style={[
+        {
+          justifyContent: "center",
+          alignItems: "center",
+          // backgroundColor: "#f0f0f0",
+        },
+      ]}
+    >
+      <View style={styles.card}>
+        <Image style={styles.cardImg} source={src} />
       </View>
-      <Text style={styles.title}>Find Your Stay</Text>
-      <View style={styles.inputContent}>
-        <TextInput style={styles.input} placeholder="Search here..." />
-        <LinearGradient
-          style={styles.inputButton}
-          colors={["#F05A22", "#F78E48"]}
-        >
-          <Text>
-            <SimpleLineIcons name="magnifier" color="#fff" />
-          </Text>
-        </LinearGradient>
-      </View>
-      <View style={styles.locationContent}>
-        {[1, 2, 3, 4].map((item) => (
-          <Component key={item} />
-        ))}
-      </View>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Our Properties</Text>
-        <Text style={styles.headerViewAll}>View All</Text>
-      </View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.card}
-        snapToInterval={100}
-      >
-        {[1, 2, 3, 4].map((item) => (
-          <View key={item} style={styles.item}>
-            <Card />
-          </View>
-        ))}
-      </ScrollView>
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>Popular</Text>
-        <Text style={styles.headerViewAll}>View All</Text>
-      </View>
-      <ScrollView
-        horizontal
-        showsHorizontalScrollIndicator={false}
-        contentContainerStyle={styles.card}
-        snapToInterval={100}
-      >
-        {[1, 2, 3, 4].map((item) => (
-          <View key={item} style={styles.item}>
-            <PopularCard />
-          </View>
-        ))}
-      </ScrollView>
-    </ScrollView>
-  );
-}
-
-const Component = () => {
-  return (
-    <View style={styles.location}>
-      <Image source={src} style={styles.locationImage} />
-      <Text style={styles.locationText}>Location</Text>
+      <Text style={styles.cardTitle}>{title}</Text>
     </View>
   );
 };
+const Home = () => {
+  return (
+    <SafeAreaView>
+      <ScrollView style={styles.container}>
+        <View style={styles.header}>
+          <View style={styles.common}>
+            <View style={[styles.headerButton, styles.headerButtonConfig]}>
+              <IconFont name="menu" />
+            </View>
+            <View>
+              <Text style={styles.deliverTo}>Deliver to</Text>
+              <View style={styles.common}>
+                <Text>Halal Lab office</Text>
+                <IconFont name="arrow-down" />
+              </View>
+            </View>
+          </View>
+          <View style={[styles.headerButton, styles.headerButtonCart]}>
+            <IconFont name="cart" color="#fff" />
+          </View>
+        </View>
+        <View style={[styles.row, styles.mb16]}>
+          <Text>Hey Halal, </Text>
+          <Text style={{ fontWeight: 500 }}>Good Afternoon!</Text>
+        </View>
+        <TextInput style={styles.input} placeholder="Search here..." />
+        <View
+          style={[
+            styles.row,
+            { justifyContent: "space-between", marginVertical: 20 },
+          ]}
+        >
+          <Text style={{ fontSize: 20 }}>All Categories</Text>
+          <View style={styles.row}>
+            <Text>See All</Text>
+            <IconFont name="arrow-right" size={12} />
+          </View>
+        </View>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+          <View style={{ flexDirection: "row", gap: 16 }}>
+            <Card title="Vegetables" />
+            <Card title="Fruits" />
+            <Card title="Meat & Fish" />
+            <Card title="Beverages" />
+            <Card title="Snacks" />
+          </View>
+        </ScrollView>
+        <View
+          style={[
+            styles.row,
+            { justifyContent: "space-between", marginVertical: 20 },
+          ]}
+        >
+          <Text style={{ fontSize: 20 }}>Open Restaurants</Text>
+          <View style={styles.row}>
+            <Text>See All</Text>
+            <IconFont name="arrow-right" size={12} />
+          </View>
+        </View>
+        <View style={{ gap: 20, marginBottom: 20 }}>
+          <RestaurantCard />
+          <RestaurantCard />
+        </View>
+      </ScrollView>
+    </SafeAreaView>
+  );
+};
+export default Home;

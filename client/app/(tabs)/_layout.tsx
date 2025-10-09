@@ -13,7 +13,6 @@ const TabLayout = () => {
       screenOptions={{
         headerTitle: "",
         headerStyle: {
-          backgroundColor: "#f5f5f5",
           borderBottomWidth: 0,
           shadowOpacity: 0, // 对于iOS，如果需要移除阴影，也可以设置此项
           elevation: 0, // 对于Android，移除阴影
@@ -34,13 +33,7 @@ const TabLayout = () => {
         options={{
           title: "",
           tabBarIcon: ({ color }) => <TabButton name="home" color={color} />,
-        }}
-      ></Tabs.Screen>
-      <Tabs.Screen
-        name="notification"
-        options={{
-          title: "",
-          tabBarIcon: ({ color }) => <TabButton name="bell" color={color} />,
+          headerShown: false,
         }}
       ></Tabs.Screen>
       <Tabs.Screen
@@ -48,6 +41,13 @@ const TabLayout = () => {
         options={{
           title: "",
           tabBarIcon: ({ color }) => <TabButton name="heart" color={color} />,
+        }}
+      ></Tabs.Screen>
+      <Tabs.Screen
+        name="notification"
+        options={{
+          title: "",
+          tabBarIcon: ({ color }) => <TabButton name="bell" color={color} />,
         }}
       ></Tabs.Screen>
       <Tabs.Screen

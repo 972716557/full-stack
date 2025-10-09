@@ -39,9 +39,7 @@ const Layout = () => {
       screenOptions={{
         headerTitleAlign: "center",
         animation: "slide_from_right",
-        headerStyle: {
-          backgroundColor: "#f5f5f5",
-        },
+        headerStyle: {},
         headerTintColor: "#292931",
         headerTitleStyle: {
           fontWeight: "bold",
