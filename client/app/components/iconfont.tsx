@@ -34,7 +34,7 @@ export const IconMap = {
   phone: "\ue6a0",
   home: "\ue608",
   email: "\ue66f",
-  word: "\ue683",
+  work: "\ue683",
   delete: "\ue610",
 };
 

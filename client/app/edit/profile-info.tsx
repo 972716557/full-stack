@@ -7,6 +7,8 @@ import IconFont from "../components/iconfont";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import BackButton from "../components/back-button";
+import Header from "../components/header";
+import { useState } from "react";
 
 const styles = StyleSheet.create({
   container: {
@@ -14,11 +16,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: "100%",
     gap: 20,
-  },
-  header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
   },
   row: {
     flexDirection: "row",
@@ -34,6 +31,21 @@ const styles = StyleSheet.create({
   label: {
     fontSize: 18,
     fontWeight: "500",
+  },
+  button: {
+    backgroundColor: "#FF7622",
+    borderRadius: 12,
+    padding: 20,
+    justifyContent: "center",
+    textAlign: "center",
+    fontWeight: 500,
+    position: "absolute",
+    bottom: 40,
+    left: 20,
+  },
+  buttonLabel: {
+    color: "#fff",
+    textAlign: "center",
   },
 });
 
@@ -104,16 +116,21 @@ const pickImage = async () => {
 // 上传图片逻辑（不变）
 
 const EditProfileInfo = () => {
+  const [parentWidth, setParentWidth] = useState(0);
+
+  // 父元素布局完成后触发，获取其宽度
+  const handleParentLayout = (event) => {
+    const { width } = event.nativeEvent.layout;
+    setParentWidth(width); // 更新父元素宽度
+  };
   return (
     <SafeAreaProvider>
-      <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+      <SafeAreaView
+        style={{ flex: 1, backgroundColor: "#fff" }}
+        onLayout={handleParentLayout}
+      >
         <ScrollView style={styles.container}>
-          <View style={styles.header}>
-            <View style={styles.row}>
-              <BackButton />
-              <Text>Edit Profile</Text>
-            </View>
-          </View>
+          <Header title="Edit Profile" />
           <View
             style={{
               position: "relative",
@@ -162,6 +179,9 @@ const EditProfileInfo = () => {
             </View>
           </View>
         </ScrollView>
+        <View style={[styles.button, { width: parentWidth - 40 }]}>
+          <Text style={styles.buttonLabel}>Save</Text>
+        </View>
       </SafeAreaView>
     </SafeAreaProvider>
   );

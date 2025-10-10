@@ -5,6 +5,7 @@ import { Image } from "expo-image";
 import IconFont from "./components/iconfont";
 import { router } from "expo-router";
 import BackButton from "./components/back-button";
+import Header from "./components/header";
 
 const styles = StyleSheet.create({
   container: {
@@ -12,11 +13,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: "100%",
     gap: 20,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
   },
   row: {
     flexDirection: "row",
@@ -55,7 +51,7 @@ const data = [
       color: "#FB6F3D",
       to: "/profile-info",
     },
-    { title: "Address", icon: "map", color: "#413DFB" },
+    { title: "Address", icon: "map", color: "#413DFB", to: "/address" },
   ],
   [
     { title: "Cart", icon: "cart", color: "#369BFF" },
@@ -74,10 +70,7 @@ const Config = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView style={styles.container}>
-        <View style={[styles.row, { gap: 12 }]}>
-          <BackButton />
-          <Text>Profile</Text>
-        </View>
+        <Header title="Profile" />
         <View style={[styles.row, { gap: 32, marginVertical: 20 }]}>
           <Image
             source={require("../assets/avatar.jpg")}

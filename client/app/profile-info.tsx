@@ -3,7 +3,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import IconFont from "./components/iconfont";
 import { Link } from "expo-router";
-import BackButton from "./components/back-button";
+import Header from "./components/header";
 
 const styles = StyleSheet.create({
   container: {
@@ -11,11 +11,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: "100%",
     gap: 20,
-  },
-  header: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginBottom: 20,
   },
   row: {
     flexDirection: "row",
@@ -71,17 +66,18 @@ const Config = () => {
   return (
     <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
       <ScrollView style={styles.container}>
-        <View style={[styles.row, { justifyContent: "space-between" }]}>
-          <View style={[styles.row, { gap: 12 }]}>
-            <BackButton />
-            <Text>Profile Info</Text>
-          </View>
-          <Link asChild href={"/edit/profile-info"}>
-            <Text style={{ color: "#FF7622", textDecorationLine: "underline" }}>
-              Edit
-            </Text>
-          </Link>
-        </View>
+        <Header
+          title="Profile Info"
+          rightNode={
+            <Link asChild href={"/edit/profile-info"}>
+              <Text
+                style={{ color: "#FF7622", textDecorationLine: "underline" }}
+              >
+                Edit
+              </Text>
+            </Link>
+          }
+        />
         <View style={[styles.row, { gap: 32, marginVertical: 20 }]}>
           <Image
             source={require("../assets/avatar.jpg")}
