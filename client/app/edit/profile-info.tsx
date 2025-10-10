@@ -3,11 +3,11 @@ import { Text, StyleSheet } from "react-native";
 import { SafeAreaProvider, SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import src from "../../assets/avatar.jpg";
-import IconFont from "../components/iconfont";
+import IconFont from "../components/common/iconfont";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
 import BackButton from "../components/back-button";
-import Header from "../components/header";
+import Header from "../components/layout/header";
 import { useState } from "react";
 
 const styles = StyleSheet.create({

@@ -1,6 +1,6 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
-import IconFont from "./iconfont";
+import IconFont from "./common/iconfont";
 
 const styles = StyleSheet.create({
   button: {

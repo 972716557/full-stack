@@ -1,9 +1,9 @@
 import { ScrollView, View, Text, StyleSheet } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
-import IconFont from "./components/iconfont";
+import IconFont from "./components/common/iconfont";
 import { Link } from "expo-router";
-import Header from "./components/header";
+import Header from "./components/layout/header";
 
 const styles = StyleSheet.create({
   container: {

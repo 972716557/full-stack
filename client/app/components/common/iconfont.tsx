@@ -1,6 +1,7 @@
 import React from "react";
 import { Text, StyleProp, ViewStyle } from "react-native";
 import { useFonts } from "expo-font"; // Expo 字体加载钩子
+import iconfont from "../../../assets/fonts/iconfont.ttf";
 
 // 1. 定义「图标名称 → Unicode编码」映射表
 // （根据你的iconfont.css替换为实际图标）
@@ -36,6 +37,8 @@ export const IconMap = {
   email: "\ue66f",
   work: "\ue683",
   delete: "\ue610",
+  clear: "\ue603",
+  "circle-clear": "\ue605",
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）
@@ -55,7 +58,7 @@ const IconFont: React.FC<IconFontProps> = ({
 }) => {
   // 加载IconFont字体（fontFamily名称需与下方一致）
   const [fontsLoaded] = useFonts({
-    iconfont: require("../../assets/fonts/iconfont.ttf"), // 字体文件路径
+    iconfont, // 字体文件路径
   });
 
   // 字体未加载完成时，显示空视图（避免乱码）

@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
-import FontIcon from "./iconfont";
+import FontIcon from "./common/iconfont";
 
 const styles = StyleSheet.create({
   title: {

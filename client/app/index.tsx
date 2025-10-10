@@ -7,7 +7,7 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import IconFont from "./components/iconfont";
+import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../assets/humber.png";
 import RestaurantCard from "./components/restaurant";
@@ -142,7 +142,13 @@ const Home = () => {
           <Text>Hey Halal, </Text>
           <Text style={{ fontWeight: 500 }}>Good Afternoon!</Text>
         </View>
-        <TextInput style={styles.input} placeholder="Search here..." />
+        <TextInput
+          style={styles.input}
+          placeholder="Search here..."
+          onFocus={() => {
+            router.push("/search");
+          }}
+        />
         <View
           style={[
             styles.row,

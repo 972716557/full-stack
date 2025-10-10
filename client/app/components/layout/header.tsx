@@ -1,5 +1,5 @@
 import { View, Text, StyleSheet } from "react-native";
-import BackButton from "./back-button";
+import BackButton from "../back-button";
 import { Link } from "expo-router";
 import { ReactNode } from "react";
 
