@@ -28,7 +28,14 @@ export const IconMap = {
   bankcard: "\ue693",
   setting: "\ue87e",
   review: "\ue602",
-  // 例子：
+  location: "\ue650",
+  edit: "\ue780",
+  pencil: "\ue725",
+  phone: "\ue6a0",
+  home: "\ue608",
+  email: "\ue66f",
+  word: "\ue683",
+  delete: "\ue610",
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）
