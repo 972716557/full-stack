@@ -8,8 +8,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import Header from "./components/header";
 import IconFont from "./components/iconfont";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { Drawer } from "react-native-drawer-layout";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
   container: {
@@ -17,6 +20,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     height: "100%",
     gap: 20,
+    zIndex: 0,
+    flex: 1,
+    position: "relative",
   },
   card: {
     padding: 16,
@@ -48,12 +54,35 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: 500,
     position: "absolute",
-    bottom: 40,
+    bottom: 20,
     left: 20,
   },
   buttonLabel: {
     color: "#fff",
     textAlign: "center",
+  },
+  contentContainer: {
+    padding: 20,
+    height: "100%",
+  },
+  blackOverlay: {
+    backgroundColor: "rgba(0, 0, 0, 0.6)", // 黑色半透明（0.6为透明度，可调整）
+  },
+  tag: {
+    backgroundColor: "#F0F5FA",
+    paddingHorizontal: 24,
+    flex: 0,
+    paddingVertical: 16,
+    borderRadius: 24,
+    color: "#32343E",
+  },
+  tagSelected: {
+    backgroundColor: "#F58D1D",
+    color: "#fff",
+  },
+  label: {
+    color: "#32343E",
+    fontSize: 16,
   },
 });
 
@@ -72,6 +101,7 @@ const data = [
 const Address = () => {
   const [parentWidth, setParentWidth] = useState(0);
   const [open, setOpen] = useState(false);
+  const [selectedTag, setSelectedTag] = useState("Home");
   // 父元素布局完成后触发，获取其宽度
   const handleParentLayout = (event) => {
     const { width } = event.nativeEvent.layout;
@@ -83,27 +113,39 @@ const Address = () => {
     setOpen(true);
   };
 
-  // 关闭抽屉
-  const closeDrawer = () => {
-    setOpen(false);
+  const bottomSheetRef = useRef(null);
+
+  const handleSheetChange = (index) => {
+    if (index === -1) {
+      setOpen(false);
+    }
   };
 
+  const renderBackground = ({ style }) =>
+    // 可点击的遮罩，点击关闭抽屉
+    open && (
+      <TouchableOpacity
+        style={[style, styles.blackOverlay]} // 结合默认样式和自定义黑色遮罩
+        onPress={() => {
+          setOpen(false);
+          bottomSheetRef.current?.close();
+        }} // 点击遮罩关闭抽屉
+        activeOpacity={1} // 去除点击透明度变化
+      />
+    );
+
   return (
-    <>
+    <GestureHandlerRootView style={{ flex: 1 }}>
       <SafeAreaView
-        style={{ flex: 1, backgroundColor: "#fff", position: "relative" }}
+        style={{
+          flex: 1,
+          backgroundColor: "#fff",
+        }}
         onLayout={handleParentLayout}
       >
-        <Drawer
-          open={open}
-          onOpen={() => setOpen(true)}
-          onClose={() => setOpen(false)}
-          renderDrawerContent={() => {
-            return <Text>Drawer content</Text>;
-          }}
-        >
-          <ScrollView style={styles.container}>
-            <Header title="My Address" />
+        <View style={styles.container}>
+          <Header title="My Address" />
+          <ScrollView style={{ flex: 1 }}>
             <View style={{ gap: 16, marginTop: 16, flex: 1 }}>
               {data.map(({ title, icon, color }) => (
                 <View style={styles.card} key={title}>
@@ -121,6 +163,7 @@ const Address = () => {
                         <TouchableOpacity
                           onPress={() => {
                             setOpen(true);
+                            bottomSheetRef.current?.expand();
                           }}
                         >
                           <IconFont name="edit" color="#FB6D3A" />
@@ -134,14 +177,55 @@ const Address = () => {
               ))}
             </View>
           </ScrollView>
-          <TouchableOpacity onPress={openDrawer}>
-            <View style={[styles.button, { width: parentWidth - 40 }]}>
+          <View style={[styles.button, { width: parentWidth - 40 }]}>
+            <TouchableOpacity onPress={openDrawer}>
               <Text style={styles.buttonLabel}>Add new address</Text>
+            </TouchableOpacity>
+          </View>
+        </View>
+        <BottomSheet
+          snapPoints={["80%"]}
+          onChange={handleSheetChange}
+          ref={bottomSheetRef}
+          index={open ? 1 : -1}
+          enablePanDownToClose={true}
+          backdropComponent={renderBackground}
+        >
+          <BottomSheetView style={styles.contentContainer}>
+            <Text style={styles.label}>Label As</Text>
+            <ScrollView horizontal>
+              <View style={{ gap: 12, marginTop: 12, flexDirection: "row" }}>
+                {["Home", "Work", "Other"].map((item) => (
+                  <TouchableOpacity
+                    key={item}
+                    activeOpacity={0.7}
+                    onPress={() => setSelectedTag(item)}
+                  >
+                    <Text
+                      key={item}
+                      style={
+                        selectedTag === item
+                          ? [styles.tag, styles.tagSelected]
+                          : styles.tag
+                      }
+                    >
+                      {item}
+                    </Text>
+                  </TouchableOpacity>
+                ))}
+              </View>
+            </ScrollView>
+            <View
+              style={[styles.button, { width: parentWidth - 40, bottom: 40 }]}
+            >
+              <TouchableOpacity onPress={openDrawer}>
+                <Text style={styles.buttonLabel}>Save Location</Text>
+              </TouchableOpacity>
             </View>
-          </TouchableOpacity>
-        </Drawer>
+          </BottomSheetView>
+        </BottomSheet>
       </SafeAreaView>
-    </>
+    </GestureHandlerRootView>
   );
 };
 export default Address;
