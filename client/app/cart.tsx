@@ -10,7 +10,6 @@ import { useState } from "react";
 import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../assets/burger.png";
-import { number } from "yup";
 
 const styles = StyleSheet.create({
   edit: {
@@ -25,8 +24,8 @@ const styles = StyleSheet.create({
   },
   footer: {
     backgroundColor: "#fff",
-    borderTopLeftRadius: 30,
-    borderTopRightRadius: 30,
+    borderTopLeftRadius: 24,
+    borderTopRightRadius: 24,
     padding: 24,
     paddingBottom: 48,
   },
@@ -46,10 +45,13 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
     borderRadius: 24,
+    flexShrink: 0,
+    flexGrow: 0,
   },
   title: {
     color: "#fff",
     fontSize: 16,
+    flexShrink: 1,
   },
   price: {
     fontWeight: "bold",
@@ -61,22 +63,23 @@ const styles = StyleSheet.create({
     color: "#888891",
   },
   icon: {
-    width: 22,
-    height: 22,
+    width: 24,
+    height: 24,
     borderRadius: "50%",
     backgroundColor: "#41414F",
     alignItems: "center",
     justifyContent: "center",
   },
   number: {
-    marginHorizontal: 20,
+    width: 40,
+    textAlign: "center",
     fontSize: 14,
     fontWeight: "bold",
     color: "#fff",
   },
 });
-const CartCart = () => {
-  const [number, setNumber] = useState(0);
+const CartCart = ({ id, onDelete, title, showDeleteButton }) => {
+  const [number, setNumber] = useState(999);
   const plus = () => {
     setNumber((i) => i + 1);
   };
@@ -86,12 +89,45 @@ const CartCart = () => {
   return (
     <View style={{ flexDirection: "row", gap: 20 }}>
       <Image source={src} style={styles.img} />
-      <View style={{ justifyContent: "space-between", flex: 1 }}>
-        <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-          pizza calzone european
-        </Text>
+      <View
+        style={{
+          justifyContent: "space-between",
+
+          flex: 1,
+        }}
+      >
+        <View style={{ flexDirection: "row" }}>
+          <View style={{ flex: 1 }}>
+            <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
+              {title}
+            </Text>
+          </View>
+          <View
+            style={[
+              styles.icon,
+              {
+                flexShrink: 0,
+                backgroundColor: "#E04444",
+                opacity: showDeleteButton ? 1 : 0,
+              },
+            ]}
+          >
+            <TouchableOpacity
+              onPress={() => {
+                onDelete(id);
+              }}
+            >
+              <IconFont name="clear" color="#fff" size={14} />
+            </TouchableOpacity>
+          </View>
+        </View>
         <Text style={styles.price}>$64</Text>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
+        <View
+          style={{
+            flexDirection: "row",
+            justifyContent: "space-between",
+          }}
+        >
           <Text style={styles.size}>14''</Text>
           <View style={{ flexDirection: "row", alignItems: "center" }}>
             <TouchableOpacity onPress={minus}>
@@ -102,7 +138,12 @@ const CartCart = () => {
             <Text style={styles.number}>{number}</Text>
             <TouchableOpacity onPress={plus}>
               <View style={styles.icon}>
-                <IconFont name="plus" color="#fff" size={14} />
+                <IconFont
+                  name="plus"
+                  color="#fff"
+                  size={12}
+                  style={{ transform: [{ translateX: -1 }] }}
+                />
               </View>
             </TouchableOpacity>
           </View>
@@ -111,8 +152,18 @@ const CartCart = () => {
     </View>
   );
 };
+
 const Cart = () => {
   const [isEdit, setIsEdit] = useState(false);
+  const [data, setData] = useState([
+    { id: 1, title: "pizza calzone european pizza calzone european" },
+    { id: 2, title: "pizza calzone european  calzone european" },
+    { id: 3, title: "pizza calzone european pizza  european" },
+    { id: 4, title: "pizza calzone european pizza calzone " },
+  ]);
+  const onDelete = (id) => {
+    setData(data.filter((item) => item.id !== id));
+  };
   return (
     <Layout
       safeAreaViewProps={{ edges: ["top", "left", "right"] }}
@@ -122,7 +173,7 @@ const Cart = () => {
         padding: 0,
       }}
       header={{
-        style: { paddingHorizontal: 12 },
+        style: { paddingHorizontal: 12, paddingBottom: 12 },
         title: <Text style={{ color: "#fff" }}>Cart</Text>,
         rightNode: (
           <>
@@ -141,8 +192,13 @@ const Cart = () => {
     >
       <ScrollView>
         <View style={{ gap: 32, paddingVertical: 12, paddingHorizontal: 24 }}>
-          {[1, 2, 3].map((item) => (
-            <CartCart />
+          {data.map((item) => (
+            <CartCart
+              key={item.id}
+              {...item}
+              onDelete={onDelete}
+              showDeleteButton={isEdit}
+            />
           ))}
         </View>
       </ScrollView>
