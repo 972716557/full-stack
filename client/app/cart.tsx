@@ -92,7 +92,6 @@ const CartCart = ({ id, onDelete, title, showDeleteButton }) => {
       <View
         style={{
           justifyContent: "space-between",
-
           flex: 1,
         }}
       >
@@ -102,23 +101,25 @@ const CartCart = ({ id, onDelete, title, showDeleteButton }) => {
               {title}
             </Text>
           </View>
+
           <View
             style={[
               styles.icon,
               {
                 flexShrink: 0,
-                backgroundColor: "#E04444",
-                opacity: showDeleteButton ? 1 : 0,
+                backgroundColor: showDeleteButton ? "#E04444" : "transparent",
               },
             ]}
           >
-            <TouchableOpacity
-              onPress={() => {
-                onDelete(id);
-              }}
-            >
-              <IconFont name="clear" color="#fff" size={14} />
-            </TouchableOpacity>
+            {showDeleteButton && (
+              <TouchableOpacity
+                onPress={() => {
+                  onDelete(id);
+                }}
+              >
+                <IconFont name="clear" color="#fff" size={14} />
+              </TouchableOpacity>
+            )}
           </View>
         </View>
         <Text style={styles.price}>$64</Text>
