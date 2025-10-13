@@ -98,7 +98,7 @@ const Card = ({ title, name, selected, onPress }) => {
         onPress(name);
       }}
     >
-      <View style={{ position: "relative" }}>
+      <View style={{ position: "relative", paddingBottom: 12 }}>
         {isSelected && (
           <View style={styles.icon}>
             <IconFont name="correct" size={18} color={"#fff"} />
@@ -136,53 +136,87 @@ const PaymentMethod = ({ title, name, selected, onPress = () => {} }) => {
 
 const Payment = () => {
   const [selected, setSelected] = useState("wechat");
+  const [cardHeight, setCardHeight] = useState(0); // 动态存储卡片高度
+  const handleCardLayout = (event) => {
+    const { height } = event.nativeEvent.layout;
+    setCardHeight(height);
+  };
+
   return (
     <Layout header={{ title: "Payment" }}>
-      <ScrollView horizontal style={{ flexGrow: 0 }}>
-        <View style={{ flexDirection: "row", gap: 20, marginTop: 20 }}>
-          {[
-            { title: "Wechat Pay", name: "wechat" },
-            { title: "Alipay", name: "alipay" },
-            { title: "Credit Card", name: "bankcard" },
-          ].map(({ title, name }) => (
-            <Card
-              title={title}
-              key={name}
-              selected={selected}
-              name={name}
-              onPress={(name) => {
-                setSelected(name);
-              }}
-            />
-          ))}
-        </View>
-      </ScrollView>
-      <ScrollView>
-        <View style={{ gap: 20, marginTop: 20 }}>
-          <View style={styles.empty}>
-            <Image style={styles.emptyImg} source={emptyCard} />
-            <Text style={styles.emptyText}>No payment methods added</Text>
-            <Text style={styles.emptyDescription}>
-              Add your payment methods to make payments easier
-            </Text>
+      <View style={{ flex: 1 }}>
+        <ScrollView horizontal style={{ flexGrow: 0 }}>
+          <View style={{ flexDirection: "row", gap: 20, marginTop: 20 }}>
+            {[
+              { title: "Wechat Pay", name: "wechat" },
+              { title: "Alipay", name: "alipay" },
+              { title: "Credit Card", name: "bankcard" },
+            ].map(({ title, name }) => (
+              <Card
+                title={title}
+                key={name}
+                selected={selected}
+                name={name}
+                onPress={(name) => {
+                  setSelected(name);
+                }}
+              />
+            ))}
           </View>
-          <PaymentMethod title={"Wechat Pay"} name={"wechat"} />
-          <View style={styles.add}>
-            <IconFont name="plus" size={20} color="#FF7622" />
-            <Text
-              style={{
-                fontSize: 16,
-                fontWeight: "bold",
-                textAlign: "center",
-                color: "#FF7622",
-              }}
-            >
-              Add new
-            </Text>
+        </ScrollView>
+        <ScrollView
+          contentContainerStyle={{
+            paddingBottom: cardHeight,
+          }}
+          showsVerticalScrollIndicator={false}
+          style={{ flex: 1 }}
+        >
+          <View
+            style={{
+              gap: 20,
+            }}
+          >
+            <View style={styles.empty}>
+              <Image style={styles.emptyImg} source={emptyCard} />
+              <Text style={styles.emptyText}>No payment methods added</Text>
+              <Text style={styles.emptyDescription}>
+                Add your payment methods to make payments easier
+              </Text>
+            </View>
+            <PaymentMethod title={"Wechat Pay"} name={"wechat"} />
+            <View style={styles.add}>
+              <IconFont name="plus" size={20} color="#FF7622" />
+              <Text
+                style={{
+                  fontSize: 16,
+                  fontWeight: "bold",
+                  textAlign: "center",
+                  color: "#FF7622",
+                }}
+              >
+                Add new
+              </Text>
+            </View>
           </View>
-        </View>
-      </ScrollView>
-      <View style={{ padding: 24 }}>
+        </ScrollView>
+      </View>
+
+      <View
+        onLayout={handleCardLayout}
+        style={{
+          position: "absolute",
+          left: 0,
+          bottom: 0,
+          right: 0,
+          padding: 24,
+          paddingBottom: 48,
+          backgroundColor: "#fff",
+          shadowColor: "#000", // 阴影颜色（黑色）
+          shadowOffset: { width: 0, height: -4 }, // 阴影向上偏移（height为负值）
+          shadowOpacity: 0.2, // 阴影透明度（0-1）
+          shadowRadius: 8, // 阴影模糊半径（值越大越模糊）
+        }}
+      >
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <Text style={{ fontSize: 16, marginRight: 8, color: "#A0A5BA" }}>
             Total:

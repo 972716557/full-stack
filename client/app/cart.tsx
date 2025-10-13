@@ -11,6 +11,7 @@ import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../assets/burger.png";
 import { Link } from "expo-router";
+import { SwipeListView } from "react-native-swipe-list-view";
 
 const styles = StyleSheet.create({
   edit: {
@@ -78,8 +79,35 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
   },
+  listContainer: {
+    flex: 1,
+    backgroundColor: "#121223",
+  },
+  // 隐藏项容器（左滑时显示）
+  hiddenContainer: {
+    flex: 1,
+    flexDirection: "row-reverse", // 按钮靠右显示
+  },
+  deleteButton: {
+    width: 80,
+    height: "100%",
+    backgroundColor: "#ff3b30",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  deleteText: {
+    color: "white",
+    fontWeight: "600",
+  },
 });
-const CartCart = ({ id, onDelete, title, showDeleteButton }) => {
+const CartCart = ({ showDeleteButton }) => {
+  const [data, setData] = useState([
+    { id: 1, title: "pizza calzone european pizza calzone european" },
+    { id: 2, title: "pizza calzone european  calzone european" },
+    { id: 3, title: "pizza calzone european pizza  european" },
+    { id: 4, title: "pizza calzone european pizza calzone " },
+  ]);
+
   const [number, setNumber] = useState(999);
   const plus = () => {
     setNumber((i) => i + 1);
@@ -87,71 +115,123 @@ const CartCart = ({ id, onDelete, title, showDeleteButton }) => {
   const minus = () => {
     setNumber((i) => i - 1);
   };
-  return (
-    <View style={{ flexDirection: "row", gap: 20 }}>
-      <Image source={src} style={styles.img} />
-      <View
-        style={{
-          justifyContent: "space-between",
-          flex: 1,
-        }}
-      >
-        <View style={{ flexDirection: "row" }}>
-          <View style={{ flex: 1 }}>
-            <Text style={styles.title} numberOfLines={2} ellipsizeMode="tail">
-              {title}
-            </Text>
-          </View>
+  const handleDelete = (id, rowMap) => {
+    // 关闭当前滑动的项（可选，删除前先收起）
+    rowMap[id]?.closeRow();
+    // 从数据源中移除
+    setData((prevData) => prevData.filter((item) => item.id !== id));
+  };
 
-          <View
-            style={[
-              styles.icon,
-              {
-                flexShrink: 0,
-                backgroundColor: showDeleteButton ? "#E04444" : "transparent",
-              },
-            ]}
-          >
-            {showDeleteButton && (
-              <TouchableOpacity
-                onPress={() => {
-                  onDelete(id);
-                }}
-              >
-                <IconFont name="clear" color="#fff" size={14} />
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
-        <Text style={styles.price}>$64</Text>
+  // 2. 渲染左滑时显示的隐藏按钮（右侧删除按钮）
+  const renderHiddenItem = ({ item }, rowMap) => (
+    <View style={styles.hiddenContainer}>
+      {/* 删除按钮 */}
+      <TouchableOpacity
+        style={styles.deleteButton}
+        onPress={() => handleDelete(item.id, rowMap)}
+      >
+        <Text style={styles.deleteText}>
+          <IconFont name="delete" color="#fff" size={18} />
+        </Text>
+      </TouchableOpacity>
+    </View>
+  );
+
+  return (
+    <SwipeListView
+      // 数据源
+      data={data}
+      // 渲染正常列表项
+      renderItem={({ item: { title, id }, index }) => (
         <View
           style={{
             flexDirection: "row",
-            justifyContent: "space-between",
+            gap: 20,
+            backgroundColor: "#121223",
+            paddingRight: 16,
           }}
         >
-          <Text style={styles.size}>14''</Text>
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <TouchableOpacity onPress={minus}>
-              <View style={styles.icon}>
-                <IconFont name="minus" color="#fff" size={14} />
+          <Image source={src} style={styles.img} />
+          <View
+            style={{
+              justifyContent: "space-between",
+              flex: 1,
+            }}
+          >
+            <View style={{ flexDirection: "row" }}>
+              <View style={{ flex: 1 }}>
+                <Text
+                  style={styles.title}
+                  numberOfLines={2}
+                  ellipsizeMode="tail"
+                >
+                  {title}
+                </Text>
               </View>
-            </TouchableOpacity>
-            <Text style={styles.number}>{number}</Text>
-            <TouchableOpacity onPress={plus}>
-              <View style={styles.icon}>
-                <IconFont
-                  name="plus"
-                  color="#fff"
-                  size={12}
-                  style={{ transform: [{ translateX: -1 }] }}
-                />
+
+              <View
+                style={[
+                  styles.icon,
+                  {
+                    flexShrink: 0,
+                    backgroundColor: showDeleteButton
+                      ? "#E04444"
+                      : "transparent",
+                  },
+                ]}
+              >
+                {showDeleteButton && (
+                  <TouchableOpacity
+                    onPress={() => {
+                      onDelete(id);
+                    }}
+                  >
+                    <IconFont name="clear" color="#fff" size={14} />
+                  </TouchableOpacity>
+                )}
               </View>
-            </TouchableOpacity>
+            </View>
+            <Text style={styles.price}>$64</Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+              }}
+            >
+              <Text style={styles.size}>14''</Text>
+              <View style={{ flexDirection: "row", alignItems: "center" }}>
+                <TouchableOpacity onPress={minus}>
+                  <View style={styles.icon}>
+                    <IconFont name="minus" color="#fff" size={14} />
+                  </View>
+                </TouchableOpacity>
+                <Text style={styles.number}>{number}</Text>
+                <TouchableOpacity onPress={plus}>
+                  <View style={styles.icon}>
+                    <IconFont
+                      name="plus"
+                      color="#fff"
+                      size={12}
+                      style={{ transform: [{ translateX: -1 }] }}
+                    />
+                  </View>
+                </TouchableOpacity>
+              </View>
+            </View>
           </View>
         </View>
-      </View>
-    </View>
+      )}
+      // 渲染左滑显示的隐藏项
+      renderHiddenItem={renderHiddenItem}
+      // 左滑距离（负值表示向左滑动）
+      rightOpenValue={-80} // 滑动80px显示完整删除按钮
+      // 列表项key
+      keyExtractor={(item) => item.id}
+      backgroundColor="#121223"
+      // 列表容器样式
+      style={styles.listContainer}
+      contentContainerStyle={{ gap: 20 }}
+    />
   );
 };
 
@@ -194,14 +274,7 @@ const Cart = () => {
     >
       <ScrollView>
         <View style={{ gap: 32, paddingVertical: 12, paddingHorizontal: 24 }}>
-          {data.map((item) => (
-            <CartCart
-              key={item.id}
-              {...item}
-              onDelete={onDelete}
-              showDeleteButton={isEdit}
-            />
-          ))}
+          <CartCart onDelete={onDelete} showDeleteButton={isEdit} />
         </View>
       </ScrollView>
       <View style={styles.footer}>
