@@ -6,7 +6,7 @@ import src from "../../assets/avatar.jpg";
 import IconFont from "../components/common/iconfont";
 import * as ImagePicker from "expo-image-picker";
 import axios from "axios";
-import BackButton from "../components/back-button";
+import BackButton from "../components/layout/back-button";
 import Header from "../components/layout/header";
 import { useState } from "react";
 

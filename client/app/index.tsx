@@ -9,9 +9,11 @@ import {
 import { SafeAreaView } from "react-native-safe-area-context";
 import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
-import src from "../assets/humber.png";
+import src from "../assets/burger.png";
 import RestaurantCard from "./components/restaurant";
 import { router } from "expo-router";
+import SearchInput from "./components/common/search-input";
+import HeaderCart from "./components/common/header-cart";
 
 const styles = StyleSheet.create({
   container: {
@@ -134,21 +136,13 @@ const Home = () => {
               </View>
             </View>
           </View>
-          <View style={[styles.headerButton, styles.headerButtonCart]}>
-            <IconFont name="cart" color="#fff" />
-          </View>
+          <HeaderCart />
         </View>
         <View style={[styles.row, styles.mb16]}>
           <Text>Hey Halal, </Text>
           <Text style={{ fontWeight: 500 }}>Good Afternoon!</Text>
         </View>
-        <TextInput
-          style={styles.input}
-          placeholder="Search here..."
-          onFocus={() => {
-            router.push("/search");
-          }}
-        />
+        <SearchInput />
         <View
           style={[
             styles.row,

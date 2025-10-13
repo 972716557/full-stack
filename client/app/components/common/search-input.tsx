@@ -1,8 +1,19 @@
 import React, { useState } from "react";
-import { View, TextInput, StyleSheet, TouchableOpacity } from "react-native";
+import {
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import IconFont from "./iconfont";
 
-const SearchInput = ({ placeholder, onSearch }) => {
+interface SearchInputProps {
+  placeholder?: string;
+  onSearch?: (text: string) => void;
+  style?: ViewStyle;
+}
+const SearchInput = ({ placeholder, onSearch, style }: SearchInputProps) => {
   const [text, setText] = useState("");
 
   // 清空输入框
@@ -18,7 +29,7 @@ const SearchInput = ({ placeholder, onSearch }) => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, style]}>
       {/* 搜索图标（左侧） */}
       <IconFont
         name="search"

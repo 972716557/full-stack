@@ -1,10 +1,10 @@
 import { ScrollView, View, Text, StyleSheet } from "react-native";
-import Button from "./components/button";
+import Button from "./components/layout/button";
 import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import IconFont from "./components/common/iconfont";
 import { router } from "expo-router";
-import BackButton from "./components/back-button";
+import BackButton from "./components/layout/back-button";
 import Header from "./components/layout/header";
 
 const styles = StyleSheet.create({

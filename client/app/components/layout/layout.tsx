@@ -1,5 +1,8 @@
 import { StyleProp, StyleSheet, ViewStyle } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
+import {
+  NativeSafeAreaViewProps,
+  SafeAreaView,
+} from "react-native-safe-area-context";
 import Header from "./header";
 import { ReactNode } from "react";
 
@@ -15,17 +18,24 @@ const styles = StyleSheet.create({
 interface Header {
   title?: ReactNode;
   rightNode?: ReactNode;
+  style?: StyleProp<ViewStyle>;
 }
 interface LayoutProps {
   children: ReactNode;
   header?: Header;
   style?: StyleProp<ViewStyle>;
+  safeAreaViewProps?: NativeSafeAreaViewProps;
 }
-const Layout = ({ children, header = {}, style }: LayoutProps) => {
-  const { title, rightNode } = header;
+const Layout = ({
+  children,
+  header = {},
+  style,
+  safeAreaViewProps,
+}: LayoutProps) => {
+  const { title, rightNode, style: headerStyle } = header;
   return (
-    <SafeAreaView style={[styles.container, style]}>
-      <Header title={title} rightNode={rightNode} />
+    <SafeAreaView style={[styles.container, style]} {...safeAreaViewProps}>
+      <Header title={title} rightNode={rightNode} style={headerStyle} />
       {children}
     </SafeAreaView>
   );

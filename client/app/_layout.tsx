@@ -2,7 +2,7 @@ import { Stack, Tabs, Link, router } from "expo-router";
 import { Image } from "expo-image";
 import { StyleSheet, TouchableOpacity } from "react-native";
 import { SimpleLineIcons } from "@expo/vector-icons";
-import Button from "./components/button";
+import Button from "./components/layout/button";
 const Logo = () => {
   return (
     <Image
@@ -53,6 +53,7 @@ const Layout = () => {
       <Stack.Screen name="profile-info" options={{ headerShown: false }} />
       <Stack.Screen name="address" options={{ headerShown: false }} />
       <Stack.Screen name="search" options={{ headerShown: false }} />
+      <Stack.Screen name="cart" options={{ headerShown: false }} />
       <Stack.Screen name="edit/profile-info" options={{ headerShown: false }} />
       <Stack.Screen
         name="detail/[id]"

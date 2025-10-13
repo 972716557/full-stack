@@ -2,6 +2,7 @@ import { View, Text, StyleSheet } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
 import FontIcon from "./common/iconfont";
+import source from "../../assets/burger.png";
 
 const styles = StyleSheet.create({
   title: {
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
 const RestaurantCard = () => {
   return (
     <View>
-      <Image source={require("../../assets/humber.png")} style={styles.image} />
+      <Image source={source} style={styles.image} />
       <Text style={styles.title}>Restaurant Card</Text>
       <Text style={styles.desc}>Burger - Chiken - Riche - Wings </Text>
       <View style={{ flexDirection: "row", gap: 16, marginTop: 8 }}>

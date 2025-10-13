@@ -16,7 +16,7 @@ export const IconMap = {
   heart: "\uea02", // 心形图标
   bell: "\ue624", // 铃铛图标
   user: "\ue60c", // 用户图标
-  plus: " \ue600", // 加号图标
+  plus: " \ue7bd", // 加号图标
   minus: "\ue604", // 减号图标
   more: "\ue601", // 减号图标
   car: "\ue61e", // 车子图标
