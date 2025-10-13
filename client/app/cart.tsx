@@ -10,6 +10,7 @@ import { useState } from "react";
 import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../assets/burger.png";
+import { Link } from "expo-router";
 
 const styles = StyleSheet.create({
   edit: {
@@ -241,20 +242,26 @@ const Cart = () => {
             <IconFont name="arrow-right" size={12} />
           </View>
         </View>
-        <Text
+        <Link
+          href="/payment"
           style={{
             backgroundColor: "#FF7622",
             borderRadius: 16,
-            textAlign: "center",
             padding: 16,
             marginTop: 32,
-            color: "#fff",
-            fontSize: 18,
-            fontWeight: "bold",
           }}
         >
-          Place Order
-        </Text>
+          <Text
+            style={{
+              textAlign: "center",
+              color: "#fff",
+              fontSize: 18,
+              fontWeight: "bold",
+            }}
+          >
+            Place Order
+          </Text>
+        </Link>
       </View>
     </Layout>
   );

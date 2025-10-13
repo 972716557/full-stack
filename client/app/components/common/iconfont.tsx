@@ -39,6 +39,9 @@ export const IconMap = {
   delete: "\ue610",
   clear: "\ue603",
   "circle-clear": "\ue605",
+  wechat: "\ue883",
+  alipay: "\ue666",
+  correct: "\ue721",
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）
