@@ -1,28 +1,14 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  Animated,
-} from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import Layout from "./components/layout/layout";
 import ProductImageCarousel from "./components/common/carousel";
 import IconFont from "./components/common/iconfont";
 import ButtonGroup from "./components/common/button-group";
 import FoodOrderCard from "./components/resturant/food-order-card";
-import {
-  FlatList,
-  Gesture,
-  GestureDetector,
-  GestureHandlerRootView,
-} from "react-native-gesture-handler";
+import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import {
-  useSharedValue,
-  withSpring,
-  useAnimatedStyle,
-} from "react-native-reanimated";
+import { useSharedValue } from "react-native-reanimated";
+import HeaderCart from "./components/common/header-cart";
 
 const styles = StyleSheet.create({
   container: {
@@ -135,8 +121,6 @@ const Restaurant = () => {
     }
   };
 
-  const translateX = useSharedValue(0);
-
   const renderCategory = () => (
     <View ref={categoryRef}>
       <ButtonGroup>
@@ -194,6 +178,7 @@ const Restaurant = () => {
         title: "Restaurant View",
         style: { paddingBottom: 12 },
         onLayout: handleHeaderLayout,
+        rightNode: <HeaderCart />,
       }}
       style={{ position: "relative" }}
     >
@@ -227,7 +212,7 @@ const Restaurant = () => {
           })}
           ListHeaderComponent={
             <>
-              <ProductImageCarousel style={{ marginTop: 20 }} />
+              <ProductImageCarousel />
               <Text style={styles.title}>Spicy restaurant</Text>
               <Text numberOfLines={4} ellipsizeMode="tail" style={styles.desc}>
                 Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed

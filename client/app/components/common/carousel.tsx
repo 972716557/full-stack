@@ -38,7 +38,7 @@ const ProductImageCarousel = ({ style, data = productImages }) => {
       <View style={styles.imageContainer}>
         <Image
           source={{ uri: item }}
-          style={[styles.image, { width: screenWidth - 40 }]}
+          style={[styles.image, { width: screenWidth - 60 }]}
           onError={handleError}
           placeholder={src}
         />
