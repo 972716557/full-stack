@@ -1,19 +1,19 @@
 import { Image } from "expo-image";
 import { View, StyleSheet, Text } from "react-native";
-import src from "../../../assets/burger.png";
+import src from "../../../assets/avatar.jpg";
 import IconFont from "../common/iconfont";
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
     backgroundColor: "#fff",
     alignItems: "center",
     justifyContent: "center",
     paddingTop: 50,
     position: "relative",
+    flex: 1,
   },
   img: {
-    borderRadius: 10,
+    borderRadius: 16,
     width: 110,
     height: 80,
     position: "absolute",
@@ -21,6 +21,7 @@ const styles = StyleSheet.create({
     zIndex: 10,
   },
   content: {
+    width: "100%",
     borderRadius: 10,
     backgroundColor: "#fff",
     padding: 10,
@@ -31,7 +32,7 @@ const styles = StyleSheet.create({
     },
     shadowColor: "#646982",
     shadowOpacity: 0.25, // 阴影不透明度 (0-1)
-    shadowRadius: 20, // 阴影模糊半径
+    shadowRadius: 2, // 阴影模糊半径
   },
   title: {
     fontSize: 16,

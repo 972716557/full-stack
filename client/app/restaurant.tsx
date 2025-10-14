@@ -1,12 +1,28 @@
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  Animated,
+} from "react-native";
 import Layout from "./components/layout/layout";
 import ProductImageCarousel from "./components/common/carousel";
 import IconFont from "./components/common/iconfont";
 import ButtonGroup from "./components/common/button-group";
 import FoodOrderCard from "./components/resturant/food-order-card";
-import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
+import {
+  FlatList,
+  Gesture,
+  GestureDetector,
+  GestureHandlerRootView,
+} from "react-native-gesture-handler";
 import { useEffect, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  useSharedValue,
+  withSpring,
+  useAnimatedStyle,
+} from "react-native-reanimated";
 
 const styles = StyleSheet.create({
   container: {
@@ -48,7 +64,6 @@ const styles = StyleSheet.create({
   // 分类按钮吸顶样式
   stickyCategoryContainer: {
     position: "absolute", // 固定在屏幕顶部
-    top: 100, // 距离屏幕顶部0px
     left: 0,
     right: 0,
     backgroundColor: "#fff",
@@ -57,16 +72,33 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 4, // Android阴影
   },
+  columnWrapper: {
+    justifyContent: "space-between", // 列之间均匀分布
+    marginBottom: 16, // 行之间的间距
+    gap: 16,
+  },
 });
+
 const Restaurant = () => {
   // 列表数据
-  const [data, setData] = useState([]);
+  const [data, setData] = useState([
+    { id: 1, title: "pizza calzone european" },
+  ]);
   // 加载状态
   const [isLoading, setIsLoading] = useState(false);
   // 当前页码
   const [page, setPage] = useState(1);
   // 是否还有更多数据
   const [hasMore, setHasMore] = useState(true);
+  const [category, setCategory] = useState([
+    "All",
+    "Pizza",
+    "Burger",
+    "Chicken",
+    "Dessert",
+    "Drinks",
+  ]);
+  const [selectedCategory, setSelectedCategory] = useState("All");
 
   // 初始加载数据
   useEffect(() => {
@@ -103,6 +135,23 @@ const Restaurant = () => {
     }
   };
 
+  const translateX = useSharedValue(0);
+
+  const renderCategory = () => (
+    <View ref={categoryRef}>
+      <ButtonGroup>
+        {category.map((item, index) => (
+          <ButtonGroup.Item
+            onPress={() => setSelectedCategory(item)}
+            key={item}
+            text={item}
+            isSelected={selectedCategory === item}
+          />
+        ))}
+      </ButtonGroup>
+    </View>
+  );
+
   // 渲染底部加载更多指示器
   const renderFooter = () => {
     if (!hasMore) return <Text style={styles.noMoreText}>没有更多数据了</Text>;
@@ -128,10 +177,13 @@ const Restaurant = () => {
   const handleCategoryLayout = () => {
     categoryRef.current?.measure((x, y) => {
       // y 是分类容器距离FlatList顶部的距离
-      setCategoryTop(y);
+      if (!categoryTop) {
+        setCategoryTop(y);
+      }
     });
   };
   const isSticky = scrollY >= categoryTop;
+
   const handleHeaderLayout = (event) => {
     const { height } = event.nativeEvent.layout;
     setHeaderHeight(height); // 头部返回按钮区域的实际高度
@@ -152,17 +204,15 @@ const Restaurant = () => {
             { top: safeAreaTop + headerHeight + 12, paddingHorizontal: 24 },
           ]}
         >
-          <ButtonGroup />
+          {renderCategory()}
         </View>
       )}
       <GestureHandlerRootView>
         <FlatList
-          contentContainerStyle={{
-            flexDirection: "row",
-            flexWrap: "wrap",
-            justifyContent: "space-between",
-            gap: 20,
-          }}
+          contentContainerStyle={{ padding: 10, backgroundColor: "white" }}
+          numColumns={2}
+          columnWrapperStyle={styles.columnWrapper}
+          showsVerticalScrollIndicator={false}
           onScroll={handleScroll}
           // 滚动事件触发频率（16ms/次，保证流畅）
           scrollEventThrottle={16}
@@ -201,7 +251,7 @@ const Restaurant = () => {
                 </View>
               </View>
               <View ref={categoryRef} onLayout={handleCategoryLayout}>
-                <ButtonGroup />
+                {!isSticky && renderCategory()}
               </View>
             </>
           }

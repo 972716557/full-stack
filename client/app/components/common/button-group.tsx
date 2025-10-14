@@ -27,35 +27,24 @@ const styles = StyleSheet.create({
   },
 });
 
-const ButtonGroup = ({
-  onPress,
-  style,
-  data = ["burger", "sandwich", "tea", "pizza", "pig", "beef"],
-}) => {
-  const [selected, setSelected] = useState(data[0]);
-  const onPressKeyword = (item) => {
-    onPress?.(item);
-    setSelected(item);
-  };
+const ButtonGroup = ({ children }) => {
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
       style={{ flexGrow: 0 }}
     >
-      <View style={[styles.buttonGroup]}>
-        {data.map((item) => (
-          <TouchableOpacity onPress={() => onPressKeyword(item)} key={item}>
-            <Text
-              style={[styles.button, item === selected ? styles.selected : {}]}
-            >
-              {item}
-            </Text>
-          </TouchableOpacity>
-        ))}
-      </View>
+      <View style={[styles.buttonGroup]}>{children}</View>
     </ScrollView>
   );
 };
+const Item = ({ text, isSelected, onPress }) => (
+  <TouchableOpacity onPress={onPress}>
+    <Text style={[styles.button, isSelected ? styles.selected : {}]}>
+      {text}
+    </Text>
+  </TouchableOpacity>
+);
 
+ButtonGroup.Item = Item;
 export default ButtonGroup;
