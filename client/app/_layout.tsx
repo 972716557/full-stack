@@ -54,6 +54,7 @@ const Layout = () => {
       <Stack.Screen name="address" options={{ headerShown: false }} />
       <Stack.Screen name="search" options={{ headerShown: false }} />
       <Stack.Screen name="cart" options={{ headerShown: false }} />
+      <Stack.Screen name="restaurant" options={{ headerShown: false }} />
       <Stack.Screen name="edit/profile-info" options={{ headerShown: false }} />
       <Stack.Screen name="payment" options={{ headerShown: false }} />
       <Stack.Screen

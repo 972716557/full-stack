@@ -10,7 +10,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../assets/burger.png";
-import RestaurantCard from "./components/restaurant";
+import RestaurantCard from "./components/restaurant-card";
 import { router } from "expo-router";
 import SearchInput from "./components/common/search-input";
 import HeaderCart from "./components/common/header-cart";
