@@ -1,4 +1,9 @@
-import { StyleProp, StyleSheet, ViewStyle } from "react-native";
+import {
+  LayoutChangeEvent,
+  StyleProp,
+  StyleSheet,
+  ViewStyle,
+} from "react-native";
 import {
   NativeSafeAreaViewProps,
   SafeAreaView,
@@ -19,6 +24,7 @@ interface Header {
   title?: ReactNode;
   rightNode?: ReactNode;
   style?: StyleProp<ViewStyle>;
+  onLayout?: (event: LayoutChangeEvent) => void;
 }
 interface LayoutProps {
   children: ReactNode;
@@ -32,10 +38,15 @@ const Layout = ({
   style,
   safeAreaViewProps,
 }: LayoutProps) => {
-  const { title, rightNode, style: headerStyle } = header;
+  const { title, rightNode, style: headerStyle, onLayout } = header;
   return (
     <SafeAreaView style={[styles.container, style]} {...safeAreaViewProps}>
-      <Header title={title} rightNode={rightNode} style={headerStyle} />
+      <Header
+        title={title}
+        rightNode={rightNode}
+        style={headerStyle}
+        onLayout={onLayout}
+      />
       {children}
     </SafeAreaView>
   );

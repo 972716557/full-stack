@@ -16,9 +16,9 @@ const styles = StyleSheet.create({
     borderColor: "#EDEDED",
   },
   buttonGroup: {
-    marginTop: 12,
     flexDirection: "row",
     gap: 8,
+    paddingVertical: 8,
   },
   selected: {
     backgroundColor: "#F58D1D",
@@ -29,6 +29,7 @@ const styles = StyleSheet.create({
 
 const ButtonGroup = ({
   onPress,
+  style,
   data = ["burger", "sandwich", "tea", "pizza", "pig", "beef"],
 }) => {
   const [selected, setSelected] = useState(data[0]);
@@ -42,7 +43,7 @@ const ButtonGroup = ({
       showsHorizontalScrollIndicator={false}
       style={{ flexGrow: 0 }}
     >
-      <View style={styles.buttonGroup}>
+      <View style={[styles.buttonGroup]}>
         {data.map((item) => (
           <TouchableOpacity onPress={() => onPressKeyword(item)} key={item}>
             <Text

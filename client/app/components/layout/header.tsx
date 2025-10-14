@@ -1,6 +1,12 @@
-import { View, Text, StyleSheet, ViewStyle, StyleProp } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ViewStyle,
+  StyleProp,
+  LayoutChangeEvent,
+} from "react-native";
 import BackButton from "./back-button";
-import { Link } from "expo-router";
 import { ReactNode } from "react";
 
 const styles = StyleSheet.create({
@@ -20,10 +26,14 @@ interface HeaderProps {
   title?: ReactNode;
   rightNode?: ReactNode;
   style?: StyleProp<ViewStyle>;
+  onLayout?: (event: LayoutChangeEvent) => void;
 }
-const Header = ({ title, rightNode, style }: HeaderProps) => {
+const Header = ({ title, rightNode, style, onLayout }: HeaderProps) => {
   return (
-    <View style={[styles.row, { justifyContent: "space-between" }, style]}>
+    <View
+      style={[styles.row, { justifyContent: "space-between" }, style]}
+      onLayout={onLayout}
+    >
       <View style={[styles.row, { gap: 12 }]}>
         <BackButton />
         <Text>{title}</Text>
