@@ -1,10 +1,4 @@
-import {
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import Layout from "./components/layout/layout";
 import ProductImageCarousel from "./components/common/carousel";
 import IconFont from "./components/common/iconfont";
@@ -88,6 +82,10 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     shadowColor: "#000",
     shadowOpacity: 0.3,
+    position: "absolute",
+    left: 0,
+    top: 0,
+    zIndex: 1000,
   },
   animationImage: {
     width: "100%",
@@ -206,15 +204,15 @@ const Restaurant = () => {
 
   const increaseCount = useCartCount((state) => state.increaseCartCount);
   const [animationVisible, setAnimationVisible] = useState(false); // 动画元素是否显示
-  const [startPos, setStartPos] = useState({ x: 0, y: 0 }); // 动画起点（商品位置）
+  const startPos = { x: 100, y: 300 };
   const [endPos, setEndPos] = useState({ x: 0, y: 0 }); // 动画终点（购物车位置）
 
   // 引用
-  const cartRef = useRef(null); // 购物车图标引用
+  const cartRef = useRef<View>(null); // 购物车图标引用
 
   // 1. 获取购物车图标的位置（终点）
   useEffect(() => {
-    cartRef.current?.measureInWindow((x, y, width, height) => {
+    cartRef.current.measureInWindow((x, y, width, height) => {
       // 终点设为购物车中心
       setEndPos({
         x: x + width / 2,
@@ -239,16 +237,16 @@ const Restaurant = () => {
     const deltaY = endY - startY;
 
     // 水平方向匀速运动
-    const translateX = startX + progress.value * deltaX;
+    const translateX = startX + progress.value * deltaX - 45;
     // 垂直方向：先上升后下降，形成抛物线
     // 使用二次贝塞尔曲线或简单的平方关系模拟抛物线
     // 这里使用 (progress - progress^2) 来模拟一个先快后慢的上升和下降
-    const parabolaFactor = -4 * (progress.value - 0.5) ** 2 + 1; // 一个开口向下的抛物线，顶点在 progress=0.5
-    const translateY = startY + progress.value * deltaY - 100 * parabolaFactor; // -100 控制抛起的高度
+
+    const translateY = startY + progress.value * deltaY - 166; // -100 控制抛起的高度
 
     return {
       transform: [{ translateX }, { translateY }, { scale: scale.value }],
-      opacity: progress.value === 0 || progress.value === 1 ? 0 : 1, // 动画开始和结束时透明
+      opacity: 1 - progress.value < 0.1 || progress.value === 1 ? 0 : 1, // 动画开始和结束时透明
     };
   });
 
@@ -268,9 +266,6 @@ const Restaurant = () => {
     if (animationVisible) {
       return;
     }
-    // 获取商品点击位置（起点）
-    const { pageX: x, pageY: y } = e.nativeEvent;
-    setStartPos({ x, y });
     setAnimationVisible(true);
 
     // 重置动画进度
@@ -283,7 +278,7 @@ const Restaurant = () => {
     });
 
     cartScale.value = withSequence(
-      withTiming(1.5, { duration: 200 }), // 放大
+      withTiming(1.3, { duration: 200 }), // 放大
       withTiming(1, { duration: 200 }) // 回弹
     );
 
@@ -389,19 +384,7 @@ const Restaurant = () => {
         />
         {/* 飞行动画元素（商品缩略图） */}
         {animationVisible && (
-          <Animated.View
-            style={[
-              styles.animationElement,
-              {
-                position: "absolute",
-                // 初始位置通过动画控制，这里设为0
-                top: 0,
-                left: 0,
-                zIndex: 1000, // 确保在最上层
-              },
-              animatedStyle,
-            ]}
-          >
+          <Animated.View style={[styles.animationElement, animatedStyle]}>
             {/* 飞行物显示商品缩略图 */}
             <Image
               source={src} // 实际项目应传入当前点击的商品图片
