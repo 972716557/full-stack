@@ -32,9 +32,11 @@ const HeaderCart = () => {
     <Link href={"/cart"}>
       <View style={[styles.headerButton]}>
         <IconFont name="cart" color="#fff" />
-        <View style={styles.badge}>
-          <Text style={{ color: "#fff", fontSize: 12 }}>{count}</Text>
-        </View>
+        {!!count && (
+          <View style={styles.badge}>
+            <Text style={{ color: "#fff", fontSize: 12 }}>{count}</Text>
+          </View>
+        )}
       </View>
     </Link>
   );

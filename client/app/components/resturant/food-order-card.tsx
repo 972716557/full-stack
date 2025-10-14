@@ -1,5 +1,5 @@
 import { Image } from "expo-image";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import src from "../../../assets/avatar.jpg";
 import IconFont from "../common/iconfont";
 
@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-const FoodOrderCard = () => {
+const FoodOrderCard = ({ onPress }) => {
   return (
     <View style={styles.container}>
       <Image source={src} style={styles.img} />
@@ -71,14 +71,16 @@ const FoodOrderCard = () => {
           }}
         >
           <Text style={styles.price}>$40</Text>
-          <View style={styles.icon}>
-            <IconFont
-              name="plus"
-              color="#fff"
-              size={16}
-              style={{ transform: [{ translateX: -1 }] }}
-            />
-          </View>
+          <TouchableOpacity onPress={onPress}>
+            <View style={styles.icon}>
+              <IconFont
+                name="plus"
+                color="#fff"
+                size={16}
+                style={{ transform: [{ translateX: -1 }] }}
+              />
+            </View>
+          </TouchableOpacity>
         </View>
       </View>
     </View>

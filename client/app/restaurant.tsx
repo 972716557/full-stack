@@ -1,4 +1,10 @@
-import { View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  TouchableOpacity,
+} from "react-native";
 import Layout from "./components/layout/layout";
 import ProductImageCarousel from "./components/common/carousel";
 import IconFont from "./components/common/iconfont";
@@ -7,8 +13,19 @@ import FoodOrderCard from "./components/resturant/food-order-card";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { useSharedValue } from "react-native-reanimated";
+import { Image } from "expo-image";
+import Animated, {
+  useSharedValue,
+  useAnimatedStyle,
+  withTiming,
+  withSequence,
+  withDelay,
+  Easing,
+} from "react-native-reanimated";
 import HeaderCart from "./components/common/header-cart";
+import src from "../assets/avatar.jpg";
+import useCartCount from "./store/cart";
+import { scheduleOnRN } from "react-native-worklets";
 
 const styles = StyleSheet.create({
   container: {
@@ -62,6 +79,19 @@ const styles = StyleSheet.create({
     justifyContent: "space-between", // 列之间均匀分布
     marginBottom: 16, // 行之间的间距
     gap: 16,
+  },
+  // 飞行动画元素
+  animationElement: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOpacity: 0.3,
+  },
+  animationImage: {
+    width: "100%",
+    height: "100%",
   },
 });
 
@@ -122,7 +152,7 @@ const Restaurant = () => {
   };
 
   const renderCategory = () => (
-    <View ref={categoryRef}>
+    <View>
       <ButtonGroup>
         {category.map((item, index) => (
           <ButtonGroup.Item
@@ -152,8 +182,9 @@ const Restaurant = () => {
   const [headerHeight, setHeaderHeight] = useState(0);
   const [scrollY, setScrollY] = useState(0); // 滚动距离
   const [categoryTop, setCategoryTop] = useState(0); // 分类按钮距离FlatList顶部的初始距离
-  const categoryRef = useRef(null); // 分类按钮容器的引用  const [scrollY, setScrollY] = useState(0); // 滚动距离
+  const categoryRef = useRef(null); // 分类按钮容器的引用
   const handleScroll = (event) => {
+    if (!event?.nativeEvent) return;
     const y = event.nativeEvent.contentOffset.y;
     setScrollY(y); // 更新滚动距离
   };
@@ -172,13 +203,116 @@ const Restaurant = () => {
     const { height } = event.nativeEvent.layout;
     setHeaderHeight(height); // 头部返回按钮区域的实际高度
   };
+
+  const increaseCount = useCartCount((state) => state.increaseCartCount);
+  const [animationVisible, setAnimationVisible] = useState(false); // 动画元素是否显示
+  const [startPos, setStartPos] = useState({ x: 0, y: 0 }); // 动画起点（商品位置）
+  const [endPos, setEndPos] = useState({ x: 0, y: 0 }); // 动画终点（购物车位置）
+
+  // 引用
+  const cartRef = useRef(null); // 购物车图标引用
+
+  // 1. 获取购物车图标的位置（终点）
+  useEffect(() => {
+    cartRef.current?.measureInWindow((x, y, width, height) => {
+      // 终点设为购物车中心
+      setEndPos({
+        x: x + width / 2,
+        y: y + height / 2, // 加上顶部安全区域
+      });
+    });
+  }, []);
+
+  // 2. 动画参数
+  const progress = useSharedValue(0); // 动画进度（0-1）
+  const cartScale = useSharedValue(1); // 购物车缩放动画
+  const scale = useSharedValue(1); // 列表项缩放动画
+
+  const animatedStyle = useAnimatedStyle(() => {
+    // 抛物线运动参数计算
+    const startX = startPos.x;
+    const startY = startPos.y;
+    const endX = endPos.x;
+    const endY = endPos.y;
+
+    const deltaX = endX - startX;
+    const deltaY = endY - startY;
+
+    // 水平方向匀速运动
+    const translateX = startX + progress.value * deltaX;
+    // 垂直方向：先上升后下降，形成抛物线
+    // 使用二次贝塞尔曲线或简单的平方关系模拟抛物线
+    // 这里使用 (progress - progress^2) 来模拟一个先快后慢的上升和下降
+    const parabolaFactor = -4 * (progress.value - 0.5) ** 2 + 1; // 一个开口向下的抛物线，顶点在 progress=0.5
+    const translateY = startY + progress.value * deltaY - 100 * parabolaFactor; // -100 控制抛起的高度
+
+    return {
+      transform: [{ translateX }, { translateY }, { scale: scale.value }],
+      opacity: progress.value === 0 || progress.value === 1 ? 0 : 1, // 动画开始和结束时透明
+    };
+  });
+
+  // 4. 购物车缩放动画
+  const cartAnimatedStyle = useAnimatedStyle(() => ({
+    transform: [{ scale: cartScale.value }],
+  }));
+
+  const handleAnimationEnd = () => {
+    setAnimationVisible(false);
+    // 实际开发中，这里可能触发添加购物车的真正逻辑
+    increaseCount();
+  };
+
+  // 5. 执行加入购物车动画
+  const handleAddToCart = (e) => {
+    if (animationVisible) {
+      return;
+    }
+    // 获取商品点击位置（起点）
+    const { pageX: x, pageY: y } = e.nativeEvent;
+    setStartPos({ x, y });
+    setAnimationVisible(true);
+
+    // 重置动画进度
+    progress.value = 0;
+
+    // 执行动画
+
+    progress.value = withTiming(1, { duration: 800 }, () => {
+      scheduleOnRN(handleAnimationEnd);
+    });
+
+    cartScale.value = withSequence(
+      withTiming(1.5, { duration: 200 }), // 放大
+      withTiming(1, { duration: 200 }) // 回弹
+    );
+
+    // 缩放动画：从小变大再变小
+    scale.value = withSequence(
+      withTiming(1.2, {
+        duration: 200,
+        easing: Easing.bezier(0.25, 0.46, 0.45, 0.94),
+      }),
+      withTiming(0.6, {
+        duration: 200,
+        easing: Easing.bezier(0.42, 0, 0.58, 1),
+      })
+    );
+  };
+
   return (
     <Layout
       header={{
         title: "Restaurant View",
         style: { paddingBottom: 12 },
         onLayout: handleHeaderLayout,
-        rightNode: <HeaderCart />,
+        rightNode: (
+          <Animated.View style={cartAnimatedStyle}>
+            <View ref={cartRef}>
+              <HeaderCart />
+            </View>
+          </Animated.View>
+        ),
       }}
       style={{ position: "relative" }}
     >
@@ -202,7 +336,9 @@ const Restaurant = () => {
           // 滚动事件触发频率（16ms/次，保证流畅）
           scrollEventThrottle={16}
           data={data}
-          renderItem={({ item }) => <FoodOrderCard />}
+          renderItem={({ item }) => (
+            <FoodOrderCard onPress={(e) => handleAddToCart(e)} />
+          )}
           keyExtractor={(item) => item.id}
           // 可视区域渲染优化：指定列表项高度（已知高度时添加，提升性能）
           getItemLayout={(data, index) => ({
@@ -251,6 +387,29 @@ const Restaurant = () => {
             fetchData(); // 重新加载第一页
           }}
         />
+        {/* 飞行动画元素（商品缩略图） */}
+        {animationVisible && (
+          <Animated.View
+            style={[
+              styles.animationElement,
+              {
+                position: "absolute",
+                // 初始位置通过动画控制，这里设为0
+                top: 0,
+                left: 0,
+                zIndex: 1000, // 确保在最上层
+              },
+              animatedStyle,
+            ]}
+          >
+            {/* 飞行物显示商品缩略图 */}
+            <Image
+              source={src} // 实际项目应传入当前点击的商品图片
+              style={styles.animationImage}
+              contentFit="cover"
+            />
+          </Animated.View>
+        )}
       </GestureHandlerRootView>
     </Layout>
   );
