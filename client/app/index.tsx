@@ -97,7 +97,7 @@ const Card = ({ title }) => {
   return (
     <TouchableOpacity
       onPress={() => {
-        router.push(`/food`);
+        router.push(`/food/id`);
       }}
     >
       <View
@@ -124,41 +124,38 @@ const Home = () => {
   return (
     <Layout
       header={{
-        showBackButton: false,
-        title: (
-          <View>
-            <View style={styles.common}>
-              <View
-                style={[styles.headerButton, styles.headerButtonConfig]}
-                onTouchEnd={onTouchConfig}
-              >
-                <IconFont name="menu" />
-              </View>
-              <View>
-                <Text style={styles.deliverTo}>Deliver to</Text>
-                <View style={styles.common}>
-                  <Text>Halal Lab office</Text>
-                  <IconFont name="arrow-down" />
+        title: () => (
+          <View style={{ flex: 1 }}>
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                justifyContent: "space-between",
+              }}
+            >
+              <View style={styles.common}>
+                <View
+                  style={[styles.headerButton, styles.headerButtonConfig]}
+                  onTouchEnd={onTouchConfig}
+                >
+                  <IconFont name="menu" />
+                </View>
+                <View>
+                  <Text style={styles.deliverTo}>Deliver to</Text>
+                  <View style={styles.common}>
+                    <Text>Halal Lab office</Text>
+                    <IconFont name="arrow-down" />
+                  </View>
                 </View>
               </View>
+              <HeaderCart />
             </View>
-            <View style={[styles.row, { marginTop: 12 }]}>
-              <Text>Hey Halal, </Text>
-              <Text style={{ fontWeight: 500 }}>Good Afternoon!</Text>
-            </View>
+            <SearchInput />
           </View>
         ),
-        rightNode: <HeaderCart />,
       }}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <TouchableOpacity
-          style={{ flex: 1 }}
-          onPress={() => router.push("/search")}
-        >
-          <SearchInput />
-        </TouchableOpacity>
-
         <View
           style={[
             styles.row,

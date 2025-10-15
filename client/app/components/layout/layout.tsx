@@ -8,7 +8,7 @@ import {
   NativeSafeAreaViewProps,
   SafeAreaView,
 } from "react-native-safe-area-context";
-import Header from "./header";
+import Header, { HeaderProps } from "./header";
 import { ReactNode } from "react";
 import { Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
 
@@ -21,16 +21,9 @@ const styles = StyleSheet.create({
   },
 });
 
-interface Header {
-  title?: ReactNode;
-  rightNode?: ReactNode;
-  style?: StyleProp<ViewStyle>;
-  onLayout?: (event: LayoutChangeEvent) => void;
-  showBackButton?: boolean;
-}
 interface LayoutProps {
   children: ReactNode;
-  header?: Header;
+  header?: HeaderProps;
   style?: StyleProp<ViewStyle>;
   safeAreaViewProps?: NativeSafeAreaViewProps;
 }

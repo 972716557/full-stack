@@ -6,13 +6,12 @@ import {
   Text,
   ScrollView,
 } from "react-native";
-import Layout from "./components/layout/layout";
-import src from "../assets/avatar.jpg";
-import IconFont from "./components/common/iconfont";
-import Description from "./components/resturant/description";
+import Layout from "../components/layout/layout";
+import src from "../../assets/avatar.jpg";
+import IconFont from "../components/common/iconfont";
+import Description from "../components/resturant/description";
 import { useState } from "react";
-import { number } from "yup";
-import BigButton from "./components/common/big-button";
+import BigButton from "../components/common/big-button";
 
 const styles = StyleSheet.create({
   container: {
