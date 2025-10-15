@@ -252,10 +252,10 @@ const Cart = () => {
       style={{
         backgroundColor: "#121223",
         position: "relative",
-        padding: 0,
+        paddingHorizontal: 0,
       }}
       header={{
-        style: { paddingHorizontal: 12, paddingBottom: 12 },
+        style: { paddingHorizontal: 12 },
         title: <Text style={{ color: "#fff" }}>Cart</Text>,
         rightNode: (
           <>

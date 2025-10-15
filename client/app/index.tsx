@@ -5,13 +5,14 @@ import {
   Text,
   TextInput,
   Platform,
+  TouchableOpacity,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../assets/burger.png";
-import RestaurantCard from "./components/restaurant-card";
-import { router } from "expo-router";
+import RestaurantCard from "./components/resturant/restaurant-card";
+import { Link, router } from "expo-router";
 import SearchInput from "./components/common/search-input";
 import HeaderCart from "./components/common/header-cart";
 
@@ -98,20 +99,26 @@ const styles = StyleSheet.create({
 });
 const Card = ({ title }) => {
   return (
-    <View
-      style={[
-        {
-          justifyContent: "center",
-          alignItems: "center",
-          // backgroundColor: "#f0f0f0",
-        },
-      ]}
+    <TouchableOpacity
+      onPress={() => {
+        router.push(`/food`);
+      }}
     >
-      <View style={styles.card}>
-        <Image style={styles.cardImg} source={src} />
+      <View
+        style={[
+          {
+            justifyContent: "center",
+            alignItems: "center",
+            // backgroundColor: "#f0f0f0",
+          },
+        ]}
+      >
+        <View style={styles.card}>
+          <Image style={styles.cardImg} source={src} />
+        </View>
+        <Text style={styles.cardTitle}>{title}</Text>
       </View>
-      <Text style={styles.cardTitle}>{title}</Text>
-    </View>
+    </TouchableOpacity>
   );
 };
 const Home = () => {
@@ -151,10 +158,16 @@ const Home = () => {
           ]}
         >
           <Text style={{ fontSize: 20 }}>All Categories</Text>
-          <View style={styles.row}>
-            <Text>See All</Text>
-            <IconFont name="arrow-right" size={12} />
-          </View>
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/categories");
+            }}
+          >
+            <View style={styles.row}>
+              <Text>See All</Text>
+              <IconFont name="arrow-right" size={12} />
+            </View>
+          </TouchableOpacity>
         </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={{ flexDirection: "row", gap: 16 }}>

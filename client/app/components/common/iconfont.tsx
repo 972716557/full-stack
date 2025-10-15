@@ -42,6 +42,11 @@ export const IconMap = {
   wechat: "\ue883",
   alipay: "\ue666",
   correct: "\ue721",
+  garlic: "\ue635",
+  onion: "\ue8e3",
+  chicken: "\ue609",
+  salt: "\ue606",
+  pepper: "\ue607",
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）

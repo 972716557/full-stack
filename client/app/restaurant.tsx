@@ -20,6 +20,7 @@ import HeaderCart from "./components/common/header-cart";
 import src from "../assets/avatar.jpg";
 import useCartCount from "./store/cart";
 import { scheduleOnRN } from "react-native-worklets";
+import Description from "./components/resturant/description";
 
 const styles = StyleSheet.create({
   container: {
@@ -28,21 +29,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  title: {
-    fontSize: 20,
-    fontWeight: "bold",
-    marginTop: 20,
-  },
-  desc: {
-    fontSize: 16,
-    color: "#A0A5BA",
-    marginTop: 4,
-  },
-  text: {
-    flexDirection: "row",
-    alignItems: "center",
-    gap: 4,
-  },
+
   loadingText: {
     marginLeft: 10,
     color: "#666",
@@ -315,7 +302,7 @@ const Restaurant = () => {
         <View
           style={[
             styles.stickyCategoryContainer,
-            { top: safeAreaTop + headerHeight + 12, paddingHorizontal: 24 },
+            { top: safeAreaTop + headerHeight, paddingHorizontal: 24 },
           ]}
         >
           {renderCategory()}
@@ -344,28 +331,11 @@ const Restaurant = () => {
           ListHeaderComponent={
             <>
               <ProductImageCarousel />
-              <Text style={styles.title}>Spicy restaurant</Text>
-              <Text numberOfLines={4} ellipsizeMode="tail" style={styles.desc}>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-                euismod, nisl nec ultricies lacinia, nisl nisl aliquam nisl,
-                euismod nisl nisl nisl nisl. Sed euismod, nisl nec ultricies
-                lacinia, nisl nisl aliquam nisl, euismod nisl nisl nisl nisl.
-                Sed euismod, nisl nec ultricies
-              </Text>
-              <View style={[{ flexDirection: "row", gap: 20, marginTop: 16 }]}>
-                <View style={styles.text}>
-                  <IconFont name="star" color="#FF7622" />
-                  <Text>4.5</Text>
-                </View>
-                <View style={styles.text}>
-                  <IconFont name="car" color="#FF7622" />
-                  <Text>Free</Text>
-                </View>
-                <View style={styles.text}>
-                  <IconFont name="clock" color="#FF7622" />
-                  <Text>30 mins</Text>
-                </View>
-              </View>
+              <Description
+                style={{ marginTop: 20 }}
+                title="Pizza calzone european"
+                desc="Prosciutto e funghi is a pizza variety that is topped with tomato sauce."
+              />
               <View ref={categoryRef} onLayout={handleCategoryLayout}>
                 {!isSticky && renderCategory()}
               </View>

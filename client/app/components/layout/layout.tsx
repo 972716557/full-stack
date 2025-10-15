@@ -13,10 +13,10 @@ import { ReactNode } from "react";
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     backgroundColor: "#fff",
     height: "100%",
     flex: 1,
+    paddingHorizontal: 20,
   },
 });
 
@@ -44,7 +44,7 @@ const Layout = ({
       <Header
         title={title}
         rightNode={rightNode}
-        style={headerStyle}
+        style={[{ paddingBottom: 12 }, headerStyle]}
         onLayout={onLayout}
       />
       {children}
