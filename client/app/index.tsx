@@ -6,6 +6,7 @@ import {
   TextInput,
   Platform,
   TouchableOpacity,
+  Dimensions,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import IconFont from "./components/common/iconfont";
@@ -16,6 +17,14 @@ import { Link, router } from "expo-router";
 import SearchInput from "./components/common/search-input";
 import HeaderCart from "./components/common/header-cart";
 import Layout from "./components/layout/layout";
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
+import { useState } from "react";
 
 const styles = StyleSheet.create({
   header: {
@@ -93,6 +102,8 @@ const styles = StyleSheet.create({
     fontWeight: 500,
   },
 });
+
+const { width: screenWidth } = Dimensions.get("window");
 const Card = ({ title }) => {
   return (
     <TouchableOpacity
@@ -118,14 +129,84 @@ const Card = ({ title }) => {
   );
 };
 const Home = () => {
+  const scrollY = useSharedValue(0);
+  // 标题动画样式（滚动时隐藏）
+  const titleAnimatedStyle = useAnimatedStyle(() => {
+    // 当滚动距离超过 20 时开始隐藏，超过 60 完全隐藏
+    const opacity = interpolate(
+      scrollY.value,
+      [20, 60], // 触发区间
+      [1, 0], // 透明度从 1→0
+      Extrapolation.CLAMP
+    );
+    const height = interpolate(
+      scrollY.value,
+      [20, 60],
+      [40, 0], // 高度从 30→0（标题默认高度）
+      Extrapolation.CLAMP
+    );
+
+    return {
+      opacity,
+      height,
+    };
+  });
+
+  const headerAnimatedStyle = useAnimatedStyle(() => {
+    const height = interpolate(
+      scrollY.value,
+      [20, 60],
+      [80, 40], // 高度从 30→0（标题默认高度）
+      Extrapolation.CLAMP
+    );
+
+    return {
+      height,
+    };
+  });
+
+  const searchAnimatedStyle = useAnimatedStyle(() => {
+    // 搜索框初始位置在标题下方（距离顶部 80），滚动后上移到标题位置（距离顶部 30）
+    const top = interpolate(
+      scrollY.value,
+      [20, 60],
+      [0, -52], // 顶部距离从 80→30（单位：px）
+      Extrapolation.CLAMP
+    );
+    const left = interpolate(
+      scrollY.value,
+      [20, 60],
+      [0, 50], // 顶部距离从 80→30（单位：px）
+      Extrapolation.CLAMP
+    );
+    // 同时缩小搜索框宽度，与头部按钮对齐
+    const width = interpolate(
+      scrollY.value,
+      [20, 60],
+      [screenWidth - 40, screenWidth - 140], // 宽度从 80%→60%
+      Extrapolation.CLAMP
+    );
+
+    return {
+      top,
+      width,
+      left,
+    };
+  });
   const onTouchConfig = () => {
     router.push("/config");
   };
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      scrollY.value = event.contentOffset.y;
+    },
+  });
   return (
     <Layout
       header={{
         title: () => (
-          <View style={{ flex: 1 }}>
+          <Animated.View style={[{ flex: 1 }, headerAnimatedStyle]}>
             <View
               style={{
                 flexDirection: "row",
@@ -140,22 +221,28 @@ const Home = () => {
                 >
                   <IconFont name="menu" />
                 </View>
-                <View>
+                <Animated.View style={[titleAnimatedStyle]}>
                   <Text style={styles.deliverTo}>Deliver to</Text>
                   <View style={styles.common}>
                     <Text>Halal Lab office</Text>
                     <IconFont name="arrow-down" />
                   </View>
-                </View>
+                </Animated.View>
               </View>
               <HeaderCart />
             </View>
-            <SearchInput />
-          </View>
+            <Animated.View style={[searchAnimatedStyle]}>
+              <SearchInput />
+            </Animated.View>
+          </Animated.View>
         ),
       }}
     >
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <Animated.ScrollView
+        onScroll={scrollHandler}
+        scrollEventThrottle={16} // 16ms 触发一次，确保动画流畅
+        showsVerticalScrollIndicator={false}
+      >
         <View
           style={[
             styles.row,
@@ -198,8 +285,10 @@ const Home = () => {
         <View style={{ gap: 20, marginBottom: 20 }}>
           <RestaurantCard />
           <RestaurantCard />
+          <RestaurantCard />
+          <RestaurantCard />
         </View>
-      </ScrollView>
+      </Animated.ScrollView>
     </Layout>
   );
 };
