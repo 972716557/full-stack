@@ -1,9 +1,8 @@
 import { ScrollView, View, Text, StyleSheet } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
 import IconFont from "./components/common/iconfont";
 import { Link } from "expo-router";
-import Header from "./components/layout/header";
+import Layout from "./components/layout/layout";
 
 const styles = StyleSheet.create({
   container: {
@@ -64,20 +63,19 @@ const data = [
 ];
 const Config = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
+    <Layout
+      header={{
+        title: "Profile Info",
+        rightNode: (
+          <Link asChild href={"/edit/profile-info"}>
+            <Text style={{ color: "#FF7622", textDecorationLine: "underline" }}>
+              Edit
+            </Text>
+          </Link>
+        ),
+      }}
+    >
       <ScrollView style={styles.container}>
-        <Header
-          title="Profile Info"
-          rightNode={
-            <Link asChild href={"/edit/profile-info"}>
-              <Text
-                style={{ color: "#FF7622", textDecorationLine: "underline" }}
-              >
-                Edit
-              </Text>
-            </Link>
-          }
-        />
         <View style={[styles.row, { gap: 32, marginVertical: 20 }]}>
           <Image
             source={require("../assets/avatar.jpg")}
@@ -108,7 +106,7 @@ const Config = () => {
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </Layout>
   );
 };
 export default Config;

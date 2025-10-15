@@ -14,10 +14,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-const BigButton = (props) => {
+const BigButton = ({ text, ...props }) => {
   return (
     <TouchableOpacity style={styles.button} {...props}>
-      <Text style={styles.text}>{props.text}</Text>
+      <Text style={styles.text}>{text}</Text>
     </TouchableOpacity>
   );
 };

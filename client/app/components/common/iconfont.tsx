@@ -47,6 +47,9 @@ export const IconMap = {
   chicken: "\ue609",
   salt: "\ue606",
   pepper: "\ue607",
+  "arrow-up": "\ue60a",
+  filter: "\ue957",
+  close: "\ue603",
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）

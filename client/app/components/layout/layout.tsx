@@ -10,6 +10,7 @@ import {
 } from "react-native-safe-area-context";
 import Header from "./header";
 import { ReactNode } from "react";
+import { Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
   container: {
@@ -40,15 +41,17 @@ const Layout = ({
 }: LayoutProps) => {
   const { title, rightNode, style: headerStyle, onLayout } = header;
   return (
-    <SafeAreaView style={[styles.container, style]} {...safeAreaViewProps}>
-      <Header
-        title={title}
-        rightNode={rightNode}
-        style={[{ paddingBottom: 12 }, headerStyle]}
-        onLayout={onLayout}
-      />
-      {children}
-    </SafeAreaView>
+    <GestureHandlerRootView>
+      <SafeAreaView style={[styles.container, style]} {...safeAreaViewProps}>
+        <Header
+          title={title}
+          rightNode={rightNode}
+          style={[{ paddingBottom: 12 }, headerStyle]}
+          onLayout={onLayout}
+        />
+        {children}
+      </SafeAreaView>
+    </GestureHandlerRootView>
   );
 };
 export default Layout;

@@ -6,10 +6,10 @@ import IconFont from "./components/common/iconfont";
 import { router } from "expo-router";
 import BackButton from "./components/layout/back-button";
 import Header from "./components/layout/header";
+import Layout from "./components/layout/layout";
 
 const styles = StyleSheet.create({
   container: {
-    padding: 20,
     backgroundColor: "#fff",
     height: "100%",
     gap: 20,
@@ -68,10 +68,9 @@ const data = [
 ];
 const Config = () => {
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <ScrollView style={styles.container}>
-        <Header title="Profile" />
-        <View style={[styles.row, { gap: 32, marginVertical: 20 }]}>
+    <Layout header={{ title: "Profile" }}>
+      <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
+        <View style={[styles.row, { gap: 32, marginBottom: 20 }]}>
           <Image
             source={require("../assets/avatar.jpg")}
             style={{ width: 100, height: 100, borderRadius: 50 }}
@@ -105,7 +104,7 @@ const Config = () => {
           ))}
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </Layout>
   );
 };
 export default Config;

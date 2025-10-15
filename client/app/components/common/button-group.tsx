@@ -27,12 +27,13 @@ const styles = StyleSheet.create({
   },
 });
 
-const ButtonGroup = ({ children }) => {
+const ButtonGroup = ({ children, ...rest }) => {
   return (
     <ScrollView
       horizontal
       showsHorizontalScrollIndicator={false}
       style={{ flexGrow: 0 }}
+      {...rest}
     >
       <View style={[styles.buttonGroup]}>{children}</View>
     </ScrollView>
