@@ -15,13 +15,9 @@ import RestaurantCard from "./components/resturant/restaurant-card";
 import { Link, router } from "expo-router";
 import SearchInput from "./components/common/search-input";
 import HeaderCart from "./components/common/header-cart";
+import Layout from "./components/layout/layout";
 
 const styles = StyleSheet.create({
-  container: {
-    paddingHorizontal: 20,
-    backgroundColor: "#fff",
-    height: "100%",
-  },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
@@ -126,31 +122,43 @@ const Home = () => {
     router.push("/config");
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: "#fff" }}>
-      <ScrollView style={styles.container}>
-        <View style={styles.header}>
-          <View style={styles.common}>
-            <View
-              style={[styles.headerButton, styles.headerButtonConfig]}
-              onTouchEnd={onTouchConfig}
-            >
-              <IconFont name="menu" />
-            </View>
-            <View>
-              <Text style={styles.deliverTo}>Deliver to</Text>
-              <View style={styles.common}>
-                <Text>Halal Lab office</Text>
-                <IconFont name="arrow-down" />
+    <Layout
+      header={{
+        showBackButton: false,
+        title: (
+          <View>
+            <View style={styles.common}>
+              <View
+                style={[styles.headerButton, styles.headerButtonConfig]}
+                onTouchEnd={onTouchConfig}
+              >
+                <IconFont name="menu" />
+              </View>
+              <View>
+                <Text style={styles.deliverTo}>Deliver to</Text>
+                <View style={styles.common}>
+                  <Text>Halal Lab office</Text>
+                  <IconFont name="arrow-down" />
+                </View>
               </View>
             </View>
+            <View style={[styles.row, { marginTop: 12 }]}>
+              <Text>Hey Halal, </Text>
+              <Text style={{ fontWeight: 500 }}>Good Afternoon!</Text>
+            </View>
           </View>
-          <HeaderCart />
-        </View>
-        <View style={[styles.row, styles.mb16]}>
-          <Text>Hey Halal, </Text>
-          <Text style={{ fontWeight: 500 }}>Good Afternoon!</Text>
-        </View>
-        <SearchInput />
+        ),
+        rightNode: <HeaderCart />,
+      }}
+    >
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <TouchableOpacity
+          style={{ flex: 1 }}
+          onPress={() => router.push("/search")}
+        >
+          <SearchInput />
+        </TouchableOpacity>
+
         <View
           style={[
             styles.row,
@@ -195,7 +203,7 @@ const Home = () => {
           <RestaurantCard />
         </View>
       </ScrollView>
-    </SafeAreaView>
+    </Layout>
   );
 };
 export default Home;

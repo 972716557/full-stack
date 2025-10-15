@@ -27,15 +27,22 @@ interface HeaderProps {
   rightNode?: ReactNode;
   style?: StyleProp<ViewStyle>;
   onLayout?: (event: LayoutChangeEvent) => void;
+  showBackButton?: boolean;
 }
-const Header = ({ title, rightNode, style, onLayout }: HeaderProps) => {
+const Header = ({
+  title,
+  rightNode,
+  style,
+  onLayout,
+  showBackButton,
+}: HeaderProps) => {
   return (
     <View
       style={[styles.row, { justifyContent: "space-between" }, style]}
       onLayout={onLayout}
     >
       <View style={[styles.row, { gap: 12 }]}>
-        <BackButton />
+        {showBackButton && <BackButton />}
         <Text>{title}</Text>
       </View>
       {rightNode}

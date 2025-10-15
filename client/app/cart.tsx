@@ -10,7 +10,7 @@ import { useState } from "react";
 import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../assets/burger.png";
-import { Link } from "expo-router";
+import { Link, router } from "expo-router";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 const styles = StyleSheet.create({
@@ -282,15 +282,21 @@ const Cart = () => {
           <Text style={{ fontSize: 16, color: "#A0A5BA" }}>
             Delivery Address
           </Text>
-          <Text
-            style={{
-              color: "#FF7622",
-              textDecorationLine: "underline",
-              fontSize: 16,
+          <TouchableOpacity
+            onPress={() => {
+              router.push("/address");
             }}
           >
-            Edit
-          </Text>
+            <Text
+              style={{
+                color: "#FF7622",
+                textDecorationLine: "underline",
+                fontSize: 16,
+              }}
+            >
+              Edit
+            </Text>
+          </TouchableOpacity>
         </View>
         <View style={styles.address}>
           <Text style={styles.addressLabel}>2118 Thornridge Cir. Syracuse</Text>

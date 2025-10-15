@@ -26,6 +26,7 @@ interface Header {
   rightNode?: ReactNode;
   style?: StyleProp<ViewStyle>;
   onLayout?: (event: LayoutChangeEvent) => void;
+  showBackButton?: boolean;
 }
 interface LayoutProps {
   children: ReactNode;
@@ -39,12 +40,19 @@ const Layout = ({
   style,
   safeAreaViewProps,
 }: LayoutProps) => {
-  const { title, rightNode, style: headerStyle, onLayout } = header;
+  const {
+    title,
+    rightNode,
+    style: headerStyle,
+    onLayout,
+    showBackButton = true,
+  } = header;
   return (
     <GestureHandlerRootView>
       <SafeAreaView style={[styles.container, style]} {...safeAreaViewProps}>
         <Header
           title={title}
+          showBackButton={showBackButton}
           rightNode={rightNode}
           style={[{ paddingBottom: 12 }, headerStyle]}
           onLayout={onLayout}
