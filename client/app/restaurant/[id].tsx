@@ -6,20 +6,22 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  LayoutChangeEvent,
 } from "react-native";
 import Layout from "../components/layout/layout";
 import Card from "./_card";
+import Animated from "react-native-reanimated";
 
 const { width: screenWidth } = Dimensions.get("window");
 
 // 模拟数据：左侧分类 + 右侧对应内容
 const categories = [
-  { id: "1", name: "服饰", height: 500 }, // height 模拟该分类内容的高度
-  { id: "2", name: "电子产品", height: 600 },
-  { id: "3", name: "食品", height: 400 },
-  { id: "4", name: "家居", height: 700 },
-  { id: "5", name: "美妆", height: 550 },
-  { id: "6", name: "图书", height: 450 },
+  { id: "1", name: "服饰" },
+  { id: "2", name: "电子产品" },
+  { id: "3", name: "食品" },
+  { id: "4", name: "家居" },
+  { id: "5", name: "美妆" },
+  { id: "6", name: "图书" },
 ];
 
 const AnchorLinkExample = () => {
@@ -30,6 +32,14 @@ const AnchorLinkExample = () => {
   // 引用
   const leftScrollRef = useRef<ScrollView>(null); // 左侧tab滚动容器
   const rightScrollRef = useRef<ScrollView>(null); // 右侧内容滚动容器
+
+  const [subTitlePositions, setSubTitlePositions] = useState<
+    {
+      y: number;
+      name: string;
+      categoryKey: string;
+    }[]
+  >([]);
 
   // 1. 记录右侧每个分类区块的位置（y坐标）
   const handleSectionLayout = (index: number, e: any) => {
@@ -76,6 +86,24 @@ const AnchorLinkExample = () => {
     });
   };
 
+  // 1. 记录所有小标题的位置（含大分类key，避免跨分类误判）
+  const handleSubTitleLayout = (
+    categoryKey: string,
+    subTitle: string,
+    e: LayoutChangeEvent
+  ) => {
+    const { y } = e.nativeEvent.layout;
+    setSubTitlePositions((prev) => {
+      // 去重后添加新位置
+      const newPositions = prev.filter(
+        (item) => !(item.categoryKey === categoryKey && item.name === subTitle)
+      );
+      newPositions.push({ y, name: subTitle, categoryKey });
+      // 按y坐标排序（确保滚动判断正确）
+      return newPositions.sort((a, b) => a.y - b.y);
+    });
+  };
+
   // 初始渲染时，确保右侧区块位置已记录
   useEffect(() => {
     // 延迟触发一次右侧滚动检查（避免初始位置未记录）
@@ -89,7 +117,7 @@ const AnchorLinkExample = () => {
 
   return (
     <Layout
-      style={{ paddingHorizontal: 0 }}
+      style={{ paddingHorizontal: 0, backgroundColor: "#F5F5F5" }}
       header={{ style: { paddingHorizontal: 20 } }}
       safeAreaViewProps={{ edges: ["left", "right", "top"] }}
     >
@@ -135,7 +163,16 @@ const AnchorLinkExample = () => {
               style={[styles.rightSection]}
               onLayout={(e) => handleSectionLayout(index, e)} // 记录区块位置
             >
-              <Text style={styles.sectionTitle}>{item.name}</Text>
+              {/* <Animated.View
+                style={[styles.section, { opacity: sectionOpacity[index] }]}
+              > */}
+              <Text
+                onLayout={(e) => handleSubTitleLayout(item.id, item.name, e)}
+                style={styles.sectionTitle}
+              >
+                {item.name}
+              </Text>
+              {/* </Animated.View> */}
               <View style={{ gap: 24 }}>
                 {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10].map((i) => (
                   <Card key={i} />
@@ -183,6 +220,7 @@ const styles = StyleSheet.create({
   // 右侧内容容器
   rightContainer: {
     flex: 1, // 占剩余宽度
+    gap: 40,
   },
   rightSection: {
     padding: 20,

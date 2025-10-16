@@ -204,6 +204,7 @@ const Home = () => {
   });
   return (
     <Layout
+      style={{ backgroundColor: "#f2f3f5" }}
       header={{
         title: () => (
           <Animated.View style={[{ flex: 1 }, headerAnimatedStyle]}>
@@ -259,19 +260,7 @@ const Home = () => {
             <Card title="Snacks" />
           </View>
         </ScrollView>
-        <View
-          style={[
-            styles.row,
-            { justifyContent: "space-between", marginVertical: 20 },
-          ]}
-        >
-          <Text style={{ fontSize: 20 }}>Open Restaurants</Text>
-          <View style={styles.row}>
-            <Text>See All</Text>
-            <IconFont name="arrow-right" size={12} />
-          </View>
-        </View>
-        <View style={{ gap: 20, marginBottom: 20 }}>
+        <View style={{ gap: 8, marginBottom: 20 }}>
           <RestaurantCard />
           <RestaurantCard />
           <RestaurantCard />
