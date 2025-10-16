@@ -48,11 +48,8 @@ const styles = StyleSheet.create({
   common: {
     flexDirection: "row",
     alignItems: "center",
-    gap: 12,
+    gap: 4,
     justifyContent: "center",
-  },
-  deliverTo: {
-    color: "#FC6E2A",
   },
   row: {
     flexDirection: "row",
@@ -156,10 +153,12 @@ const Home = () => {
                 >
                   <IconFont name="menu" />
                 </View>
-                <Animated.View style={[titleAnimatedStyle]}>
-                  <Text style={styles.deliverTo}>Deliver to</Text>
+                <Animated.View
+                  style={[titleAnimatedStyle, { justifyContent: "center" }]}
+                >
                   <View style={styles.common}>
-                    <Text>Halal Lab office</Text>
+                    <IconFont name="location" />
+                    <Text>中金大厦</Text>
                     <IconFont name="arrow-down" />
                   </View>
                 </Animated.View>
