@@ -141,7 +141,6 @@ const Search = () => {
       <SearchInput
         placeholder={"Search dishes, restaurants"}
         onSearch={onSearch}
-        style={{ marginTop: 24 }}
       />
       <ScrollView>
         <Text style={[styles.title, { marginTop: 24 }]}>Recent Keywords</Text>

@@ -232,7 +232,14 @@ const Home = () => {
               <HeaderCart />
             </View>
             <Animated.View style={[searchAnimatedStyle]}>
-              <SearchInput />
+              <TouchableOpacity
+                activeOpacity={1}
+                onPress={(e) => {
+                  router.push("/search");
+                }}
+              >
+                <SearchInput isFakeInput />
+              </TouchableOpacity>
             </Animated.View>
           </Animated.View>
         ),
@@ -243,24 +250,6 @@ const Home = () => {
         scrollEventThrottle={16} // 16ms 触发一次，确保动画流畅
         showsVerticalScrollIndicator={false}
       >
-        <View
-          style={[
-            styles.row,
-            { justifyContent: "space-between", marginVertical: 20 },
-          ]}
-        >
-          <Text style={{ fontSize: 20 }}>All Categories</Text>
-          <TouchableOpacity
-            onPress={() => {
-              router.push("/categories");
-            }}
-          >
-            <View style={styles.row}>
-              <Text>See All</Text>
-              <IconFont name="arrow-right" size={12} />
-            </View>
-          </TouchableOpacity>
-        </View>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={{ flexDirection: "row", gap: 16 }}>
             <Card title="Vegetables" />

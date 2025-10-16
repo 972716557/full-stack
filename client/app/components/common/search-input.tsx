@@ -4,6 +4,7 @@ import {
   TextInput,
   StyleSheet,
   TouchableOpacity,
+  Text,
   ViewStyle,
 } from "react-native";
 import IconFont from "./iconfont";
@@ -12,8 +13,14 @@ interface SearchInputProps {
   placeholder?: string;
   onSearch?: (text: string) => void;
   style?: ViewStyle;
+  isFakeInput?: boolean;
 }
-const SearchInput = ({ placeholder, onSearch, style }: SearchInputProps) => {
+const SearchInput = ({
+  placeholder = "请输入搜索内容",
+  onSearch,
+  style,
+  isFakeInput,
+}: SearchInputProps) => {
   const [text, setText] = useState("");
 
   // 清空输入框
@@ -28,7 +35,17 @@ const SearchInput = ({ placeholder, onSearch, style }: SearchInputProps) => {
     onSearch(value); // 实时搜索，也可改为防抖处理
   };
 
-  return (
+  return isFakeInput ? (
+    <View style={[styles.container, style]}>
+      <IconFont
+        name="search"
+        size={18}
+        color="#999"
+        style={styles.searchIcon}
+      />
+      <Text style={{ color: "#999" }}>{placeholder}</Text>
+    </View>
+  ) : (
     <View style={[styles.container, style]}>
       {/* 搜索图标（左侧） */}
       <IconFont
@@ -41,7 +58,7 @@ const SearchInput = ({ placeholder, onSearch, style }: SearchInputProps) => {
       {/* 输入框 */}
       <TextInput
         style={styles.input}
-        placeholder={placeholder || "请输入搜索内容"}
+        placeholder={placeholder}
         placeholderTextColor="#999"
         value={text}
         onChangeText={handleTextChange}
