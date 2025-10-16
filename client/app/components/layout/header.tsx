@@ -23,7 +23,7 @@ const styles = StyleSheet.create({
 });
 
 export interface HeaderProps {
-  title?: () => React.JSX.Element | ReactNode;
+  title?: (() => React.JSX.Element) | ReactNode;
   rightNode?: ReactNode;
   style?: StyleProp<ViewStyle>;
   onLayout?: (event: LayoutChangeEvent) => void;

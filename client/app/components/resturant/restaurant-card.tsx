@@ -42,7 +42,7 @@ const RestaurantCard = () => {
   return (
     <TouchableOpacity
       onPress={() => {
-        router.push("/restaurant");
+        router.push("/restaurant/id");
       }}
     >
       <View>
