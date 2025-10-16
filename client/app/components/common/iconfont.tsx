@@ -50,6 +50,16 @@ export const IconMap = {
   "arrow-up": "\ue60a",
   filter: "\ue957",
   close: "\ue603",
+  "milk-tea": "\ue612",
+  hotel: "\ue642",
+  cosmetics: "\ue64f",
+  "mother-baby": "\ue638",
+  "fruits-vegetables": "\ue60f",
+  flower: "\ue68d",
+  desert: "\ue61d",
+  medicine: "\ue812",
+  electronics: "\ue6eb",
+  pet: "\ue60b",
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）

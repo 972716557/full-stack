@@ -8,22 +8,31 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { Image } from "expo-image";
-import src from "../../../assets/burger.png";
+import cosmetics from "../../../assets/svg/cosmetics.svg";
+import desert from "../../../assets/svg/desert.svg";
+import electronics from "../../../assets/svg/electronics.svg";
+import flower from "../../../assets/svg/flower.svg";
+import fruitVegetables from "../../../assets/svg/fruit-vegetables.svg";
+import hotel from "../../../assets/svg/hotel.svg";
+import medicine from "../../../assets/svg/medicine.svg";
+import milkTea from "../../../assets/svg/milk-tea.svg";
+import motherBaby from "../../../assets/svg/mother-baby.svg";
+import pet from "../../../assets/svg/pet.svg";
 
 // 获取屏幕宽度
 const { width: screenWidth } = Dimensions.get("window");
 
 const data = [
-  { title: "咖啡奶茶" },
-  { title: "甜点" },
-  { title: "买药" },
-  { title: "蔬菜水果" },
-  { title: "酒店" },
-  { title: "数码家电" },
-  { title: "鲜花" },
-  { title: "美妆" },
-  { title: "宠物" },
-  { title: "母婴" },
+  { title: "咖啡奶茶", name: "milk-tea", src: milkTea },
+  { title: "甜点", name: "desert", src: desert },
+  { title: "买药", name: "medicine", src: medicine },
+  { title: "蔬菜水果", name: "fruits-vegetables", src: fruitVegetables },
+  { title: "酒店", name: "hotel", src: hotel },
+  { title: "数码家电", name: "electronics", src: electronics },
+  { title: "鲜花", name: "flower", src: flower },
+  { title: "美妆", name: "cosmetics", src: cosmetics },
+  { title: "宠物", name: "pet", src: pet },
+  { title: "母婴", name: "mother-baby", src: motherBaby },
 ];
 const FiveItemsPerRow = ({ rowNum = 5 }) => {
   // 1. 计算父容器可用宽度（屏幕宽度 - 左右内边距）
@@ -40,7 +49,7 @@ const FiveItemsPerRow = ({ rowNum = 5 }) => {
 
         return (
           <View
-            key={item.id}
+            key={index}
             style={[
               styles.item,
               {
@@ -54,8 +63,8 @@ const FiveItemsPerRow = ({ rowNum = 5 }) => {
                 router.push(`/food/id`);
               }}
             >
-              <View>
-                <Image style={[styles.itemImage]} source={src} />
+              <View style={{ justifyContent: "center", alignItems: "center" }}>
+                <Image style={[styles.itemImage]} source={item.src} />
                 <Text style={styles.title}>{item.title}</Text>
               </View>
             </TouchableOpacity>
@@ -86,9 +95,10 @@ const styles = StyleSheet.create({
   },
 
   itemImage: {
-    width: 50,
-    height: 50,
-    borderRadius: "50%",
+    width: 40,
+    height: 40,
+    borderBottomRightRadius: "50%",
+    borderBottomLeftRadius: "50%",
   },
   title: {
     fontSize: 14,
