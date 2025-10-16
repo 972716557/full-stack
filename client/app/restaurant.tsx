@@ -3,7 +3,7 @@ import Layout from "./components/layout/layout";
 import ProductImageCarousel from "./components/common/carousel";
 import IconFont from "./components/common/iconfont";
 import ButtonGroup from "./components/common/button-group";
-import FoodOrderCard from "./components/resturant/food-order-card";
+import FoodOrderCard from "./components/restaurant/food-order-card";
 import { FlatList, GestureHandlerRootView } from "react-native-gesture-handler";
 import { useEffect, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -20,7 +20,7 @@ import HeaderCart from "./components/common/header-cart";
 import src from "../assets/avatar.jpg";
 import useCartCount from "./store/cart";
 import { scheduleOnRN } from "react-native-worklets";
-import Description from "./components/resturant/description";
+import Description from "./components/restaurant/description";
 
 const styles = StyleSheet.create({
   container: {

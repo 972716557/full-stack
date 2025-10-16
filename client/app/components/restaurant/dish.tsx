@@ -1,7 +1,8 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import { Image } from "expo-image";
 import IconFont from "../common/iconfont";
 import src from "../../../assets/burger.png";
+import { router } from "expo-router";
 
 const style = StyleSheet.create({
   container: {
@@ -88,28 +89,34 @@ const Dish = ({
   initialPrice = "10",
 }) => {
   return (
-    <View style={style.container}>
-      <View style={style.imgContent}>
-        <Image style={style.img} source={img} />
-        <Text style={style.tip}>{tip}</Text>
-        <Text style={style.sale}>{sale}</Text>
-      </View>
-      <Text numberOfLines={1} style={style.title}>
-        {title}
-      </Text>
-      <View style={style.footer}>
-        <View>
-          <View style={style.priceContent}>
-            <Text style={style.yuan}>¥</Text>
-            <Text style={style.price}>{price}</Text>
+    <TouchableWithoutFeedback
+      onPress={() => {
+        router.push(`/restaurant/id`);
+      }}
+    >
+      <View style={style.container}>
+        <View style={style.imgContent}>
+          <Image style={style.img} source={img} />
+          <Text style={style.tip}>{tip}</Text>
+          <Text style={style.sale}>{sale}</Text>
+        </View>
+        <Text numberOfLines={1} style={style.title}>
+          {title}
+        </Text>
+        <View style={style.footer}>
+          <View>
+            <View style={style.priceContent}>
+              <Text style={style.yuan}>¥</Text>
+              <Text style={style.price}>{price}</Text>
+            </View>
+            <Text style={style.initialPrice}>¥{initialPrice}</Text>
           </View>
-          <Text style={style.initialPrice}>¥{initialPrice}</Text>
-        </View>
-        <View style={style.add}>
-          <IconFont name="plus" size={10} color="#fff" />
+          <View style={style.add}>
+            <IconFont name="plus" size={10} color="#fff" />
+          </View>
         </View>
       </View>
-    </View>
+    </TouchableWithoutFeedback>
   );
 };
 

@@ -9,7 +9,7 @@ import {
 import Layout from "../components/layout/layout";
 import src from "../../assets/avatar.jpg";
 import IconFont from "../components/common/iconfont";
-import Description from "../components/resturant/description";
+import Description from "../components/restaurant/description";
 import { useState } from "react";
 import BigButton from "../components/common/big-button";
 

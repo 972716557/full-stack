@@ -6,6 +6,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   ScrollView,
+  TouchableWithoutFeedback,
 } from "react-native";
 import { Image } from "expo-image";
 import React from "react";
@@ -96,40 +97,46 @@ const RestaurantCard = ({
   return (
     <>
       <View style={styles.card}>
-        <View style={styles.container}>
-          <Image source={src} style={styles.image} />
-          <View style={styles.content}>
-            <Text numberOfLines={1} style={styles.title}>
-              {title}
-            </Text>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                justifyContent: "space-between",
-              }}
-            >
-              <View style={styles.info}>
-                <Text style={styles.desc}>{sale}</Text>
-                <Text style={styles.desc}>{enough}</Text>
-                <Text style={styles.tip}>免运费</Text>
-              </View>
-              <View style={styles.info}>
-                <Text style={styles.desc}>{time}</Text>
-                <Text style={styles.desc}>{distance}</Text>
-              </View>
-            </View>
-            <View style={styles.info}>
-              <Text>
-                <Text style={styles.star}>{star}</Text>
-                <Text style={styles.starLabel}>分</Text>
+        <TouchableWithoutFeedback
+          onPress={() => {
+            router.push(`/restaurant/id`);
+          }}
+        >
+          <View style={styles.container}>
+            <Image source={src} style={styles.image} />
+            <View style={styles.content}>
+              <Text numberOfLines={1} style={styles.title}>
+                {title}
               </Text>
-              <View style={styles.tag}>
-                <Text style={{ color: "#FF7622", fontSize: 12 }}>{tip}</Text>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                }}
+              >
+                <View style={styles.info}>
+                  <Text style={styles.desc}>{sale}</Text>
+                  <Text style={styles.desc}>{enough}</Text>
+                  <Text style={styles.tip}>免运费</Text>
+                </View>
+                <View style={styles.info}>
+                  <Text style={styles.desc}>{time}</Text>
+                  <Text style={styles.desc}>{distance}</Text>
+                </View>
+              </View>
+              <View style={styles.info}>
+                <Text>
+                  <Text style={styles.star}>{star}</Text>
+                  <Text style={styles.starLabel}>分</Text>
+                </Text>
+                <View style={styles.tag}>
+                  <Text style={{ color: "#FF7622", fontSize: 12 }}>{tip}</Text>
+                </View>
               </View>
             </View>
           </View>
-        </View>
+        </TouchableWithoutFeedback>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           <View style={styles.menu}>
             {menu.map((item, index) => (

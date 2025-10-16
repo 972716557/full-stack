@@ -12,7 +12,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import IconFont from "./components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../assets/burger.png";
-import RestaurantCard from "./components/resturant/restaurant-card";
+import RestaurantCard from "./components/restaurant/restaurant-card";
 import { Link, router } from "expo-router";
 import SearchInput from "./components/common/search-input";
 import HeaderCart from "./components/common/header-cart";
@@ -136,6 +136,7 @@ const Home = () => {
   return (
     <Layout
       style={{ backgroundColor: "#f2f3f5" }}
+      safeAreaViewProps={{ edges: ["left", "right", "top"] }}
       header={{
         title: () => (
           <Animated.View style={[{ flex: 1 }, headerAnimatedStyle]}>
@@ -156,11 +157,18 @@ const Home = () => {
                 <Animated.View
                   style={[titleAnimatedStyle, { justifyContent: "center" }]}
                 >
-                  <View style={styles.common}>
-                    <IconFont name="location" />
-                    <Text>中金大厦</Text>
-                    <IconFont name="arrow-down" />
-                  </View>
+                  <TouchableOpacity
+                    activeOpacity={1}
+                    onPress={() => {
+                      router.push("/address");
+                    }}
+                  >
+                    <View style={styles.common}>
+                      <IconFont name="location" />
+                      <Text>中金大厦</Text>
+                      <IconFont name="arrow-down" />
+                    </View>
+                  </TouchableOpacity>
                 </Animated.View>
               </View>
               <HeaderCart />

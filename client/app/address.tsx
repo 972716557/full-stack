@@ -104,7 +104,7 @@ const Address = () => {
     );
 
   return (
-    <Layout header={{ title: "My Address" }}>
+    <Layout header={{ title: "地址" }}>
       <ScrollView style={{ flex: 1 }}>
         <View style={{ gap: 16, marginTop: 16, flex: 1 }}>
           {data.map(({ title, icon, color }) => (

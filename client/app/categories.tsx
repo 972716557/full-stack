@@ -13,9 +13,9 @@ import {
 import RNPickerSelect from "react-native-picker-select";
 import SelectDropdown from "react-native-select-dropdown";
 import PopularCard from "./components/popular-card";
-import FoodOrderCard from "./components/resturant/food-order-card";
+import FoodOrderCard from "./components/restaurant/food-order-card";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import RestaurantCard from "./components/resturant/restaurant-card";
+import RestaurantCard from "./components/restaurant/restaurant-card";
 import { useState } from "react";
 import IconFont from "./components/common/iconfont";
 import CommonModal from "./components/common/modal";
