@@ -33,7 +33,7 @@ const styles = StyleSheet.create({
   image: {
     width: 80,
     height: 80,
-    borderRadius: 16,
+    borderRadius: 8,
     objectFit: "fill",
   },
   desc: {

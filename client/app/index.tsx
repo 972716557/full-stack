@@ -25,6 +25,7 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import { useState } from "react";
+import FiveItemsPerRow from "./components/common/wrap";
 
 const styles = StyleSheet.create({
   header: {
@@ -44,9 +45,6 @@ const styles = StyleSheet.create({
   headerButtonConfig: {
     backgroundColor: "#ECF0F4",
   },
-  headerButtonCart: {
-    backgroundColor: "#181C2E",
-  },
   common: {
     flexDirection: "row",
     alignItems: "center",
@@ -60,74 +58,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  mb16: {
-    marginBottom: 16,
-  },
-  input: {
-    height: 62,
-    borderRadius: 12,
-    backgroundColor: "#F6F6F6",
-    paddingLeft: 16,
-  },
-  card: {
-    width: 120,
-    height: 120,
-    borderRadius: 12,
-    overflow: "hidden",
-    padding: 20,
-    ...Platform.select({
-      ios: {
-        shadowColor: "#000", // 阴影颜色（深色更立体）
-        shadowOffset: { width: 0, height: 4 }, // 阴影偏移（向下4px，增强悬浮感）
-        shadowOpacity: 0.15, // 阴影透明度（0.1-0.3 较自然）
-        shadowRadius: 8, // 阴影模糊半径（值越大越柔和）
-      },
-      android: {
-        // Android 原生阴影（elevation 值越大，阴影越明显）
-        elevation: 8,
-        // 可选：Android 10+ 支持通过 outline 微调阴影（需配合 borderRadius）
-        outlineStyle: "none",
-      },
-    }),
-  },
-  cardImg: {
-    width: "100%",
-    height: "100%",
-    borderRadius: 12,
-    objectFit: "fill",
-    backgroundColor: "#98A8B8",
-  },
-  cardTitle: {
-    fontSize: 18,
-    fontWeight: 500,
-  },
 });
 
 const { width: screenWidth } = Dimensions.get("window");
-const Card = ({ title }) => {
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        router.push(`/food/id`);
-      }}
-    >
-      <View
-        style={[
-          {
-            justifyContent: "center",
-            alignItems: "center",
-            // backgroundColor: "#f0f0f0",
-          },
-        ]}
-      >
-        <View style={styles.card}>
-          <Image style={styles.cardImg} source={src} />
-        </View>
-        <Text style={styles.cardTitle}>{title}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
+
 const Home = () => {
   const scrollY = useSharedValue(0);
   // 标题动画样式（滚动时隐藏）
@@ -251,20 +185,14 @@ const Home = () => {
         scrollEventThrottle={16} // 16ms 触发一次，确保动画流畅
         showsVerticalScrollIndicator={false}
       >
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          <View style={{ flexDirection: "row", gap: 16 }}>
-            <Card title="Vegetables" />
-            <Card title="Fruits" />
-            <Card title="Meat & Fish" />
-            <Card title="Beverages" />
-            <Card title="Snacks" />
+        <View style={{ gap: 8, marginTop: 8 }}>
+          <FiveItemsPerRow />
+          <View style={{ gap: 8 }}>
+            <RestaurantCard />
+            <RestaurantCard />
+            <RestaurantCard />
+            <RestaurantCard />
           </View>
-        </ScrollView>
-        <View style={{ gap: 8, marginBottom: 20 }}>
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
-          <RestaurantCard />
         </View>
       </Animated.ScrollView>
     </Layout>
