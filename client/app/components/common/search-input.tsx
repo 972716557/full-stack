@@ -36,7 +36,7 @@ const SearchInput = ({
   };
 
   return isFakeInput ? (
-    <View style={[styles.container, style]}>
+    <View style={[styles.container, styles.fake, style]}>
       <IconFont
         name="search"
         size={18}
@@ -85,6 +85,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#f5f5f5", // 灰色背景
     borderRadius: 20, // 圆角
     marginVertical: 10,
+    flex: 1,
   },
   searchIcon: {
     marginRight: 8, // 与输入框的间距
@@ -97,6 +98,10 @@ const styles = StyleSheet.create({
   clearButton: {
     marginLeft: 8, // 与输入框的间距
     padding: 2,
+  },
+  fake: {
+    borderWidth: 1,
+    borderColor: "#FC6E2A",
   },
 });
 

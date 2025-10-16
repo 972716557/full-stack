@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   headerButtonConfig: {
-    backgroundColor: "#ECF0F4",
+    backgroundColor: "#c6caceff",
   },
   common: {
     flexDirection: "row",
@@ -117,7 +117,7 @@ const Home = () => {
     const width = interpolate(
       scrollY.value,
       [20, 60],
-      [screenWidth - 40, screenWidth - 140], // 宽度从 80%→60%
+      [screenWidth - 16, screenWidth - 116], // 宽度从 80%→60%
       Extrapolation.CLAMP
     );
 
@@ -185,7 +185,7 @@ const Home = () => {
         scrollEventThrottle={16} // 16ms 触发一次，确保动画流畅
         showsVerticalScrollIndicator={false}
       >
-        <View style={{ gap: 8, marginTop: 8 }}>
+        <View style={{ gap: 8, marginTop: 12 }}>
           <FiveItemsPerRow />
           <View style={{ gap: 8 }}>
             <RestaurantCard />
