@@ -6,10 +6,11 @@ import {
   useWindowDimensions,
   StyleSheet,
   StatusBar,
+  Text,
 } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
 import Scroll from "./_scroll";
-import { useState } from "react";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
   tabBar: {
@@ -17,11 +18,15 @@ const styles = StyleSheet.create({
     flexGrow: 0,
     paddingTop: StatusBar.currentHeight,
     backgroundColor: "#fff",
+    justifyContent: "flex-start",
   },
   tabItem: {
-    flex: 1,
     alignItems: "center",
     padding: 16,
+  },
+  desc: {
+    fontSize: 12,
+    color: "#646982",
   },
 });
 const FirstRoute = () => (
@@ -35,15 +40,25 @@ const SecondRoute = () => (
 const renderScene = SceneMap({
   first: Scroll,
   second: SecondRoute,
+  third: SecondRoute,
 });
 
 export default function TabViewExample() {
   const layout = useWindowDimensions();
-
+  const inset = useSafeAreaInsets();
   const [index, setIndex] = React.useState(0);
   const [routes] = React.useState([
-    { key: "first", title: "First" },
-    { key: "second", title: "Second" },
+    { key: "first", title: "外卖" },
+    {
+      key: "second",
+      title: (
+        <Text style={{ alignItems: "baseline", gap: 2, flexDirection: "row" }}>
+          <Text style={{ fontSize: 20 }}>点评</Text>
+          <Text style={styles.desc}>900+</Text>
+        </Text>
+      ),
+    },
+    { key: "third", title: "商家" },
   ]);
   const renderTabBar = (props) => {
     const inputRange = props.navigationState.routes.map((x, i) => i);
@@ -65,7 +80,28 @@ export default function TabViewExample() {
                 setIndex(i);
               }}
             >
-              <Animated.Text style={{ opacity }}>{route.title}</Animated.Text>
+              <Animated.Text
+                style={[
+                  { opacity, fontSize: 20 },
+                  index === i && { color: "red" },
+                ]}
+              >
+                {route.title}
+              </Animated.Text>
+              {index === i && (
+                <Animated.View
+                  style={[
+                    { opacity },
+                    {
+                      height: 4,
+                      width: 20,
+                      backgroundColor: "red",
+                      borderRadius: 2,
+                      marginTop: 4,
+                    },
+                  ]}
+                />
+              )}
             </TouchableOpacity>
           );
         })}
@@ -78,6 +114,7 @@ export default function TabViewExample() {
       renderScene={renderScene}
       onIndexChange={setIndex}
       renderTabBar={renderTabBar}
+      style={{ height: layout.height - inset.top - 40 }}
       initialLayout={{ width: layout.width }}
     />
   );

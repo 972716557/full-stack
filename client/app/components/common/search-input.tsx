@@ -36,7 +36,7 @@ const SearchInput = ({
   };
 
   return isFakeInput ? (
-    <View style={[styles.container, styles.fake]}>
+    <View style={[styles.container, styles.fake, style]}>
       <IconFont
         name="search"
         size={18}

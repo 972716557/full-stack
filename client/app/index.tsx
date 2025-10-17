@@ -1,19 +1,13 @@
 import {
-  ScrollView,
   View,
   StyleSheet,
   Text,
-  TextInput,
-  Platform,
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import { SafeAreaView } from "react-native-safe-area-context";
 import IconFont from "./components/common/iconfont";
-import { Image } from "expo-image";
-import src from "../assets/burger.png";
 import RestaurantCard from "./components/restaurant/restaurant-card";
-import { Link, router } from "expo-router";
+import { router } from "expo-router";
 import SearchInput from "./components/common/search-input";
 import HeaderCart from "./components/common/header-cart";
 import Layout from "./components/layout/layout";
@@ -24,7 +18,6 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import { useState } from "react";
 import FiveItemsPerRow from "./components/common/wrap";
 
 const styles = StyleSheet.create({
@@ -133,6 +126,7 @@ const Home = () => {
       scrollY.value = event.contentOffset.y;
     },
   });
+
   return (
     <Layout
       style={{ backgroundColor: "#f2f3f5" }}

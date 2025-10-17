@@ -1,30 +1,136 @@
-import React, { useState, useRef, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  Dimensions,
-  LayoutChangeEvent,
-} from "react-native";
+import React, { use, useRef, useState } from "react";
+import { View, StyleSheet, Text, Dimensions } from "react-native";
 import Layout from "../components/layout/layout";
-import Card from "./_card";
 import { Image } from "expo-image";
-import Animated from "react-native-reanimated";
+import Animated, {
+  Extrapolation,
+  interpolate,
+  useAnimatedScrollHandler,
+  useAnimatedStyle,
+  useSharedValue,
+} from "react-native-reanimated";
 import banner from "../../assets/burger.png";
 import Info from "./_info";
-import Scroll from "./_scroll";
 import TopTabExample from "./_tab";
+import BackButton from "app/components/layout/back-button";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import SearchInput from "app/components/common/search-input";
+import IconFont from "app/components/common/iconfont";
+import SelectAddress from "app/components/common/select-address";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
+import AddressSheet from "app/components/common/address-sheet";
 
-const AnchorLinkExample = () => {
+const screenHeight = Dimensions.get("window").height;
+const RestaurantDetail = () => {
+  const scrollY = useSharedValue(0);
+  const inset = useSafeAreaInsets();
+
+  const searchAnimatedStyle = useAnimatedStyle(() => {
+    // 搜索框初始位置在标题下方（距离顶部 80），滚动后上移到标题位置（距离顶部 30）
+    const opacity = interpolate(
+      scrollY.value,
+      [0, 50], // 触发区间
+      [0, 1], // 透明度从 1→0
+      Extrapolation.CLAMP
+    );
+
+    return {
+      backgroundColor: `rgba(255, 255, 255, ${opacity})`,
+    };
+  });
+  const locationAnimatedStyle = useAnimatedStyle(() => {
+    // 搜索框初始位置在标题下方（距离顶部 80），滚动后上移到标题位置（距离顶部 30）
+    const opacity = interpolate(
+      scrollY.value,
+      [0, 50], // 触发区间
+      [0, 1], // 透明度从 1→0
+      Extrapolation.CLAMP
+    );
+
+    return {
+      backgroundColor: `rgba(255, 255, 255, ${opacity})`,
+    };
+  });
+
+  const searchInputAnimatedStyle = useAnimatedStyle(() => {
+    // 搜索框初始位置在标题下方（距离顶部 80），滚动后上移到标题位置（距离顶部 30）
+    const opacity = interpolate(
+      scrollY.value,
+      [0, 50], // 触发区间
+      [0, 1], // 透明度从 1→0
+      Extrapolation.CLAMP
+    );
+
+    return {
+      backgroundColor: `rgba(255, 255, 255, ${opacity})`,
+    };
+  });
+
+  const scrollHandler = useAnimatedScrollHandler({
+    onScroll: (event) => {
+      if (scrollY) {
+        scrollY.value = event.contentOffset.y;
+      }
+    },
+  });
+
+  const ref = useRef(null);
+  const [visible, setVisible] = useState(false);
+
+  const handleSheetChange = (index) => {
+    if (index === -1) {
+      setVisible(false);
+    }
+  };
+
   return (
     <Layout
       style={{ paddingHorizontal: 0, backgroundColor: "#F5F5F5" }}
-      header={{ style: { paddingHorizontal: 12 } }}
-      safeAreaViewProps={{ edges: ["left", "right", "top"] }}
+      header={{
+        title: () => (
+          <Animated.View
+            style={[
+              {
+                paddingHorizontal: 12,
+                flex: 1,
+                paddingTop: inset.top,
+                paddingBottom: 12,
+                flexDirection: "row",
+                justifyContent: "space-between",
+                gap: 12,
+                alignItems: "center",
+              },
+              searchAnimatedStyle,
+            ]}
+          >
+            <BackButton />
+            <Animated.View style={searchAnimatedStyle}>
+              <SearchInput
+                isFakeInput
+                placeholder="搜索店内商品"
+                style={{ flex: 1 }}
+              />
+            </Animated.View>
+            <Animated.View style={searchAnimatedStyle}>
+              <SelectAddress
+                onPress={() => {
+                  setVisible(true);
+                }}
+              />
+            </Animated.View>
+            <IconFont name="star" />
+            <IconFont name="more" />
+          </Animated.View>
+        ),
+      }}
+      safeAreaViewProps={{ edges: ["left", "right"] }}
     >
-      <ScrollView style={{ backgroundColor: "#fff", flexGrow: 0 }}>
+      <Animated.ScrollView
+        onScroll={scrollHandler}
+        scrollEventThrottle={16} // 16ms 触发一次，确保动画流畅
+        showsVerticalScrollIndicator={false}
+        // style={{ backgroundColor: "#fff", flex: 1 }}
+      >
         <View style={[styles.banner]}>
           <Image
             style={[styles.bannerImg]}
@@ -33,8 +139,16 @@ const AnchorLinkExample = () => {
           />
         </View>
         <Info />
-      </ScrollView>
-      <TopTabExample />
+        <TopTabExample />
+      </Animated.ScrollView>
+      {/* 底部抽屉组件 */}
+      <AddressSheet
+        ref={ref}
+        visible={visible}
+        onClose={() => {
+          setVisible(false);
+        }}
+      />
     </Layout>
   );
 };
@@ -102,4 +216,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AnchorLinkExample;
+export default RestaurantDetail;

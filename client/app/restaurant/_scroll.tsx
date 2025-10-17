@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   rightContainer: {
     flex: 1, // 占剩余宽度
     gap: 40,
-    height: 600,
   },
   rightSection: {
     padding: 20,
