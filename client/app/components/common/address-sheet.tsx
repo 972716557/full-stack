@@ -1,14 +1,10 @@
-import BottomSheet, {
-  BottomSheetView,
-  WINDOW_HEIGHT,
-} from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import {
   View,
   Text,
   StyleSheet,
   ScrollView,
   TouchableOpacity,
-  useWindowDimensions,
   Dimensions,
 } from "react-native";
 import IconFont from "./iconfont";
@@ -36,6 +32,8 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     zIndex: 20,
+    backgroundColor: "#f5f5f5",
+    borderRadius: 20,
   },
   header: {
     flexDirection: "row",
@@ -291,12 +289,19 @@ const AddressSheet = ({
       <BottomSheetView style={styles.contentContainer}>
         <View style={styles.header}>
           <Text style={styles.title}>{title}</Text>
-          <Text onPress={onInternalClose} style={styles.close}>
+          <TouchableOpacity onPress={onInternalClose} style={styles.close}>
             <IconFont name="close" size={18} />
-          </Text>
+          </TouchableOpacity>
         </View>
         <ScrollView>
-          <View style={{ gap: 12, paddingHorizontal: 12, marginTop: 8 }}>
+          <View
+            style={{
+              gap: 12,
+              paddingHorizontal: 12,
+              marginTop: 8,
+              paddingBottom: 20,
+            }}
+          >
             {data.map((item, index) => (
               <Card key={index} {...item} />
             ))}

@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleProp, ViewStyle } from "react-native";
+import { Text, StyleProp, ViewStyle, TextProps } from "react-native";
 import { useFonts } from "expo-font"; // Expo 字体加载钩子
 import iconfont from "../../../assets/fonts/iconfont.ttf";
 
@@ -63,12 +63,12 @@ export const IconMap = {
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）
-type IconFontProps = {
+interface IconFontProps extends TextProps {
   name: keyof typeof IconMap; // 图标名称（只能是IconMap中的键）
   size?: number; // 图标大小，默认20
   color?: string; // 图标颜色，默认#333
   style?: StyleProp<ViewStyle>; // 额外样式（如margin）
-};
+}
 
 // 3. 核心组件
 const IconFont: React.FC<IconFontProps> = ({
@@ -76,6 +76,7 @@ const IconFont: React.FC<IconFontProps> = ({
   size = 20,
   color = "#333",
   style,
+  ...rest
 }) => {
   // 加载IconFont字体（fontFamily名称需与下方一致）
   const [fontsLoaded] = useFonts({
@@ -96,6 +97,7 @@ const IconFont: React.FC<IconFontProps> = ({
         },
         style, // 支持外部传入样式覆盖
       ]}
+      {...rest}
     >
       {IconMap[name]} {/* 渲染对应图标的Unicode */}
     </Text>

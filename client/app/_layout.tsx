@@ -60,6 +60,7 @@ const Layout = () => {
       <Stack.Screen name="categories" options={{ headerShown: false }} />
       <Stack.Screen name="food/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="restaurant/[id]" options={{ headerShown: false }} />
+      <Stack.Screen name="address/add" options={{ headerShown: false }} />
 
       <Stack.Screen
         name="detail/[id]"

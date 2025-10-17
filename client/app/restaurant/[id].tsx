@@ -105,11 +105,7 @@ const RestaurantDetail = () => {
           >
             <BackButton />
             <Animated.View style={searchAnimatedStyle}>
-              <SearchInput
-                isFakeInput
-                placeholder="搜索店内商品"
-                style={{ flex: 1 }}
-              />
+              <SearchInput isFakeInput placeholder="搜索店内商品" />
             </Animated.View>
             <Animated.View style={searchAnimatedStyle}>
               <SelectAddress
