@@ -10,7 +10,7 @@ import {
 } from "react-native-safe-area-context";
 import Header, { HeaderProps } from "./header";
 import { ReactNode } from "react";
-import { Gesture, GestureHandlerRootView } from "react-native-gesture-handler";
+import { GestureHandlerRootView } from "react-native-gesture-handler";
 
 const styles = StyleSheet.create({
   container: {

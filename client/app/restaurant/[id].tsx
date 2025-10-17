@@ -1,5 +1,5 @@
-import React, { use, useRef, useState } from "react";
-import { View, StyleSheet, Text, Dimensions } from "react-native";
+import React, { useRef, useState } from "react";
+import { View, StyleSheet } from "react-native";
 import Layout from "../components/layout/layout";
 import { Image } from "expo-image";
 import Animated, {
@@ -17,52 +17,48 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchInput from "app/components/common/search-input";
 import IconFont from "app/components/common/iconfont";
 import SelectAddress from "app/components/common/select-address";
-import BottomSheet, { BottomSheetView } from "@gorhom/bottom-sheet";
 import AddressSheet from "app/components/common/address-sheet";
 
-const screenHeight = Dimensions.get("window").height;
 const RestaurantDetail = () => {
   const scrollY = useSharedValue(0);
   const inset = useSafeAreaInsets();
 
   const searchAnimatedStyle = useAnimatedStyle(() => {
-    // 搜索框初始位置在标题下方（距离顶部 80），滚动后上移到标题位置（距离顶部 30）
     const opacity = interpolate(
       scrollY.value,
-      [0, 50], // 触发区间
+      [0, 200], // 触发区间
       [0, 1], // 透明度从 1→0
       Extrapolation.CLAMP
     );
-
     return {
       backgroundColor: `rgba(255, 255, 255, ${opacity})`,
     };
   });
+
   const locationAnimatedStyle = useAnimatedStyle(() => {
-    // 搜索框初始位置在标题下方（距离顶部 80），滚动后上移到标题位置（距离顶部 30）
     const opacity = interpolate(
       scrollY.value,
-      [0, 50], // 触发区间
+      [0, 200], // 触发区间
       [0, 1], // 透明度从 1→0
       Extrapolation.CLAMP
     );
 
     return {
-      backgroundColor: `rgba(255, 255, 255, ${opacity})`,
+      display: opacity > 0.5 ? "flex" : "none",
+      flex: 1,
     };
   });
 
   const searchInputAnimatedStyle = useAnimatedStyle(() => {
-    // 搜索框初始位置在标题下方（距离顶部 80），滚动后上移到标题位置（距离顶部 30）
     const opacity = interpolate(
       scrollY.value,
-      [0, 50], // 触发区间
+      [0, 200], // 触发区间
       [0, 1], // 透明度从 1→0
       Extrapolation.CLAMP
     );
-
     return {
-      backgroundColor: `rgba(255, 255, 255, ${opacity})`,
+      display: opacity > 0.5 ? "none" : "flex",
+      flex: 1,
     };
   });
 
@@ -85,7 +81,10 @@ const RestaurantDetail = () => {
 
   return (
     <Layout
-      style={{ paddingHorizontal: 0, backgroundColor: "#F5F5F5" }}
+      style={{ paddingHorizontal: 0 }}
+      safeAreaViewProps={{
+        edges: ["left", "right"],
+      }}
       header={{
         title: () => (
           <Animated.View
@@ -93,21 +92,27 @@ const RestaurantDetail = () => {
               {
                 paddingHorizontal: 12,
                 flex: 1,
+                position: "absolute",
+                top: 0,
                 paddingTop: inset.top,
                 paddingBottom: 12,
+                left: 0,
+                right: 0,
+                zIndex: 99,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 gap: 12,
                 alignItems: "center",
+                backgroundColor: "rgba(255,255,255,0)",
               },
               searchAnimatedStyle,
             ]}
           >
             <BackButton />
-            <Animated.View style={searchAnimatedStyle}>
+            <Animated.View style={searchInputAnimatedStyle}>
               <SearchInput isFakeInput placeholder="搜索店内商品" />
             </Animated.View>
-            <Animated.View style={searchAnimatedStyle}>
+            <Animated.View style={locationAnimatedStyle}>
               <SelectAddress
                 onPress={() => {
                   setVisible(true);
@@ -119,13 +124,12 @@ const RestaurantDetail = () => {
           </Animated.View>
         ),
       }}
-      safeAreaViewProps={{ edges: ["left", "right"] }}
     >
       <Animated.ScrollView
         onScroll={scrollHandler}
         scrollEventThrottle={16} // 16ms 触发一次，确保动画流畅
         showsVerticalScrollIndicator={false}
-        // style={{ backgroundColor: "#fff", flex: 1 }}
+        style={{ backgroundColor: "#fff", flex: 1, paddingTop: inset.top + 50 }}
       >
         <View style={[styles.banner]}>
           <Image
