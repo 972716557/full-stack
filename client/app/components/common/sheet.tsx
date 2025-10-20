@@ -6,7 +6,6 @@ import {
   View,
   Text,
   StyleSheet,
-  ScrollView,
   TouchableOpacity,
   Dimensions,
   TouchableWithoutFeedback,
@@ -78,6 +77,7 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "#000", // 黑色遮罩（配合透明度）
+    zIndex: 99,
   },
 });
 
@@ -90,11 +90,11 @@ const Sheet = ({
   children,
   footer,
   ref,
+  onChange,
   showHeader = true,
   ...rest
 }: SheetProps) => {
   const inset = useSafeAreaInsets();
-
   const onInternalClose = () => {
     onClose?.();
     ref.current?.close();
@@ -102,6 +102,9 @@ const Sheet = ({
   // 3. 共享值：跟踪抽屉打开状态（用于遮罩动画）
   const progress = useSharedValue(0);
   const handleSheetChanges = (index) => {
+    if (index === -1) {
+      onClose?.();
+    }
     progress.value = withTiming(index === -1 ? 0 : 1, { duration: 200 });
   };
 
@@ -137,7 +140,7 @@ const Sheet = ({
       ref={ref}
       index={visible ? 1 : -1} // 初始状态：-1 表示完全关闭（隐藏在屏幕外）
       snapPoints={["80%"]}
-      enablePanDownToClose={true}
+      enablePanDownToClose
       backgroundComponent={({ style }) => (
         <TouchableWithoutFeedback onPress={onInternalClose}>
           <View style={[style, styles.backgroundMask]} />
@@ -146,6 +149,7 @@ const Sheet = ({
       backdropComponent={CustomBackdrop}
       handleComponent={null}
       onChange={handleSheetChanges}
+      containerStyle={{ zIndex: 100 }}
       {...rest}
     >
       <BottomSheetView style={styles.contentContainer}>

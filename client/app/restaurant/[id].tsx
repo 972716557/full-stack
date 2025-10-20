@@ -106,12 +106,12 @@ const RestaurantDetail = () => {
                 paddingBottom: 12,
                 left: 0,
                 right: 0,
-                zIndex: 99,
                 flexDirection: "row",
                 justifyContent: "space-between",
                 gap: 12,
                 alignItems: "center",
                 backgroundColor: "rgba(255,255,255,0)",
+                zIndex: 1,
               },
               searchAnimatedStyle,
             ]}
@@ -152,7 +152,7 @@ const RestaurantDetail = () => {
       <View
         style={[
           styles.bottom,
-          { paddingBottom: inset.bottom + 12, zIndex: 100 },
+          { paddingBottom: inset.bottom + 12, zIndex: 1000 },
         ]}
       >
         <View style={[{ gap: 12 }, styles.row]}>
