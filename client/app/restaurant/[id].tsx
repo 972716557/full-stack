@@ -1,5 +1,5 @@
 import React, { useRef, useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import Layout from "../components/layout/layout";
 import { Image } from "expo-image";
 import Animated, {
@@ -18,10 +18,14 @@ import SearchInput from "app/components/common/search-input";
 import IconFont from "app/components/common/iconfont";
 import SelectAddress from "app/components/common/select-address";
 import AddressSheet from "app/components/common/address-sheet";
+import DetailSheet from "./_detail";
 
 const RestaurantDetail = () => {
   const scrollY = useSharedValue(0);
   const inset = useSafeAreaInsets();
+
+  const detailRef = useRef(null);
+  const [detailVisible, setDetailVisible] = useState(false);
 
   const searchAnimatedStyle = useAnimatedStyle(() => {
     const opacity = interpolate(
@@ -141,12 +145,72 @@ const RestaurantDetail = () => {
         <Info />
         <TopTabExample />
       </Animated.ScrollView>
+      <View
+        style={[
+          styles.bottom,
+          { paddingBottom: inset.bottom + 12, zIndex: 100 },
+        ]}
+      >
+        <View style={[{ gap: 12 }, styles.row]}>
+          <View style={styles.cart}>
+            <IconFont name="cart-fill" size={20} color="#fff" />
+            <Text style={styles.cartTip}>1</Text>
+          </View>
+          <View>
+            <View style={[styles.row]}>
+              <Text style={styles.yuan}>￥</Text>
+              <Text style={styles.price}>8.5</Text>
+              <TouchableWithoutFeedback
+                onPress={() => {
+                  if (detailVisible) {
+                    detailRef.current.close();
+                  }
+                  setDetailVisible((v) => !v);
+                }}
+              >
+                <View style={styles.row}>
+                  <Text style={styles.detail}>明细</Text>
+                  {detailVisible ? (
+                    <IconFont name="arrow-down" size={12} color="#666" />
+                  ) : (
+                    <IconFont name="arrow-up" size={12} color="#666" />
+                  )}
+                </View>
+              </TouchableWithoutFeedback>
+            </View>
+            <View style={[styles.row]}>
+              <Text style={[styles.desc, { fontSize: 12, color: "#666" }]}>
+                免运费
+              </Text>
+              <Text
+                style={[
+                  styles.desc,
+                  { fontSize: 12, textDecorationLine: "line-through" },
+                ]}
+              >
+                ￥3
+              </Text>
+            </View>
+          </View>
+        </View>
+        <View style={styles.pay}>
+          <Text style={styles.payText}>去结算</Text>
+        </View>
+      </View>
       {/* 底部抽屉组件 */}
       <AddressSheet
         ref={ref}
         visible={visible}
         onClose={() => {
           setVisible(false);
+        }}
+      />
+      {/* 明细抽屉组件 */}
+      <DetailSheet
+        ref={detailRef}
+        visible={detailVisible}
+        onClose={() => {
+          setDetailVisible(false);
         }}
       />
     </Layout>
@@ -213,6 +277,68 @@ const styles = StyleSheet.create({
     height: 200,
     objectFit: "fill",
     borderRadius: 10,
+  },
+  bottom: {
+    paddingHorizontal: 12,
+    paddingTop: 12,
+    justifyContent: "space-between",
+    flexDirection: "row",
+    backgroundColor: "#fff",
+  },
+  cart: {
+    backgroundColor: "#dd1919d3",
+    width: 40,
+    height: 40,
+    borderRadius: 20,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "relative",
+  },
+  cartTip: {
+    position: "absolute",
+    top: -2,
+    right: -2,
+    backgroundColor: "#fff",
+    width: 15,
+    height: 15,
+    borderRadius: 7.5,
+    color: "#dd1919d3",
+    fontSize: 10,
+    borderWidth: 1,
+    borderColor: "#dd1919d3",
+    textAlign: "center",
+  },
+  pay: {
+    backgroundColor: "#f00e0ecd",
+    paddingHorizontal: 30,
+    paddingVertical: 8,
+    borderRadius: 8,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  payText: {
+    color: "#fff",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  desc: {
+    color: "#646982",
+  },
+  yuan: {
+    fontSize: 12,
+  },
+  price: {
+    fontSize: 20,
+    fontWeight: "bold",
+    marginRight: 4,
+  },
+  detail: {
+    color: "#646982",
+    fontSize: 12,
+  },
+  row: {
+    flexDirection: "row",
+    alignItems: "baseline",
   },
 });
 
