@@ -18,7 +18,8 @@ import SearchInput from "app/components/common/search-input";
 import IconFont from "app/components/common/iconfont";
 import SelectAddress from "app/components/common/select-address";
 import AddressSheet from "app/components/common/address-sheet";
-import DetailSheet from "./_detail";
+import DetailSheet from "./_detail-sheet";
+import CartSheet from "./cart-sheet";
 
 const RestaurantDetail = () => {
   const scrollY = useSharedValue(0);
@@ -26,6 +27,9 @@ const RestaurantDetail = () => {
 
   const detailRef = useRef(null);
   const [detailVisible, setDetailVisible] = useState(false);
+
+  const cartRef = useRef(null);
+  const [cartVisible, setCartVisible] = useState(false);
 
   const searchAnimatedStyle = useAnimatedStyle(() => {
     const opacity = interpolate(
@@ -152,10 +156,17 @@ const RestaurantDetail = () => {
         ]}
       >
         <View style={[{ gap: 12 }, styles.row]}>
-          <View style={styles.cart}>
-            <IconFont name="cart-fill" size={20} color="#fff" />
-            <Text style={styles.cartTip}>1</Text>
-          </View>
+          <TouchableWithoutFeedback
+            onPress={() => {
+              setCartVisible(true);
+            }}
+          >
+            <View style={styles.cart}>
+              <IconFont name="cart-fill" size={20} color="#fff" />
+              <Text style={styles.cartTip}>1</Text>
+            </View>
+          </TouchableWithoutFeedback>
+
           <View>
             <View style={[styles.row]}>
               <Text style={styles.yuan}>￥</Text>
@@ -211,6 +222,13 @@ const RestaurantDetail = () => {
         visible={detailVisible}
         onClose={() => {
           setDetailVisible(false);
+        }}
+      />
+      <CartSheet
+        ref={cartRef}
+        visible={cartVisible}
+        onClose={() => {
+          setCartVisible(false);
         }}
       />
     </Layout>

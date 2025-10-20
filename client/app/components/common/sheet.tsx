@@ -28,6 +28,7 @@ interface SheetProps extends BottomSheetProps {
   onClose?: () => void;
   footer?: ReactNode;
   ref?: Ref<BottomSheetMethods>;
+  showHeader?: boolean;
 }
 
 const styles = StyleSheet.create({
@@ -88,6 +89,7 @@ const Sheet = ({
   children,
   footer,
   ref,
+  showHeader = true,
   ...rest
 }: SheetProps) => {
   const inset = useSafeAreaInsets();
@@ -144,13 +146,15 @@ const Sheet = ({
       {...rest}
     >
       <BottomSheetView style={styles.contentContainer}>
-        <View style={styles.header}>
-          <Text style={styles.title}>{title}</Text>
-          <TouchableOpacity onPress={onInternalClose} style={styles.close}>
-            <IconFont name="close" size={18} />
-          </TouchableOpacity>
-        </View>
-        <ScrollView>{children}</ScrollView>
+        {showHeader && (
+          <View style={styles.header}>
+            <Text style={styles.title}>{title}</Text>
+            <TouchableOpacity onPress={onInternalClose} style={styles.close}>
+              <IconFont name="close" size={18} />
+            </TouchableOpacity>
+          </View>
+        )}
+        {children}
         <View style={[styles.footer, { paddingBottom: inset.bottom }]}>
           {footer}
         </View>
