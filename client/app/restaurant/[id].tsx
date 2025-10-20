@@ -158,7 +158,14 @@ const RestaurantDetail = () => {
         <View style={[{ gap: 12 }, styles.row]}>
           <TouchableWithoutFeedback
             onPress={() => {
-              setCartVisible(true);
+              if (detailVisible) {
+                detailRef.current.close();
+                setDetailVisible(false);
+              }
+              if (cartVisible) {
+                cartRef.current.close();
+              }
+              setCartVisible((v) => !v);
             }}
           >
             <View style={styles.cart}>
@@ -175,6 +182,10 @@ const RestaurantDetail = () => {
                 onPress={() => {
                   if (detailVisible) {
                     detailRef.current.close();
+                  }
+                  if (cartVisible) {
+                    cartRef.current.close();
+                    setCartVisible(false);
                   }
                   setDetailVisible((v) => !v);
                 }}
@@ -356,7 +367,7 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    alignItems: "baseline",
+    alignItems: "center",
   },
 });
 

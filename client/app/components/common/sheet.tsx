@@ -9,6 +9,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  TouchableWithoutFeedback,
 } from "react-native";
 import IconFont from "./iconfont";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -95,7 +96,7 @@ const Sheet = ({
   const inset = useSafeAreaInsets();
 
   const onInternalClose = () => {
-    onClose();
+    onClose?.();
     ref.current?.close();
   };
   // 3. 共享值：跟踪抽屉打开状态（用于遮罩动画）
@@ -138,7 +139,9 @@ const Sheet = ({
       snapPoints={["80%"]}
       enablePanDownToClose={true}
       backgroundComponent={({ style }) => (
-        <View style={[style, styles.backgroundMask]} />
+        <TouchableWithoutFeedback onPress={onInternalClose}>
+          <View style={[style, styles.backgroundMask]} />
+        </TouchableWithoutFeedback>
       )}
       backdropComponent={CustomBackdrop}
       handleComponent={null}

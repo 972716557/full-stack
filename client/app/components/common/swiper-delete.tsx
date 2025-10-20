@@ -6,7 +6,6 @@ import { SwipeListView } from "react-native-swipe-list-view";
 const styles = StyleSheet.create({
   listContainer: {
     flex: 1,
-    backgroundColor: "#fff",
   },
   // 隐藏项容器（左滑时显示）
   hiddenContainer: {
@@ -19,10 +18,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#ff3b30",
     justifyContent: "center",
     alignItems: "center",
-  },
-  deleteText: {
-    color: "white",
-    fontWeight: "600",
   },
 });
 
@@ -56,9 +51,7 @@ const SwiperDelete = ({ renderItem, ...rest }) => {
         style={styles.deleteButton}
         onPress={() => handleDelete(item.id, rowMap)}
       >
-        <Text style={styles.deleteText}>
-          <IconFont name="delete" color="#fff" size={18} />
-        </Text>
+        <IconFont name="delete" color="#fff" size={18} />
       </TouchableOpacity>
     </View>
   );
