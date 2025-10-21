@@ -1,4 +1,4 @@
-import * as React from "react";
+import { useState } from "react";
 import {
   Animated,
   TouchableOpacity,
@@ -9,7 +9,7 @@ import {
   Text,
 } from "react-native";
 import { TabView, SceneMap } from "react-native-tab-view";
-import Scroll from "./_scroll";
+import Takeout from "./takeout";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
@@ -38,16 +38,17 @@ const SecondRoute = () => (
 );
 
 const renderScene = SceneMap({
-  first: Scroll,
+  first: Takeout,
   second: SecondRoute,
   third: SecondRoute,
 });
 
-export default function TabViewExample() {
+export default function MenuTab() {
   const layout = useWindowDimensions();
   const inset = useSafeAreaInsets();
-  const [index, setIndex] = React.useState(0);
-  const [routes] = React.useState([
+  const [index, setIndex] = useState(0);
+
+  const [routes] = useState([
     { key: "first", title: "外卖" },
     {
       key: "second",
@@ -109,13 +110,15 @@ export default function TabViewExample() {
     );
   };
   return (
-    <TabView
-      navigationState={{ index, routes }}
-      renderScene={renderScene}
-      onIndexChange={setIndex}
-      renderTabBar={renderTabBar}
-      style={{ height: layout.height - inset.top - 40 }}
-      initialLayout={{ width: layout.width }}
-    />
+    <>
+      <TabView
+        navigationState={{ index, routes }}
+        renderScene={renderScene}
+        onIndexChange={setIndex}
+        renderTabBar={renderTabBar}
+        style={{ height: layout.height - inset.top - 40 }}
+        initialLayout={{ width: layout.width }}
+      />
+    </>
   );
 }

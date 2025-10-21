@@ -11,7 +11,7 @@ import Animated, {
 } from "react-native-reanimated";
 import banner from "../../assets/burger.png";
 import Info from "./_info";
-import TopTabExample from "./_tab";
+import MenuTab from "./_tab";
 import BackButton from "app/components/layout/back-button";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import SearchInput from "app/components/common/search-input";
@@ -20,6 +20,7 @@ import SelectAddress from "app/components/common/select-address";
 import AddressSheet from "app/components/common/address-sheet";
 import DetailSheet from "./_detail-sheet";
 import CartSheet from "./cart-sheet";
+import PaymentSheet from "./payment-sheet";
 
 const RestaurantDetail = () => {
   const scrollY = useSharedValue(0);
@@ -81,10 +82,12 @@ const RestaurantDetail = () => {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
 
-  const handleSheetChange = (index) => {
-    if (index === -1) {
-      setVisible(false);
-    }
+  const paymentRef = useRef(null);
+  const [paymentVisible, setPaymentVisible] = useState(false);
+
+  const pay = () => {
+    setPaymentVisible(true);
+    paymentRef.current.expand();
   };
 
   return (
@@ -147,7 +150,7 @@ const RestaurantDetail = () => {
           />
         </View>
         <Info />
-        <TopTabExample />
+        <MenuTab />
       </Animated.ScrollView>
       <View
         style={[
@@ -216,7 +219,9 @@ const RestaurantDetail = () => {
           </View>
         </View>
         <View style={styles.pay}>
-          <Text style={styles.payText}>去结算</Text>
+          <Text style={styles.payText} onPress={pay}>
+            去结算
+          </Text>
         </View>
       </View>
       {/* 底部抽屉组件 */}
@@ -240,6 +245,14 @@ const RestaurantDetail = () => {
         visible={cartVisible}
         onClose={() => {
           setCartVisible(false);
+        }}
+      />
+      <PaymentSheet
+        ref={paymentRef}
+        zIndex={1000}
+        visible={paymentVisible}
+        onClose={() => {
+          setPaymentVisible(false);
         }}
       />
     </Layout>

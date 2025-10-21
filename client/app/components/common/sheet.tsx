@@ -29,6 +29,7 @@ interface SheetProps extends BottomSheetProps {
   footer?: ReactNode;
   ref?: Ref<BottomSheetMethods>;
   showHeader?: boolean;
+  zIndex?: number;
 }
 
 const styles = StyleSheet.create({
@@ -37,9 +38,9 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   contentContainer: {
-    zIndex: 20,
     backgroundColor: "#f5f5f5",
-    borderRadius: 20,
+    borderTopLeftRadius: 20,
+    borderTopRightRadius: 20,
   },
   header: {
     flexDirection: "row",
@@ -77,7 +78,6 @@ const styles = StyleSheet.create({
     top: 0,
     left: 0,
     backgroundColor: "#000", // 黑色遮罩（配合透明度）
-    zIndex: 99,
   },
 });
 
@@ -91,6 +91,7 @@ const Sheet = ({
   footer,
   ref,
   onChange,
+  zIndex = 50,
   showHeader = true,
   ...rest
 }: SheetProps) => {
@@ -118,7 +119,7 @@ const Sheet = ({
         [0, 0.8],
         Extrapolation.CLAMP
       );
-      return { opacity };
+      return { opacity, zIndex: zIndex - 10 };
     });
 
     return (
@@ -149,7 +150,7 @@ const Sheet = ({
       backdropComponent={CustomBackdrop}
       handleComponent={null}
       onChange={handleSheetChanges}
-      containerStyle={{ zIndex: 100 }}
+      containerStyle={{ zIndex }}
       {...rest}
     >
       <BottomSheetView style={styles.contentContainer}>

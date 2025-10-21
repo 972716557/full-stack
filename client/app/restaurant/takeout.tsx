@@ -7,7 +7,7 @@ import {
   LayoutChangeEvent,
   TouchableOpacity,
 } from "react-native";
-import Card from "./_card";
+import Card from "./takeout-card";
 
 const styles = StyleSheet.create({
   container: {
@@ -214,9 +214,6 @@ const Scroll = () => {
             style={[styles.rightSection]}
             onLayout={(e) => handleSectionLayout(index, e)} // 记录区块位置
           >
-            {/* <Animated.View
-                style={[styles.section, { opacity: sectionOpacity[index] }]}
-              > */}
             <Text
               onLayout={(e) => handleSubTitleLayout(item.id, item.name, e)}
               style={styles.sectionTitle}

@@ -1,8 +1,10 @@
 import { Image } from "expo-image";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import img from "../../assets/burger.png";
 
 import IconFont from "../components/common/iconfont";
+import DishDetailSheet from "./dish-detail-sheet";
+import { useRef, useState } from "react";
 
 const styles = StyleSheet.create({
   container: {
@@ -28,8 +30,6 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     paddingHorizontal: 4,
     borderRadius: 4,
-    flexDirection: "row",
-    flexGrow: 0,
     fontSize: 10,
     backgroundColor: "#f5f5f5",
   },
@@ -63,9 +63,13 @@ const Card = ({
   desc = "月售2",
   price = "9.9",
 }) => {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
   return (
     <View style={styles.container}>
-      <Image source={src} style={styles.image} />
+      <TouchableWithoutFeedback>
+        <Image source={src} style={styles.image} />
+      </TouchableWithoutFeedback>
       <View style={{ justifyContent: "space-between" }}>
         <Text numberOfLines={2} style={styles.title}>
           {title}
@@ -74,11 +78,14 @@ const Card = ({
           <Text style={styles.desc}>{desc}</Text>
           <Text style={[styles.desc, styles.tag]}>标签</Text>
         </View>
-        <Text
-          style={[styles.tag, { color: "#FF7622", borderColor: "#FF7622" }]}
-        >
-          Card
-        </Text>
+        <View style={{ flexDirection: "row", gap: 4, alignItems: "center" }}>
+          <Text
+            style={[styles.tag, { color: "#FF7622", borderColor: "#FF7622" }]}
+          >
+            Card
+          </Text>
+        </View>
+
         <View
           style={{
             flexDirection: "row",
@@ -92,10 +99,21 @@ const Card = ({
             <Text style={styles.rest}>{price?.slice(1)}</Text>
           </View>
           <View style={styles.add}>
-            <IconFont name="plus" size={12} color="#fff" />
+            <IconFont
+              name="plus"
+              size={12}
+              color="#fff"
+              style={{ transform: [{ translateX: -1 }] }}
+            />
           </View>
         </View>
       </View>
+      <DishDetailSheet
+        ref={ref}
+        visible={visible}
+        onClose={() => setVisible(false)}
+        zIndex={100}
+      />
     </View>
   );
 };
