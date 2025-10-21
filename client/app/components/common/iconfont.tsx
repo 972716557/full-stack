@@ -8,21 +8,22 @@ import iconfont from "../../../assets/fonts/iconfont.ttf";
 export const IconMap = {
   menu: "\ue634", // 菜单图标
   "arrow-down": "\ue628", // 下拉箭头
-  cart: "\ue7d6", // 购物车图标
-  "cart-fill": "\ue7f4", // 填充购物车图标
+  cart: "\ue644", // 购物车图标
+  "cart-fill": "\ue622", // 填充购物车图标
   search: "\ue87c", // 搜索图标
   "arrow-right": "\ue945", // 右箭头
   "arrow-left": "\ue948", // 左箭头
   heart: "\uea02", // 心形图标
   bell: "\ue624", // 铃铛图标
-  user: "\ue60c", // 用户图标
-  plus: " \ue67d", // 加号图标
-  minus: "\ue604", // 减号图标
-  more: "\ue601", // 减号图标
+  user: "\ue990", // 用户图标
+  "user-fill": "\ue991",
+  plus: " \ue688", // 加号图标
+  minus: "\ue687", // 减号图标
+  more: "\ue68c", // 更多
   car: "\ue61e", // 车子图标
   question: "\ue782", // 问号图标
   clock: "\ue819", // 时间图标
-  star: "\ue7df", // 星星图标
+  star: "\ue643", // 星星图标
   "star-fill": "\ue608", // 填充星星图标
   logout: "\ue60e", // 退出图标
   map: "\ue7f3",
@@ -33,9 +34,8 @@ export const IconMap = {
   edit: "\ue780",
   pencil: "\ue725",
   phone: "\ue6a0",
-  home: "\ue608",
-  "home-fill": "\ue626",
-  "user-fill": "\ue64a",
+  home: "\ue641",
+  "home-fill": "\ue61f",
   email: "\ue66f",
   work: "\ue683",
   delete: "\ue610",
@@ -51,17 +51,11 @@ export const IconMap = {
   pepper: "\ue607",
   "arrow-up": "\ue60a",
   filter: "\ue957",
-  close: "\ue603",
-  "milk-tea": "\ue612",
-  hotel: "\ue642",
-  cosmetics: "\ue64f",
-  "mother-baby": "\ue638",
-  "fruits-vegetables": "\ue60f",
-  flower: "\ue68d",
-  desert: "\ue61d",
-  medicine: "\ue812",
-  electronics: "\ue6eb",
-  pet: "\ue60b",
+  close: "\ue685",
+  "circle-close": "\ue68a",
+  "circle-check-fill": "\ue989",
+  "circle-close-fill": "\ue98a",
+  "circle-plus-fill": "\ue98b",
 };
 
 // 2. IconFont 组件 props 类型定义（可选，增强类型提示）

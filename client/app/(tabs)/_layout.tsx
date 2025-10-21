@@ -23,7 +23,11 @@ const TabLayout = () => {
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
-            <IconFont name={focused ? "home-fill" : "home"} color={color} />
+            <IconFont
+              name={focused ? "home-fill" : "home"}
+              color={color}
+              size={26}
+            />
           ),
           headerShown: false,
         }}
@@ -33,7 +37,11 @@ const TabLayout = () => {
         options={{
           title: "",
           tabBarIcon: ({ color, focused }) => (
-            <IconFont name={focused ? "cart-fill" : "cart"} color={color} />
+            <IconFont
+              name={focused ? "cart-fill" : "cart"}
+              color={color}
+              size={26}
+            />
           ),
         }}
       ></Tabs.Screen>
@@ -43,7 +51,11 @@ const TabLayout = () => {
           headerShown: false,
           title: "",
           tabBarIcon: ({ color, focused }) => (
-            <IconFont name={focused ? "user-fill" : "user"} color={color} />
+            <IconFont
+              name={focused ? "user-fill" : "user"}
+              color={color}
+              size={26}
+            />
           ),
         }}
       ></Tabs.Screen>
