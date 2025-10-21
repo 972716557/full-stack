@@ -1,24 +1,13 @@
+import IconFont from "app/components/common/iconfont";
 import { Tabs } from "expo-router";
-import { SimpleLineIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
 
-const TabButton = (props) => {
-  const { name, ...rest } = props;
-  return <SimpleLineIcons size={20} name={name} {...rest} />;
-};
-
 const TabLayout = () => {
-  return <></>;
   return (
     <Tabs
       screenOptions={{
-        headerTitle: "",
-        headerStyle: {
-          borderBottomWidth: 0,
-          shadowOpacity: 0, // 对于iOS，如果需要移除阴影，也可以设置此项
-          elevation: 0, // 对于Android，移除阴影
-        },
-        tabBarActiveTintColor: "#1f99b0",
+        headerShown: false,
+        tabBarActiveTintColor: "#F58D1D",
         // 去除安卓手机切换tab的波纹样式
         tabBarButton: (props) => (
           <TouchableOpacity
@@ -33,30 +22,29 @@ const TabLayout = () => {
         name="index"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => <TabButton name="home" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <IconFont name={focused ? "home-fill" : "home"} color={color} />
+          ),
           headerShown: false,
         }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name="heart"
+        name="cart"
         options={{
           title: "",
-          tabBarIcon: ({ color }) => <TabButton name="heart" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <IconFont name={focused ? "cart-fill" : "cart"} color={color} />
+          ),
         }}
       ></Tabs.Screen>
       <Tabs.Screen
-        name="notification"
-        options={{
-          title: "",
-          tabBarIcon: ({ color }) => <TabButton name="bell" color={color} />,
-        }}
-      ></Tabs.Screen>
-      <Tabs.Screen
-        name="user"
+        name="config"
         options={{
           headerShown: false,
           title: "",
-          tabBarIcon: ({ color }) => <TabButton name="user" color={color} />,
+          tabBarIcon: ({ color, focused }) => (
+            <IconFont name={focused ? "user-fill" : "user"} color={color} />
+          ),
         }}
       ></Tabs.Screen>
     </Tabs>

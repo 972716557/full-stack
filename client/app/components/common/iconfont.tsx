@@ -8,7 +8,7 @@ import iconfont from "../../../assets/fonts/iconfont.ttf";
 export const IconMap = {
   menu: "\ue634", // 菜单图标
   "arrow-down": "\ue628", // 下拉箭头
-  cart: "\ue834", // 购物车图标
+  cart: "\ue7d6", // 购物车图标
   "cart-fill": "\ue7f4", // 填充购物车图标
   search: "\ue87c", // 搜索图标
   "arrow-right": "\ue945", // 右箭头
@@ -34,6 +34,8 @@ export const IconMap = {
   pencil: "\ue725",
   phone: "\ue6a0",
   home: "\ue608",
+  "home-fill": "\ue626",
+  "user-fill": "\ue64a",
   email: "\ue66f",
   work: "\ue683",
   delete: "\ue610",

@@ -5,11 +5,11 @@ import {
   ScrollView,
   TouchableOpacity,
 } from "react-native";
-import Layout from "./components/layout/layout";
+import Layout from "../components/layout/layout";
 import { useState } from "react";
-import IconFont from "./components/common/iconfont";
+import IconFont from "../components/common/iconfont";
 import { Image } from "expo-image";
-import src from "../assets/burger.png";
+import src from "../../assets/burger.png";
 import { Link, router } from "expo-router";
 import { SwipeListView } from "react-native-swipe-list-view";
 
@@ -183,7 +183,7 @@ const CartCart = ({ showDeleteButton }) => {
                 {showDeleteButton && (
                   <TouchableOpacity
                     onPress={() => {
-                      onDelete(id);
+                      // onDelete(id);
                     }}
                   >
                     <IconFont name="clear" color="#fff" size={14} />

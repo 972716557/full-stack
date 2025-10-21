@@ -35,6 +35,7 @@ const HeaderRight = () => {
 const Layout = () => {
   return (
     <Stack
+      initialRouteName="(tabs)"
       // 兼容安卓动画
       screenOptions={{
         headerTitleAlign: "center",
@@ -48,12 +49,9 @@ const Layout = () => {
     >
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
       <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-      <Stack.Screen name="index" options={{ headerShown: false }} />
-      <Stack.Screen name="config" options={{ headerShown: false }} />
       <Stack.Screen name="profile-info" options={{ headerShown: false }} />
       <Stack.Screen name="address" options={{ headerShown: false }} />
       <Stack.Screen name="search" options={{ headerShown: false }} />
-      <Stack.Screen name="cart" options={{ headerShown: false }} />
       <Stack.Screen name="restaurant" options={{ headerShown: false }} />
       <Stack.Screen name="edit/profile-info" options={{ headerShown: false }} />
       <Stack.Screen name="payment" options={{ headerShown: false }} />

@@ -1,17 +1,13 @@
 import { ScrollView, View, Text, StyleSheet } from "react-native";
-import Button from "./components/layout/button";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { Image } from "expo-image";
-import IconFont from "./components/common/iconfont";
+import IconFont from "../components/common/iconfont";
 import { router } from "expo-router";
-import BackButton from "./components/layout/back-button";
-import Header from "./components/layout/header";
-import Layout from "./components/layout/layout";
+import Layout from "../components/layout/layout";
+import src from "../../assets/burger.png";
 
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#fff",
-    height: "100%",
     gap: 20,
   },
   row: {
@@ -68,11 +64,11 @@ const data = [
 ];
 const Config = () => {
   return (
-    <Layout header={{ title: "Profile" }}>
+    <Layout header={{ title: null, showBackButton: false }}>
       <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
         <View style={[styles.row, { gap: 32, marginBottom: 20 }]}>
           <Image
-            source={require("../assets/avatar.jpg")}
+            source={src}
             style={{ width: 100, height: 100, borderRadius: 50 }}
           />
           <View>

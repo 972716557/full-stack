@@ -5,12 +5,12 @@ import {
   TouchableOpacity,
   Dimensions,
 } from "react-native";
-import IconFont from "./components/common/iconfont";
-import RestaurantCard from "./components/restaurant/restaurant-card";
+import IconFont from "app/components/common/iconfont";
+import RestaurantCard from "app/components/restaurant/restaurant-card";
 import { router } from "expo-router";
-import SearchInput from "./components/common/search-input";
-import HeaderCart from "./components/common/header-cart";
-import Layout from "./components/layout/layout";
+import SearchInput from "app/components/common/search-input";
+import HeaderCart from "app/components/common/header-cart";
+import Layout from "app/components/layout/layout";
 import Animated, {
   Extrapolation,
   interpolate,
@@ -18,7 +18,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import FiveItemsPerRow from "./components/common/wrap";
+import FiveItemsPerRow from "app/components/common/wrap";
 
 const styles = StyleSheet.create({
   header: {
