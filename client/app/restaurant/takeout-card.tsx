@@ -3,8 +3,7 @@ import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import img from "../../assets/burger.png";
 
 import IconFont from "../components/common/iconfont";
-import DishDetailSheet from "./dish-detail-sheet";
-import { useRef, useState } from "react";
+import useDishDetailSheet from "app/store/dish-detail-sheet";
 
 const styles = StyleSheet.create({
   container: {
@@ -63,11 +62,15 @@ const Card = ({
   desc = "月售2",
   price = "9.9",
 }) => {
-  const [visible, setVisible] = useState(false);
-  const ref = useRef(null);
+  const toggleVisible = useDishDetailSheet((state) => state.toggleVisible);
+  const ref = useDishDetailSheet((state) => state.ref);
+  const onPress = () => {
+    toggleVisible();
+    ref.current.expand();
+  };
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback>
+      <TouchableWithoutFeedback onPress={onPress}>
         <Image source={src} style={styles.image} />
       </TouchableWithoutFeedback>
       <View style={{ justifyContent: "space-between" }}>
@@ -108,12 +111,6 @@ const Card = ({
           </View>
         </View>
       </View>
-      <DishDetailSheet
-        ref={ref}
-        visible={visible}
-        onClose={() => setVisible(false)}
-        zIndex={100}
-      />
     </View>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { View, StyleSheet, Text, TouchableWithoutFeedback } from "react-native";
 import Layout from "../components/layout/layout";
 import { Image } from "expo-image";
@@ -21,11 +21,14 @@ import AddressSheet from "app/components/common/address-sheet";
 import DetailSheet from "./_detail-sheet";
 import CartSheet from "./cart-sheet";
 import PaymentSheet from "./payment-sheet";
+import DishDetailSheet from "./dish-detail-sheet";
+import useDishDetailSheet from "app/store/dish-detail-sheet";
 
 const RestaurantDetail = () => {
   const scrollY = useSharedValue(0);
   const inset = useSafeAreaInsets();
 
+  const setRef = useDishDetailSheet((state) => state.setRef);
   const detailRef = useRef(null);
   const [detailVisible, setDetailVisible] = useState(false);
 
@@ -85,10 +88,15 @@ const RestaurantDetail = () => {
   const paymentRef = useRef(null);
   const [paymentVisible, setPaymentVisible] = useState(false);
 
+  const dishDetailSheet = useRef(null);
   const pay = () => {
     setPaymentVisible(true);
     paymentRef.current.expand();
   };
+
+  useEffect(() => {
+    setRef(dishDetailSheet);
+  }, []);
 
   return (
     <Layout
@@ -254,6 +262,12 @@ const RestaurantDetail = () => {
         onClose={() => {
           setPaymentVisible(false);
         }}
+      />
+      <DishDetailSheet
+        ref={dishDetailSheet}
+        visible={visible}
+        onClose={() => setVisible(false)}
+        zIndex={100}
       />
     </Layout>
   );
