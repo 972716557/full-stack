@@ -60,7 +60,7 @@ const FiveItemsPerRow = ({ rowNum = 5 }) => {
           >
             <TouchableOpacity
               onPress={() => {
-                router.push(`/food/id`);
+                router.push(`/category`);
               }}
             >
               <View style={{ justifyContent: "center", alignItems: "center" }}>

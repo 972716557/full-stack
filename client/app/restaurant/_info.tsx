@@ -73,7 +73,7 @@ const Info = () => {
           <Text style={styles.title}>塔斯汀·中国汉堡（海岸城店）</Text>
           <View style={{ flexDirection: "row", gap: 4 }}>
             <Text style={styles.tag}>堂食餐厅</Text>
-            <TakeoutTag text="外卖" />
+            <TakeoutTag />
             <TakeoutTag text="品牌" />
           </View>
           <View style={{ flexDirection: "row", gap: 30 }}>

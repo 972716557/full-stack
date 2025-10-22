@@ -1,4 +1,4 @@
-import { StyleSheet, Text } from "react-native";
+import { StyleProp, StyleSheet, Text, TextStyle } from "react-native";
 const styles = StyleSheet.create({
   tag: {
     backgroundColor: "#ffc107",
@@ -10,7 +10,12 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
 });
-const TakeoutTag = ({ text, style, ...rest }) => {
+export interface TakeoutTagProps {
+  text?: string;
+  style?: StyleProp<TextStyle>;
+}
+
+const TakeoutTag = ({ text = "外卖", style, ...rest }: TakeoutTagProps) => {
   return (
     <Text style={[styles.tag, style]} {...rest}>
       {text}

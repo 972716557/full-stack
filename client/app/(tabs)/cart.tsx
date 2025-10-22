@@ -187,7 +187,7 @@ const Cart = () => {
           >
             <View style={[styles.row, { flex: 1, maxWidth: 220 }]}>
               <CommonCheckbox />
-              <TakeoutTag text="外卖" style={{ marginLeft: 12 }} />
+              <TakeoutTag style={{ marginLeft: 12 }} />
               <Text numberOfLines={1} style={styles.address}>
                 塔斯汀·中国汉堡（深圳南山区海岸海岸城店）
               </Text>
@@ -385,16 +385,22 @@ const Cart = () => {
               </View>
             </View>
           </View>
-          <View
-            style={{
-              paddingHorizontal: 24,
-              paddingVertical: 12,
-              backgroundColor: "#F58D1D",
-              borderRadius: 8,
+          <Pressable
+            onPress={() => {
+              router.push("/payment");
             }}
           >
-            <Text style={{ color: "#fff", fontWeight: "bold" }}>去结算</Text>
-          </View>
+            <View
+              style={{
+                paddingHorizontal: 24,
+                paddingVertical: 12,
+                backgroundColor: "#F58D1D",
+                borderRadius: 8,
+              }}
+            >
+              <Text style={{ color: "#fff", fontWeight: "bold" }}>去结算</Text>
+            </View>
+          </Pressable>
         </View>
       </View>
       <AddressSheet

@@ -2,11 +2,20 @@ import { Image } from "expo-image";
 import IconFont from "./components/common/iconfont";
 import TagWithWrappingText from "./components/common/tag-with-wrapping-text";
 import Layout from "./components/layout/layout";
-import { View, StyleSheet, Text, ScrollView, Button } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  ScrollView,
+  Button,
+  Pressable,
+} from "react-native";
 import img from "../assets/burger.png";
 import CommonCheckbox from "./components/common/checkbox";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import TakeoutTag from "./components/common/takeout-tag";
+import { useRef, useState } from "react";
+import AddressSheet from "./components/common/address-sheet";
 
 const styles = StyleSheet.create({
   card: {
@@ -90,6 +99,9 @@ const data = [
 ];
 const Payment = () => {
   const inset = useSafeAreaInsets();
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
+
   return (
     <Layout
       header={{ title: "确认订单" }}
@@ -103,21 +115,29 @@ const Payment = () => {
               content="深圳工商银行大厦"
               tag={<Text style={styles.tagLabel}>地址</Text>}
             />
-            <View
-              style={[
-                styles.row,
-                {
-                  backgroundColor: "#dcd7d73c",
-                  paddingVertical: 8,
-                  paddingHorizontal: 8,
-                  borderRadius: 4,
-                  marginTop: 8,
-                },
-              ]}
+            <Pressable
+              onPress={() => {
+                setVisible(true);
+                ref.current.expand();
+              }}
             >
-              <Text style={styles.selectAddress}>选择其他收货地址</Text>
-              <IconFont name="arrow-right" color="#646982" size={12} />
-            </View>
+              <View
+                style={[
+                  styles.row,
+                  {
+                    backgroundColor: "#dcd7d73c",
+                    paddingVertical: 8,
+                    paddingHorizontal: 8,
+                    borderRadius: 4,
+                    marginTop: 8,
+                  },
+                ]}
+              >
+                <Text style={styles.selectAddress}>选择其他收货地址</Text>
+                <IconFont name="arrow-right" color="#646982" size={12} />
+              </View>
+            </Pressable>
+
             <View style={styles.divider} />
             <View
               style={{
@@ -127,7 +147,7 @@ const Payment = () => {
                 marginBottom: 16,
               }}
             >
-              <TakeoutTag text="外卖" />
+              <TakeoutTag style={{ marginRight: 4 }} />
               <Text style={{ fontSize: 13 }}>
                 塔斯汀·中国汉堡（枫叶信息科技园店）
               </Text>
@@ -289,6 +309,11 @@ const Payment = () => {
           <Text style={{ color: "#fff", fontWeight: "bold" }}>立即支付</Text>
         </View>
       </View>
+      <AddressSheet
+        ref={ref}
+        visible={visible}
+        onClose={() => setVisible(false)}
+      />
     </Layout>
   );
 };

@@ -18,7 +18,7 @@ import Animated, {
   useAnimatedStyle,
   useSharedValue,
 } from "react-native-reanimated";
-import FiveItemsPerRow from "app/components/common/wrap";
+import Category from "app/components/common/wrap";
 
 const styles = StyleSheet.create({
   header: {
@@ -187,7 +187,7 @@ const Home = () => {
         showsVerticalScrollIndicator={false}
       >
         <View style={{ gap: 8, marginTop: 12 }}>
-          <FiveItemsPerRow />
+          <Category />
           <View style={{ gap: 8 }}>
             <RestaurantCard />
             <RestaurantCard />
