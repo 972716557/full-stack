@@ -3,6 +3,7 @@ import { StyleSheet, View, Text, ScrollView } from "react-native";
 import src from "../../assets/burger.png";
 import CouponCard from "./_coupon";
 import { Marquee } from "@animatereactnative/marquee";
+import TakeoutTag from "app/components/common/takeout-tag";
 
 const styles = StyleSheet.create({
   card: {
@@ -34,15 +35,6 @@ const styles = StyleSheet.create({
     borderRadius: 2,
     color: "#fff",
     fontSize: 12,
-  },
-  tagYellow: {
-    backgroundColor: "#ffc107",
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    borderRadius: 2,
-    color: "#353623ff",
-    fontSize: 12,
-    fontWeight: "bold",
   },
   desc: {
     fontSize: 12,
@@ -81,8 +73,8 @@ const Info = () => {
           <Text style={styles.title}>塔斯汀·中国汉堡（海岸城店）</Text>
           <View style={{ flexDirection: "row", gap: 4 }}>
             <Text style={styles.tag}>堂食餐厅</Text>
-            <Text style={styles.tagYellow}>外卖</Text>
-            <Text style={styles.tagYellow}>品牌</Text>
+            <TakeoutTag text="外卖" />
+            <TakeoutTag text="品牌" />
           </View>
           <View style={{ flexDirection: "row", gap: 30 }}>
             <View style={{ gap: 2 }}>

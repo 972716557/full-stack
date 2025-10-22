@@ -4,71 +4,41 @@ import {
   Text,
   ScrollView,
   TouchableOpacity,
+  Pressable,
 } from "react-native";
 import Layout from "../components/layout/layout";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import IconFont from "../components/common/iconfont";
 import { Image } from "expo-image";
 import src from "../../assets/burger.png";
-import { Link, router } from "expo-router";
 import { SwipeListView } from "react-native-swipe-list-view";
+import useCartCount from "app/store/cart";
+import CommonCheckbox from "app/components/common/checkbox";
+import Price from "app/components/common/price";
+import TakeoutTag from "app/components/common/takeout-tag";
+import { router } from "expo-router";
+import AddressSheet from "app/components/common/address-sheet";
 
 const styles = StyleSheet.create({
-  edit: {
-    color: "#FF7622",
-    textDecorationLine: "underline",
-    fontWeight: "bold",
-  },
-  done: {
-    color: "#059C6A",
-    textDecorationLine: "underline",
-    fontWeight: "bold",
-  },
   footer: {
     backgroundColor: "#fff",
-    borderTopLeftRadius: 24,
-    borderTopRightRadius: 24,
-    padding: 24,
-    paddingBottom: 48,
-  },
-  address: {
-    backgroundColor: "#F0F5FA",
-    borderRadius: 10,
-    paddingHorizontal: 12,
-    paddingVertical: 22,
-    marginTop: 10,
-    marginBottom: 30,
-  },
-  addressLabel: {
-    fontSize: 14,
-    color: "#91959C",
+    padding: 8,
   },
   img: {
-    width: 100,
-    height: 100,
-    borderRadius: 24,
+    width: 80,
+    height: 80,
+    borderRadius: 12,
     flexShrink: 0,
     flexGrow: 0,
   },
   title: {
-    color: "#fff",
-    fontSize: 16,
+    fontSize: 14,
     flexShrink: 1,
-  },
-  price: {
-    fontWeight: "bold",
-    fontSize: 18,
-    color: "#fff",
-  },
-  size: {
-    fontSize: 15,
-    color: "#888891",
   },
   icon: {
     width: 24,
     height: 24,
-    borderRadius: "50%",
-    backgroundColor: "#41414F",
+    borderRadius: 4,
     alignItems: "center",
     justifyContent: "center",
   },
@@ -76,12 +46,14 @@ const styles = StyleSheet.create({
     width: 40,
     textAlign: "center",
     fontSize: 14,
-    fontWeight: "bold",
-    color: "#fff",
+    fontWeight: "500",
+    backgroundColor: "#F5F5F5",
+    paddingVertical: 4,
+    paddingHorizontal: 6,
+    borderRadius: 8,
   },
   listContainer: {
     flex: 1,
-    backgroundColor: "#121223",
   },
   // 隐藏项容器（左滑时显示）
   hiddenContainer: {
@@ -89,8 +61,8 @@ const styles = StyleSheet.create({
     flexDirection: "row-reverse", // 按钮靠右显示
   },
   deleteButton: {
-    width: 80,
-    height: "100%",
+    width: 60,
+    height: 80,
     backgroundColor: "#ff3b30",
     justifyContent: "center",
     alignItems: "center",
@@ -99,141 +71,45 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "600",
   },
+  row: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+  desc: {
+    fontSize: 10,
+    color: "#999",
+  },
+  tag: {
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    borderRadius: 4,
+    backgroundColor: "#f5f5f5",
+    fontSize: 10,
+    marginLeft: 4,
+  },
+  card: {
+    padding: 12,
+    backgroundColor: "#fff",
+    borderRadius: 12,
+  },
+  address: {
+    fontSize: 16,
+    fontWeight: 500,
+    marginLeft: 4,
+    marginRight: 4,
+  },
+  selectAddress: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingHorizontal: 8,
+    paddingVertical: 8,
+    backgroundColor: "rgba(221, 212, 212, 0.26)",
+    borderRadius: 4,
+    marginBottom: 12,
+    justifyContent: "space-between",
+  },
 });
-const CartCart = ({ showDeleteButton }) => {
-  const [data, setData] = useState([
-    { id: 1, title: "pizza calzone european pizza calzone european" },
-    { id: 2, title: "pizza calzone european  calzone european" },
-    { id: 3, title: "pizza calzone european pizza  european" },
-    { id: 4, title: "pizza calzone european pizza calzone " },
-  ]);
-
-  const [number, setNumber] = useState(999);
-  const plus = () => {
-    setNumber((i) => i + 1);
-  };
-  const minus = () => {
-    setNumber((i) => i - 1);
-  };
-  const handleDelete = (id, rowMap) => {
-    // 关闭当前滑动的项（可选，删除前先收起）
-    rowMap[id]?.closeRow();
-    // 从数据源中移除
-    setData((prevData) => prevData.filter((item) => item.id !== id));
-  };
-
-  // 2. 渲染左滑时显示的隐藏按钮（右侧删除按钮）
-  const renderHiddenItem = ({ item }, rowMap) => (
-    <View style={styles.hiddenContainer}>
-      {/* 删除按钮 */}
-      <TouchableOpacity
-        style={styles.deleteButton}
-        onPress={() => handleDelete(item.id, rowMap)}
-      >
-        <Text style={styles.deleteText}>
-          <IconFont name="delete" color="#fff" size={18} />
-        </Text>
-      </TouchableOpacity>
-    </View>
-  );
-
-  return (
-    <SwipeListView
-      // 数据源
-      data={data}
-      // 渲染正常列表项
-      renderItem={({ item: { title, id }, index }) => (
-        <View
-          style={{
-            flexDirection: "row",
-            gap: 20,
-            backgroundColor: "#121223",
-            paddingRight: 16,
-          }}
-        >
-          <Image source={src} style={styles.img} />
-          <View
-            style={{
-              justifyContent: "space-between",
-              flex: 1,
-            }}
-          >
-            <View style={{ flexDirection: "row" }}>
-              <View style={{ flex: 1 }}>
-                <Text
-                  style={styles.title}
-                  numberOfLines={2}
-                  ellipsizeMode="tail"
-                >
-                  {title}
-                </Text>
-              </View>
-
-              <View
-                style={[
-                  styles.icon,
-                  {
-                    flexShrink: 0,
-                    backgroundColor: showDeleteButton
-                      ? "#E04444"
-                      : "transparent",
-                  },
-                ]}
-              >
-                {showDeleteButton && (
-                  <TouchableOpacity
-                    onPress={() => {
-                      // onDelete(id);
-                    }}
-                  >
-                    <IconFont name="clear" color="#fff" size={14} />
-                  </TouchableOpacity>
-                )}
-              </View>
-            </View>
-            <Text style={styles.price}>$64</Text>
-            <View
-              style={{
-                flexDirection: "row",
-                justifyContent: "space-between",
-              }}
-            >
-              <Text style={styles.size}>14''</Text>
-              <View style={{ flexDirection: "row", alignItems: "center" }}>
-                <TouchableOpacity onPress={minus}>
-                  <View style={styles.icon}>
-                    <IconFont name="minus" color="#fff" size={14} />
-                  </View>
-                </TouchableOpacity>
-                <Text style={styles.number}>{number}</Text>
-                <TouchableOpacity onPress={plus}>
-                  <View style={styles.icon}>
-                    <IconFont
-                      name="plus"
-                      color="#fff"
-                      size={12}
-                      style={{ transform: [{ translateX: -1 }] }}
-                    />
-                  </View>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </View>
-        </View>
-      )}
-      // 渲染左滑显示的隐藏项
-      renderHiddenItem={renderHiddenItem}
-      // 左滑距离（负值表示向左滑动）
-      rightOpenValue={-80} // 滑动80px显示完整删除按钮
-      // 列表项key
-      keyExtractor={(item) => item.id}
-      backgroundColor="#121223"
-      // 列表容器样式
-      style={styles.listContainer}
-      contentContainerStyle={{ gap: 20 }}
-    />
-  );
-};
 
 const Cart = () => {
   const [isEdit, setIsEdit] = useState(false);
@@ -243,105 +119,291 @@ const Cart = () => {
     { id: 3, title: "pizza calzone european pizza  european" },
     { id: 4, title: "pizza calzone european pizza calzone " },
   ]);
+
+  const [checked, setChecked] = useState([]);
+  const [totalPrice, setTotalPrice] = useState(0);
   const onDelete = (id) => {
     setData(data.filter((item) => item.id !== id));
   };
+  const cartCount = useCartCount((state) => state.cartCount);
+  const [visible, setVisible] = useState(false);
+
+  const ref = useRef(null);
+
+  const CartCart = ({ showDeleteButton }) => {
+    const [data, setData] = useState([
+      { id: 1, title: "香辣鸡腿中国汉堡+翅根+薯条+可乐" },
+      { id: 2, title: "香辣鸡腿中国汉堡+翅根+薯条" },
+      { id: 3, title: "香辣鸡腿中国汉堡+翅根+薯条+可乐" },
+      { id: 4, title: "香辣鸡腿中国汉堡+薯条+可乐" },
+    ]);
+
+    const [number, setNumber] = useState(999);
+    const plus = () => {
+      setNumber((i) => i + 1);
+    };
+    const minus = () => {
+      setNumber((i) => i - 1);
+    };
+    const handleDelete = (id, rowMap) => {
+      // 关闭当前滑动的项（可选，删除前先收起）
+      rowMap[id]?.closeRow();
+      // 从数据源中移除
+      setData((prevData) => prevData.filter((item) => item.id !== id));
+    };
+
+    // 2. 渲染左滑时显示的隐藏按钮（右侧删除按钮）
+    const renderHiddenItem = ({ item }, rowMap) => (
+      <View style={styles.hiddenContainer}>
+        {/* 删除按钮 */}
+        <TouchableOpacity
+          style={styles.deleteButton}
+          onPress={() => handleDelete(item.id, rowMap)}
+        >
+          <Text style={styles.deleteText}>
+            <IconFont name="delete" color="#fff" size={18} />
+          </Text>
+        </TouchableOpacity>
+      </View>
+    );
+
+    return (
+      <View>
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "space-between",
+            gap: 8,
+            marginBottom: 16,
+            flexWrap: "nowrap",
+            flex: 1,
+          }}
+        >
+          <Pressable
+            onPress={() => {
+              router.push("/restaurant/id");
+            }}
+          >
+            <View style={[styles.row, { flex: 1, maxWidth: 220 }]}>
+              <CommonCheckbox />
+              <TakeoutTag text="外卖" style={{ marginLeft: 12 }} />
+              <Text numberOfLines={1} style={styles.address}>
+                塔斯汀·中国汉堡（深圳南山区海岸海岸城店）
+              </Text>
+              <IconFont name="arrow-right" size={6} />
+            </View>
+          </Pressable>
+          <View style={[styles.row, { flexShrink: 0 }]}>
+            <Text style={{ color: "#ffc107", fontSize: 12 }}>34分钟达到</Text>
+          </View>
+        </View>
+        <Pressable
+          onPress={() => {
+            setVisible(true);
+            ref.current.expand();
+          }}
+        >
+          <View style={styles.selectAddress}>
+            <View style={styles.row}>
+              <IconFont name="location" size={12} color="#666" />
+              <Text style={{ fontSize: 12, fontWeight: 500, color: "#666" }}>
+                深圳南山区南三环西路
+              </Text>
+            </View>
+            <IconFont name="arrow-right" size={6} />
+          </View>
+        </Pressable>
+        <SwipeListView
+          // 数据源
+          data={data}
+          // 渲染正常列表项
+          renderItem={({ item: { title, id }, index }) => (
+            <View
+              style={{
+                flexDirection: "row",
+                gap: 12,
+                backgroundColor: "#fff",
+                alignItems: "center",
+              }}
+            >
+              <CommonCheckbox />
+              <Image source={src} style={styles.img} />
+              <View
+                style={{
+                  flex: 1,
+                }}
+              >
+                <View style={{ flexDirection: "row" }}>
+                  <View style={{ flex: 1 }}>
+                    <Text
+                      style={styles.title}
+                      numberOfLines={2}
+                      ellipsizeMode="tail"
+                    >
+                      {title}
+                    </Text>
+                  </View>
+                </View>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    justifyContent: "space-between",
+                    marginTop: 8,
+                  }}
+                >
+                  <View style={[styles.row, { alignItems: "baseline" }]}>
+                    <Price price={9} dot=".9" />
+                    <Text style={{ fontSize: 12, color: "red", marginLeft: 4 }}>
+                      到手价
+                    </Text>
+                    <Text
+                      style={{ fontSize: 12, color: "#999", marginLeft: 4 }}
+                    >
+                      ￥19.9
+                    </Text>
+                  </View>
+                  {showDeleteButton ? (
+                    <View
+                      style={[
+                        styles.icon,
+                        {
+                          flexShrink: 0,
+                          backgroundColor: "#E04444",
+                        },
+                      ]}
+                    >
+                      <TouchableOpacity
+                        onPress={() => {
+                          // onDelete(id);
+                        }}
+                      >
+                        <IconFont name="delete" color="#fff" size={14} />
+                      </TouchableOpacity>
+                    </View>
+                  ) : (
+                    <View
+                      style={{ flexDirection: "row", alignItems: "center" }}
+                    >
+                      <TouchableOpacity onPress={minus}>
+                        <View style={styles.icon}>
+                          <IconFont name="minus" size={8} />
+                        </View>
+                      </TouchableOpacity>
+                      <Text style={styles.number}>{number}</Text>
+                      <TouchableOpacity onPress={plus}>
+                        <View style={styles.icon}>
+                          <IconFont
+                            name="plus"
+                            size={8}
+                            style={{ transform: [{ translateX: -1 }] }}
+                          />
+                        </View>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              </View>
+            </View>
+          )}
+          // 渲染左滑显示的隐藏项
+          renderHiddenItem={renderHiddenItem}
+          // 左滑距离（负值表示向左滑动）
+          rightOpenValue={-80} // 滑动80px显示完整删除按钮
+          // 列表项key
+          keyExtractor={(item) => item.id}
+          // 列表容器样式
+          style={styles.listContainer}
+          contentContainerStyle={{ gap: 20 }}
+        />
+      </View>
+    );
+  };
+
   return (
     <Layout
       safeAreaViewProps={{ edges: ["top", "left", "right"] }}
       style={{
-        backgroundColor: "#121223",
         position: "relative",
         paddingHorizontal: 0,
       }}
       header={{
         style: { paddingHorizontal: 12 },
-        title: <Text style={{ color: "#fff" }}>Cart</Text>,
+        showBackButton: false,
+        title: (
+          <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <Text style={{ fontSize: 18, fontWeight: "bold" }}>购物车</Text>
+            <Text style={{ color: "#999" }}>（{cartCount}）</Text>
+          </View>
+        ),
         rightNode: (
           <>
             {isEdit ? (
-              <Text style={styles.done} onPress={() => setIsEdit(false)}>
-                Done
-              </Text>
+              <Text onPress={() => setIsEdit(false)}>完成</Text>
             ) : (
-              <Text style={styles.edit} onPress={() => setIsEdit(true)}>
-                EDIT Items
-              </Text>
+              <Text onPress={() => setIsEdit(true)}>管理</Text>
             )}
           </>
         ),
       }}
     >
       <ScrollView>
-        <View style={{ gap: 32, paddingVertical: 12, paddingHorizontal: 24 }}>
-          <CartCart onDelete={onDelete} showDeleteButton={isEdit} />
+        <View style={{ padding: 12, gap: 16, backgroundColor: "#f5f5f5" }}>
+          <View style={styles.card}>
+            <CartCart onDelete={onDelete} showDeleteButton={isEdit} />
+          </View>
+          <View style={styles.card}>
+            <CartCart onDelete={onDelete} showDeleteButton={isEdit} />
+          </View>
         </View>
       </ScrollView>
       <View style={styles.footer}>
-        <View style={{ flexDirection: "row", justifyContent: "space-between" }}>
-          <Text style={{ fontSize: 16, color: "#A0A5BA" }}>
-            Delivery Address
-          </Text>
-          <TouchableOpacity
-            onPress={() => {
-              router.push("/address");
-            }}
-          >
-            <Text
-              style={{
-                color: "#FF7622",
-                textDecorationLine: "underline",
-                fontSize: 16,
+        <View style={styles.row}>
+          <View style={{ flexDirection: "row", alignItems: "center", gap: 6 }}>
+            <CommonCheckbox
+              onChange={(checked) => {
+                // setIsEdit(checked);
               }}
-            >
-              Edit
-            </Text>
-          </TouchableOpacity>
-        </View>
-        <View style={styles.address}>
-          <Text style={styles.addressLabel}>2118 Thornridge Cir. Syracuse</Text>
-        </View>
-        <View
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <View style={{ flexDirection: "row", alignItems: "center" }}>
-            <Text style={{ fontSize: 20, color: "#91959C", marginRight: 12 }}>
-              Total:
-            </Text>
-            <Text style={{ fontSize: 30 }}>$96</Text>
+            />
+            <Text>全选</Text>
+            <View>
+              <View style={[styles.row, { alignItems: "baseline" }]}>
+                <Text style={{ fontSize: 12 }}>已选1件，合计: </Text>
+                <Price price="29" dot=".90" />
+              </View>
+              <View
+                style={{
+                  flexDirection: "row",
+                  alignItems: "center",
+                  marginTop: 4,
+                }}
+              >
+                <Text style={styles.desc}>优惠减：</Text>
+                <Text style={styles.desc}>￥</Text>
+                <Text style={styles.desc}>10</Text>
+                <Text style={styles.tag}>优惠明细</Text>
+              </View>
+            </View>
           </View>
-          <View style={{ flexDirection: "row", alignItems: "baseline" }}>
-            <Text style={{ color: "#FF7622", fontSize: 16, marginRight: 4 }}>
-              Breakdown
-            </Text>
-            <IconFont name="arrow-right" size={12} />
-          </View>
-        </View>
-        <Link
-          href="/payment"
-          style={{
-            backgroundColor: "#FF7622",
-            borderRadius: 16,
-            padding: 16,
-            marginTop: 32,
-          }}
-        >
-          <Text
+          <View
             style={{
-              textAlign: "center",
-              color: "#fff",
-              fontSize: 18,
-              fontWeight: "bold",
+              paddingHorizontal: 24,
+              paddingVertical: 12,
+              backgroundColor: "#F58D1D",
+              borderRadius: 8,
             }}
           >
-            Place Order
-          </Text>
-        </Link>
+            <Text style={{ color: "#fff", fontWeight: "bold" }}>去结算</Text>
+          </View>
+        </View>
       </View>
+      <AddressSheet
+        ref={ref}
+        onClose={() => {
+          setVisible(false);
+        }}
+        visible={visible}
+      />
     </Layout>
   );
 };

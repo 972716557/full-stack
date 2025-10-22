@@ -6,6 +6,7 @@ import { View, StyleSheet, Text, ScrollView, Button } from "react-native";
 import img from "../assets/burger.png";
 import CommonCheckbox from "./components/common/checkbox";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import TakeoutTag from "./components/common/takeout-tag";
 
 const styles = StyleSheet.create({
   card: {
@@ -41,15 +42,6 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#dcd7d73c",
     marginVertical: 20,
-  },
-  tip: {
-    fontSize: 10,
-    backgroundColor: "#ffc107",
-    paddingHorizontal: 4,
-    paddingVertical: 2,
-    color: "#353623ff",
-    borderRadius: 2,
-    marginRight: 4,
   },
   img: {
     width: 80,
@@ -135,7 +127,7 @@ const Payment = () => {
                 marginBottom: 16,
               }}
             >
-              <Text style={styles.tip}>外卖</Text>
+              <TakeoutTag text="外卖" />
               <Text style={{ fontSize: 13 }}>
                 塔斯汀·中国汉堡（枫叶信息科技园店）
               </Text>

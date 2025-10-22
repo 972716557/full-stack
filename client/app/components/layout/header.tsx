@@ -20,6 +20,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     gap: 12,
   },
+  title: {
+    fontSize: 18,
+    fontWeight: "bold",
+  },
 });
 
 export interface HeaderProps {
@@ -47,7 +51,7 @@ const Header = ({
         <>
           <View style={[styles.row, { gap: 12 }]}>
             {showBackButton && <BackButton />}
-            <Text>{title}</Text>
+            <Text style={styles.title}>{title}</Text>
           </View>
           {rightNode}
         </>
