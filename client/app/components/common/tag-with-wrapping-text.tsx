@@ -45,10 +45,7 @@ const styles = StyleSheet.create({
   tag: {
     position: "absolute", // 绝对定位，固定在左侧
     left: 0, // 与容器左侧的距离（和容器padding一致）
-    top: 0, // 与容器顶部的距离（和容器padding一致）
-    paddingHorizontal: 6, // 左右内边距
-    paddingVertical: 2, // 上下内边距（避免过高）
-    backgroundColor: "#ff9500", // 橙色背景（示例）
+    top: 2, // 与容器顶部的距离（和容器padding一致）
     borderRadius: 2,
   },
 

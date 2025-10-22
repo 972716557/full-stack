@@ -43,7 +43,7 @@ export const IconMap = {
   "circle-clear": "\ue605",
   wechat: "\ue883",
   alipay: "\ue666",
-  correct: "\ue721",
+  correct: "\ue686",
   garlic: "\ue635",
   onion: "\ue8e3",
   chicken: "\ue609",

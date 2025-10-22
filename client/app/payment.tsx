@@ -1,229 +1,301 @@
-import {
-  View,
-  StyleSheet,
-  Text,
-  ScrollView,
-  ViewStyle,
-  TouchableOpacity,
-} from "react-native";
-import Layout from "./components/layout/layout";
-import IconFont from "./components/common/iconfont";
-import emptyCard from "../assets/empty-card.png";
 import { Image } from "expo-image";
-import { useState } from "react";
-import BigButton from "./components/common/big-button";
+import IconFont from "./components/common/iconfont";
+import TagWithWrappingText from "./components/common/tag-with-wrapping-text";
+import Layout from "./components/layout/layout";
+import { View, StyleSheet, Text, ScrollView, Button } from "react-native";
+import img from "../assets/burger.png";
+import CommonCheckbox from "./components/common/checkbox";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+
 const styles = StyleSheet.create({
-  container: {
-    width: 85,
-    height: 72,
-    backgroundColor: "#F0F5FA",
-    borderRadius: 12,
-    justifyContent: "center",
+  card: {
+    backgroundColor: "#fff",
+    paddingHorizontal: 16,
+    paddingVertical: 16,
+    borderRadius: 8,
+  },
+  tagLabel: {
+    fontSize: 8,
+    padding: 2,
+    color: "#FF7622",
+    borderRadius: 2,
+    backgroundColor: "#FFF0E0",
+    borderWidth: 1,
+    borderColor: "#FFF0E0",
+  },
+  row: {
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
   },
   title: {
-    textAlign: "center",
-    marginTop: 8,
-    color: "#464E57",
-    fontSize: 12,
-  },
-  empty: {
-    backgroundColor: "#F7F8F9",
-    borderRadius: 12,
-    padding: 24,
-    marginTop: 16,
-    alignItems: "center",
-  },
-  emptyText: {
     fontSize: 16,
     fontWeight: "bold",
-    textAlign: "center",
-    marginTop: 20,
-    marginBottom: 8,
   },
-  emptyDescription: {
-    fontSize: 14,
-    color: "#686869",
-    textAlign: "center",
-    lineHeight: 24,
-    width: "70%",
+  selectAddress: {
+    fontSize: 12,
+    color: "#646982",
   },
-  emptyImg: {
-    width: 170,
-    height: 110,
-    borderRadius: 12,
+  divider: {
+    width: "100%",
+    height: 1,
+    backgroundColor: "#dcd7d73c",
+    marginVertical: 20,
   },
-  add: {
-    padding: 16,
-    borderColor: "#F0F5FA",
-    borderWidth: 2,
-    borderRadius: 12,
-    marginTop: 20,
-    alignItems: "center",
-    justifyContent: "center",
+  tip: {
+    fontSize: 10,
+    backgroundColor: "#ffc107",
+    paddingHorizontal: 4,
+    paddingVertical: 2,
+    color: "#353623ff",
+    borderRadius: 2,
+    marginRight: 4,
+  },
+  img: {
+    width: 80,
+    height: 80,
+    borderRadius: 8,
+  },
+  price: {
+    fontSize: 16,
+    color: "#ee5252ff",
+    fontWeight: "bold",
+  },
+  desc: {
+    fontSize: 13,
+    color: "#333",
+  },
+  sub: {
+    fontSize: 12,
+    color: "#999",
+  },
+  footer: {
     flexDirection: "row",
-    gap: 8,
-  },
-  icon: {
-    position: "absolute",
-    right: -4,
-    top: -4,
-    width: 24,
-    height: 24,
-    justifyContent: "center",
+    justifyContent: "space-between",
+    paddingHorizontal: 24,
+    paddingTop: 12,
     alignItems: "center",
-    borderRadius: 12,
-    backgroundColor: "#FF7622",
-    zIndex: 100,
-    borderColor: "#fff",
-    borderWidth: 2,
+    backgroundColor: "#fff",
+    marginHorizontal: -12,
   },
-  paymentCard: {
-    backgroundColor: "#F4F5F7",
-    padding: 24,
-    borderRadius: 12,
+  button: {
+    backgroundColor: "#FF7622",
+    paddingHorizontal: 40,
+    paddingVertical: 12,
+    borderRadius: 4,
   },
 });
 
-const Card = ({ title, name, selected, onPress }) => {
-  const isSelected = selected === name;
-
-  const style: ViewStyle = {
-    borderColor: "#FF7622",
-    borderWidth: 2,
-  };
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        onPress(name);
-      }}
-    >
-      <View style={{ position: "relative", paddingBottom: 12 }}>
-        {isSelected && (
-          <View style={styles.icon}>
-            <IconFont name="correct" size={18} color={"#fff"} />
-          </View>
-        )}
-        <View style={[styles.container, isSelected ? style : {}]}>
-          <IconFont name={name} size={30} />
-        </View>
-        <Text style={styles.title}>{title}</Text>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
-const PaymentMethod = ({ title, name, selected, onPress = () => {} }) => {
-  const isSelected = selected === name;
-  return (
-    <TouchableOpacity
-      onPress={() => {
-        onPress(name);
-      }}
-    >
-      <View style={styles.paymentCard}>
-        <Text style={{ fontWeight: "bold", marginBottom: 6 }}>{title}</Text>
-        <View style={{ flexDirection: "row", alignItems: "center", gap: 8 }}>
-          <IconFont name="bankcard" size={16} />
-          <Text style={{ fontSize: 14, color: "#464E57" }}>
-            1234 5678 9012 3456
-          </Text>
-        </View>
-      </View>
-    </TouchableOpacity>
-  );
-};
-
+const data = [
+  { title: "商品金额", value: "￥10.00" },
+  {
+    title: "配送费",
+    value: "￥5.00",
+  },
+  { title: "运费优惠", value: "￥-5.00", isDiscount: true },
+  { title: "打包费", value: "￥5.00" },
+  { title: "优惠券", value: "￥-5.00", isDiscount: true, showArrow: true },
+];
 const Payment = () => {
-  const [selected, setSelected] = useState("wechat");
-  const [cardHeight, setCardHeight] = useState(0); // 动态存储卡片高度
-  const handleCardLayout = (event) => {
-    const { height } = event.nativeEvent.layout;
-    setCardHeight(height);
-  };
-
+  const inset = useSafeAreaInsets();
   return (
-    <Layout header={{ title: "Payment" }}>
-      <View style={{ flex: 1 }}>
-        <ScrollView horizontal style={{ flexGrow: 0 }}>
-          <View style={{ flexDirection: "row", gap: 20, marginTop: 20 }}>
-            {[
-              { title: "Wechat Pay", name: "wechat" },
-              { title: "Alipay", name: "alipay" },
-              { title: "Credit Card", name: "bankcard" },
-            ].map(({ title, name }) => (
-              <Card
-                title={title}
-                key={name}
-                selected={selected}
-                name={name}
-                onPress={(name) => {
-                  setSelected(name);
-                }}
-              />
-            ))}
-          </View>
-        </ScrollView>
-        <ScrollView
-          contentContainerStyle={{
-            paddingBottom: cardHeight,
-          }}
-          showsVerticalScrollIndicator={false}
-          style={{ flex: 1 }}
-        >
-          <View
-            style={{
-              gap: 20,
-            }}
-          >
-            <View style={styles.empty}>
-              <Image style={styles.emptyImg} source={emptyCard} />
-              <Text style={styles.emptyText}>No payment methods added</Text>
-              <Text style={styles.emptyDescription}>
-                Add your payment methods to make payments easier
+    <Layout
+      header={{ title: "确认订单" }}
+      style={{ backgroundColor: "#F2F3F5" }}
+    >
+      <ScrollView style={{ flex: 1 }} showsVerticalScrollIndicator={false}>
+        <View style={{ gap: 12 }}>
+          <View style={styles.card}>
+            <TagWithWrappingText
+              contentStyle={styles.title}
+              content="深圳工商银行大厦"
+              tag={<Text style={styles.tagLabel}>地址</Text>}
+            />
+            <View
+              style={[
+                styles.row,
+                {
+                  backgroundColor: "#dcd7d73c",
+                  paddingVertical: 8,
+                  paddingHorizontal: 8,
+                  borderRadius: 4,
+                  marginTop: 8,
+                },
+              ]}
+            >
+              <Text style={styles.selectAddress}>选择其他收货地址</Text>
+              <IconFont name="arrow-right" color="#646982" size={12} />
+            </View>
+            <View style={styles.divider} />
+            <View
+              style={{
+                flexDirection: "row",
+                alignItems: "center",
+                flexWrap: "nowrap",
+                marginBottom: 16,
+              }}
+            >
+              <Text style={styles.tip}>外卖</Text>
+              <Text style={{ fontSize: 13 }}>
+                塔斯汀·中国汉堡（枫叶信息科技园店）
               </Text>
             </View>
-            <PaymentMethod title={"Wechat Pay"} name={"wechat"} />
-            <View style={styles.add}>
-              <IconFont name="plus" size={20} color="#FF7622" />
-              <Text
+            <View
+              style={[
+                styles.row,
+                {
+                  gap: 8,
+                  alignItems: "flex-start",
+                  justifyContent: "flex-start",
+                },
+              ]}
+            >
+              <Image source={img} style={styles.img} />
+              <View
                 style={{
-                  fontSize: 16,
-                  fontWeight: "bold",
-                  textAlign: "center",
-                  color: "#FF7622",
+                  flex: 1,
+                  gap: 8,
                 }}
               >
-                Add new
-              </Text>
+                <View>
+                  <Text numberOfLines={1} style={styles.title}>
+                    香辣鸡腿中国汉堡+盐酥鸡米花+塔塔鸡翅+可怜hang+1份薯条+
+                  </Text>
+                </View>
+                <View style={styles.row}>
+                  <View
+                    style={{ flexDirection: "row", alignItems: "baseline" }}
+                  >
+                    <Text style={{ fontSize: 8, color: "#ee5252ff" }}>¥</Text>
+                    <Text style={styles.price}>12</Text>
+                    <Text
+                      style={{
+                        color: "#ee5252ff",
+                        fontSize: 10,
+                        fontWeight: "bold",
+                      }}
+                    >
+                      .0
+                    </Text>
+                  </View>
+                  <Text style={{ fontSize: 10 }}>X1</Text>
+                </View>
+              </View>
+            </View>
+            <View style={{ gap: 16, marginTop: 12 }}>
+              <View style={styles.row}>
+                <Text style={styles.desc}>配送</Text>
+                <View>
+                  <View style={[styles.row, { justifyContent: "flex-end" }]}>
+                    <Text style={styles.desc}>立即送出</Text>
+                    <IconFont name="arrow-right" size={12} color="#999" />
+                  </View>
+                  <Text
+                    style={{
+                      color: "red",
+                      marginTop: 4,
+                      marginRight: 12,
+                      fontSize: 12,
+                    }}
+                  >
+                    预计 1-2 小时送达
+                  </Text>
+                </View>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.desc}>如遇缺货</Text>
+                <View style={styles.row}>
+                  <Text style={styles.desc}>缺货时与我电话沟通</Text>
+                  <IconFont name="arrow-right" size={12} color="#999" />
+                </View>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.desc}>餐具数量</Text>
+                <View style={styles.row}>
+                  <Text style={styles.desc}>商家按餐量提供</Text>
+                  <IconFont name="arrow-right" size={12} color="#999" />
+                </View>
+              </View>
+              <View style={styles.row}>
+                <Text style={styles.desc}>
+                  备注
+                  <Text>
+                    <Text style={styles.sub}>（一次备注，多次使用）</Text>
+                  </Text>
+                </Text>
+                <View style={styles.row}>
+                  <Text style={styles.sub}>请输入口味偏好等要求</Text>
+                  <IconFont name="arrow-right" size={12} color="#999" />
+                </View>
+              </View>
             </View>
           </View>
-        </ScrollView>
-      </View>
-
-      <View
-        onLayout={handleCardLayout}
-        style={{
-          position: "absolute",
-          left: 0,
-          bottom: 0,
-          right: 0,
-          padding: 24,
-          paddingBottom: 48,
-          backgroundColor: "#fff",
-          shadowColor: "#000", // 阴影颜色（黑色）
-          shadowOffset: { width: 0, height: -4 }, // 阴影向上偏移（height为负值）
-          shadowOpacity: 0.2, // 阴影透明度（0-1）
-          shadowRadius: 8, // 阴影模糊半径（值越大越模糊）
-        }}
-      >
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Text style={{ fontSize: 16, marginRight: 8, color: "#A0A5BA" }}>
-            Total:
-          </Text>
-          <Text style={{ fontSize: 26, fontWeight: "bold" }}>¥ 0.00</Text>
+          <View style={[styles.card, { gap: 12 }]}>
+            {data.map((item) => (
+              <View key={item.title} style={styles.row}>
+                <Text style={styles.desc}>{item.title}</Text>
+                <View style={styles.row}>
+                  <Text style={[item.isDiscount && { color: "red" }]}>
+                    {item.value}
+                  </Text>
+                  {item.showArrow ? (
+                    <IconFont name="arrow-right" size={10} color="#999" />
+                  ) : (
+                    <View style={{ width: 12 }}></View>
+                  )}
+                </View>
+              </View>
+            ))}
+            <View style={[styles.divider, { marginVertical: 6 }]}></View>
+            <View
+              style={{
+                justifyContent: "flex-end",
+                flexDirection: "row",
+                alignItems: "center",
+              }}
+            >
+              <Text style={styles.title}>合计：</Text>
+              <Text style={{ color: "red" }}>￥13.90</Text>
+            </View>
+          </View>
+          <View style={[styles.card, { gap: 8 }]}>
+            <View style={styles.row}>
+              <View style={[styles.row, { alignItems: "center", gap: 8 }]}>
+                <IconFont name="wechat" />
+                <Text>微信支付</Text>
+              </View>
+              <CommonCheckbox />
+            </View>
+            <View style={[styles.row]}>
+              <View style={[styles.row, { alignItems: "center", gap: 8 }]}>
+                <IconFont name="alipay" />
+                <Text>支付宝</Text>
+              </View>
+              <CommonCheckbox />
+            </View>
+          </View>
         </View>
-        <BigButton text="Pay & Confirm" />
+      </ScrollView>
+      <View
+        style={[
+          styles.footer,
+          { marginBottom: -inset.bottom, paddingBottom: inset.bottom + 16 },
+        ]}
+      >
+        <View style={[styles.row, { alignItems: "baseline" }]}>
+          <Text style={[styles.price, { fontSize: 16, fontWeight: "bold" }]}>
+            ￥
+          </Text>
+          <Text style={[styles.price, { fontSize: 20, fontWeight: "bold" }]}>
+            13
+          </Text>
+          <Text style={[styles.price, { fontSize: 14, fontWeight: "bold" }]}>
+            .90
+          </Text>
+        </View>
+        <View style={styles.button}>
+          <Text style={{ color: "#fff", fontWeight: "bold" }}>立即支付</Text>
+        </View>
       </View>
     </Layout>
   );
