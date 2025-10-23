@@ -19,6 +19,7 @@ import Animated, {
 } from "react-native-reanimated";
 import Banner from "./components/category/banner";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import Recommend from "./components/category/recommend-card";
 
 const styles = StyleSheet.create({
   header: {
@@ -191,6 +192,7 @@ const Home = () => {
       >
         <Banner />
         <View style={{ gap: 8, paddingHorizontal: 8, marginTop: 12 }}>
+          <Recommend />
           <View style={{ gap: 8 }}>
             <RestaurantCard />
             <RestaurantCard />
