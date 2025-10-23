@@ -4,6 +4,15 @@ import { Image } from "expo-image";
 import IconFont from "../common/iconfont";
 import image from "../../../assets/burger.png";
 import thunder from "../../../assets/svg/thunder.svg";
+import SlideUpSwitcher from "./slideup-switcher";
+import noodles from "../../../assets/svg/noodles.svg";
+import steamedBun from "../../../assets/svg/steamed-bun.svg";
+import cheungFun from "../../../assets/svg/cheung-fun.svg";
+import burger from "../../../assets/svg/burger.svg";
+import desert from "../../../assets/svg/desert.svg";
+import spiceHotPot from "../../../assets/svg/spice-hot-pot.svg";
+import soybeanMilk from "../../../assets/svg/soybean-milk.svg";
+import milkTea from "../../../assets/svg/milk-tea.svg";
 const styles = StyleSheet.create({
   container: {
     padding: 12,
@@ -36,6 +45,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
     flex: 1,
+    marginBottom: 12,
   },
   title: {
     textAlign: "center",
@@ -86,10 +96,28 @@ const styles = StyleSheet.create({
 });
 
 const data = [
-  { title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, dot: ".9" },
-  { title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11 },
-  { title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11 },
-  { title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11 },
+  {
+    id: 1,
+    title: "瑞幸咖啡",
+    desc: "茉莉花拿铁",
+    price: 11,
+    dot: ".9",
+    src: noodles,
+  },
+  { id: 2, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: burger },
+  { id: 3, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: cheungFun },
+  { id: 4, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: desert },
+  {
+    id: 5,
+    title: "瑞幸咖啡",
+    desc: "茉莉花拿铁",
+    price: 11,
+    dot: ".9",
+    src: milkTea,
+  },
+  { id: 6, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: steamedBun },
+  { id: 7, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: soybeanMilk },
+  { id: 8, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: spiceHotPot },
 ];
 const Card = ({
   title,
@@ -142,25 +170,27 @@ const Card = ({
 };
 const Recommend = () => {
   return (
-    <LinearGradient
-      colors={["#f3afaf8a", "#fff"]}
-      start={{ x: 1, y: 0 }}
-      end={{ x: 1, y: 0.2 }}
-      style={styles.container}
-    >
-      <View style={styles.header}>
-        <Text style={styles.headerTitle}>甄选爆品</Text>
-        <View style={styles.row}>
-          <Text style={{ color: "#666", fontSize: 12 }}>更多</Text>
-          <IconFont name="arrow-right" size={8} color={"#666"} />
+    <View>
+      <LinearGradient
+        colors={["#f3afaf8a", "#fff"]}
+        start={{ x: 1, y: 0 }}
+        end={{ x: 1, y: 0.2 }}
+        style={styles.container}
+      >
+        <View style={styles.header}>
+          <Text style={styles.headerTitle}>甄选爆品</Text>
+          <View style={styles.row}>
+            <Text style={{ color: "#666", fontSize: 12 }}>更多</Text>
+            <IconFont name="arrow-right" size={8} color={"#666"} />
+          </View>
         </View>
-      </View>
-      <View style={[styles.row, { marginTop: 12 }]}>
-        {data.map((item, index) => (
-          <Card key={index} {...item} />
-        ))}
-      </View>
-    </LinearGradient>
+        <SlideUpSwitcher
+          data={data}
+          singleGroup={4}
+          renderItem={(item, index) => <Card key={item.id} {...item} />}
+        ></SlideUpSwitcher>
+      </LinearGradient>
+    </View>
   );
 };
 export default Recommend;
