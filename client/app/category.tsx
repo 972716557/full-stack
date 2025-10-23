@@ -18,24 +18,13 @@ import Animated, {
   useSharedValue,
 } from "react-native-reanimated";
 import Banner from "./components/category/banner";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const styles = StyleSheet.create({
   header: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 20,
-    paddingTop: 12,
-  },
-  headerButton: {
-    width: 45,
-    height: 45,
-    borderRadius: 22.5,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  headerButtonConfig: {
-    backgroundColor: "#c6caceff",
+    backgroundColor: "#f08e04e3",
+    flex: 1,
+    paddingHorizontal: 12,
   },
   common: {
     flexDirection: "row",
@@ -52,6 +41,7 @@ const styles = StyleSheet.create({
 const { width: screenWidth } = Dimensions.get("window");
 
 const Home = () => {
+  const inset = useSafeAreaInsets();
   const scrollY = useSharedValue(0);
   // 标题动画样式（滚动时隐藏）
   const titleAnimatedStyle = useAnimatedStyle(() => {
@@ -62,16 +52,9 @@ const Home = () => {
       [1, 0], // 透明度从 1→0
       Extrapolation.CLAMP
     );
-    const height = interpolate(
-      scrollY.value,
-      [20, 60],
-      [40, 0], // 高度从 30→0（标题默认高度）
-      Extrapolation.CLAMP
-    );
 
     return {
       opacity,
-      height,
     };
   });
 
@@ -79,12 +62,19 @@ const Home = () => {
     const height = interpolate(
       scrollY.value,
       [20, 60],
-      [80, 40], // 高度从 30→0（标题默认高度）
+      [160, 120], // 高度从 30→0（标题默认高度）
       Extrapolation.CLAMP
     );
-
+    const opacity = interpolate(
+      scrollY.value,
+      [20, 60],
+      [1, 0],
+      Extrapolation.CLAMP
+    );
     return {
       height,
+      opacity: opacity < 0.1 ? 1 : opacity,
+      backgroundColor: opacity >= 0.1 ? "#f08e04e3" : "#fff",
     };
   });
 
@@ -93,20 +83,20 @@ const Home = () => {
     const top = interpolate(
       scrollY.value,
       [20, 60],
-      [0, -52], // 顶部距离从 80→30（单位：px）
+      [0, -42],
       Extrapolation.CLAMP
     );
     const left = interpolate(
       scrollY.value,
-      [20, 60],
-      [0, 50], // 顶部距离从 80→30（单位：px）
+      [12, 60],
+      [0, 26], // 顶部距离从 80→30（单位：px）
       Extrapolation.CLAMP
     );
     // 同时缩小搜索框宽度，与头部按钮对齐
     const width = interpolate(
       scrollY.value,
       [20, 60],
-      [screenWidth - 16, screenWidth - 116], // 宽度从 80%→60%
+      [screenWidth - 24, screenWidth - 60],
       Extrapolation.CLAMP
     );
 
@@ -125,11 +115,17 @@ const Home = () => {
 
   return (
     <Layout
-      style={{ backgroundColor: "#f2f3f5" }}
-      safeAreaViewProps={{ edges: ["left", "right", "top"] }}
+      style={{ backgroundColor: "#f2f3f5", paddingHorizontal: 0 }}
+      showSafeView={false}
       header={{
         title: () => (
-          <Animated.View style={[{ flex: 1 }, headerAnimatedStyle]}>
+          <Animated.View
+            style={[
+              { paddingTop: inset.top },
+              styles.header,
+              headerAnimatedStyle,
+            ]}
+          >
             <View
               style={{
                 flexDirection: "row",
@@ -138,6 +134,14 @@ const Home = () => {
               }}
             >
               <View style={styles.common}>
+                <IconFont
+                  name="arrow-left"
+                  size={16}
+                  onPress={() => {
+                    router.back();
+                  }}
+                  color="#333"
+                />
                 <Animated.View
                   style={[
                     titleAnimatedStyle,
@@ -145,17 +149,9 @@ const Home = () => {
                       justifyContent: "center",
                       flexDirection: "row",
                       alignItems: "center",
-                      marginBottom: 12,
                     },
                   ]}
                 >
-                  <IconFont
-                    name="arrow-left"
-                    size={16}
-                    onPress={() => {
-                      router.back();
-                    }}
-                  />
                   <TouchableOpacity
                     activeOpacity={1}
                     onPress={() => {
@@ -193,8 +189,8 @@ const Home = () => {
         scrollEventThrottle={16} // 16ms 触发一次，确保动画流畅
         showsVerticalScrollIndicator={false}
       >
-        <View style={{ gap: 8, marginTop: 12 }}>
-          <Banner />
+        <Banner />
+        <View style={{ gap: 8, paddingHorizontal: 8, marginTop: 12 }}>
           <View style={{ gap: 8 }}>
             <RestaurantCard />
             <RestaurantCard />

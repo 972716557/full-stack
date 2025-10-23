@@ -66,8 +66,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: "#fff",
     borderRadius: 8,
-    marginTop: 12,
-    padding: 12,
+    padding: 8,
   },
   // 滚动指示器容器（底部细条）
   indicatorContainer: {

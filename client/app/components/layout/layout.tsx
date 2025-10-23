@@ -1,9 +1,4 @@
-import {
-  LayoutChangeEvent,
-  StyleProp,
-  StyleSheet,
-  ViewStyle,
-} from "react-native";
+import { View, StyleProp, StyleSheet, ViewStyle } from "react-native";
 import {
   NativeSafeAreaViewProps,
   SafeAreaView,
@@ -26,12 +21,14 @@ interface LayoutProps {
   header?: HeaderProps;
   style?: StyleProp<ViewStyle>;
   safeAreaViewProps?: NativeSafeAreaViewProps;
+  showSafeView?: boolean;
 }
 const Layout = ({
   children,
   header = {},
   style,
   safeAreaViewProps,
+  showSafeView = true,
 }: LayoutProps) => {
   const {
     title,
@@ -42,16 +39,29 @@ const Layout = ({
   } = header;
   return (
     <GestureHandlerRootView>
-      <SafeAreaView style={[styles.container, style]} {...safeAreaViewProps}>
-        <Header
-          title={title}
-          showBackButton={showBackButton}
-          rightNode={rightNode}
-          style={[{ paddingBottom: 12 }, headerStyle]}
-          onLayout={onLayout}
-        />
-        {children}
-      </SafeAreaView>
+      {showSafeView ? (
+        <SafeAreaView style={[styles.container, style]} {...safeAreaViewProps}>
+          <Header
+            title={title}
+            showBackButton={showBackButton}
+            rightNode={rightNode}
+            style={[{ paddingBottom: 12 }, headerStyle]}
+            onLayout={onLayout}
+          />
+          {children}
+        </SafeAreaView>
+      ) : (
+        <View style={[styles.container, style]}>
+          <Header
+            title={title}
+            showBackButton={showBackButton}
+            rightNode={rightNode}
+            style={[{ paddingBottom: 12 }, headerStyle]}
+            onLayout={onLayout}
+          />
+          {children}
+        </View>
+      )}
     </GestureHandlerRootView>
   );
 };
