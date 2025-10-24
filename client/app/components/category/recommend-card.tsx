@@ -13,6 +13,7 @@ import desert from "../../../assets/svg/desert.svg";
 import spiceHotPot from "../../../assets/svg/spice-hot-pot.svg";
 import soybeanMilk from "../../../assets/svg/soybean-milk.svg";
 import milkTea from "../../../assets/svg/milk-tea.svg";
+import { router } from "expo-router";
 const styles = StyleSheet.create({
   container: {
     padding: 12,
@@ -209,7 +210,14 @@ const Recommend = () => {
         <View style={styles.header}>
           <Text style={styles.headerTitle}>甄选爆品</Text>
           <View style={styles.row}>
-            <Text style={{ color: "#666", fontSize: 12 }}>更多</Text>
+            <Text
+              onPress={() => {
+                router.push("/recommend");
+              }}
+              style={{ color: "#666", fontSize: 12 }}
+            >
+              更多
+            </Text>
             <IconFont name="arrow-right" size={8} color={"#666"} />
           </View>
         </View>

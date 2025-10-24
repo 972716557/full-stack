@@ -55,6 +55,7 @@ const Layout = () => {
       <Stack.Screen name="edit/profile-info" options={{ headerShown: false }} />
       <Stack.Screen name="payment" options={{ headerShown: false }} />
       <Stack.Screen name="category" options={{ headerShown: false }} />
+      <Stack.Screen name="recommend" options={{ headerShown: false }} />
       <Stack.Screen name="restaurant/[id]" options={{ headerShown: false }} />
       <Stack.Screen name="address/add" options={{ headerShown: false }} />
 
