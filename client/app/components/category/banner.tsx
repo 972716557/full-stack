@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, View, Text, Pressable } from "react-native";
 import noodles from "../../../assets/svg/noodles.svg";
 import steamedBun from "../../../assets/svg/steamed-bun.svg";
 import cheungFun from "../../../assets/svg/cheung-fun.svg";
@@ -11,12 +11,18 @@ import soybeanMilk from "../../../assets/svg/soybean-milk.svg";
 import milkTea from "../../../assets/svg/milk-tea.svg";
 import { Image } from "expo-image";
 import ScrollWithIndicator from "./scroll-with-indicator";
+import { useState } from "react";
 const styles = StyleSheet.create({
   image: {
     width: 40,
     height: 40,
     borderRadius: "50%",
     objectFit: "contain",
+  },
+  selectedText: {
+    backgroundColor: "#FF7622",
+    color: "white",
+    borderRadius: 4,
   },
 });
 const data = [
@@ -53,16 +59,40 @@ const data = [
   },
 ];
 const Banner = () => {
+  const [selected, setSelected] = useState(data[0].title);
   return (
     <ScrollWithIndicator>
-      <View style={{ flexDirection: "row", gap: 20 }}>
+      <View style={{ flexDirection: "row", gap: 16 }}>
         {data.map(({ title, src }) => (
-          <View style={{ gap: 4, alignItems: "center" }} key={title}>
-            <Image source={src} style={styles.image} />
-            <Text style={{ fontSize: 12, color: "#333", textAlign: "center" }}>
-              {title}
-            </Text>
-          </View>
+          <Pressable onPress={() => setSelected(title)} key={title}>
+            <View style={{ alignItems: "center" }}>
+              <Image source={src} style={styles.image} />
+              <View
+                style={[
+                  {
+                    marginTop: 4,
+                    height: 20,
+                    alignItems: "center",
+                    justifyContent: "center",
+                    paddingHorizontal: 4,
+                  },
+                  selected === title && styles.selectedText,
+                ]}
+              >
+                <Text
+                  style={[
+                    {
+                      fontSize: 12,
+                      color: "#333",
+                    },
+                    selected === title && styles.selectedText,
+                  ]}
+                >
+                  {title}
+                </Text>
+              </View>
+            </View>
+          </Pressable>
         ))}
       </View>
     </ScrollWithIndicator>
