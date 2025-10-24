@@ -50,6 +50,10 @@ const SlideUpSwitcher = ({ data, singleGroup = 4, renderItem }) => {
 
     const reset = () => {
       setIsAnimating(false);
+      setCurrentChild(nextChild);
+      setNextChild(
+        children[(currentIndex + 1) % Math.ceil(data.length / singleGroup)]
+      );
       setCurrentIndex(
         (index) => (index + 1) % Math.ceil(data.length / singleGroup)
       );
@@ -108,10 +112,12 @@ const SlideUpSwitcher = ({ data, singleGroup = 4, renderItem }) => {
   }, [data.length]);
 
   // 当前显示的元素
-  const currentChild = children[currentIndex];
+  const [currentChild, setCurrentChild] = useState(children[currentIndex]);
+
   // 即将显示的元素
-  const nextChild =
-    children[(currentIndex + 1) % Math.ceil(data.length / singleGroup)];
+  const [nextChild, setNextChild] = useState(
+    children[(currentIndex + 1) % Math.ceil(data.length / singleGroup)]
+  );
 
   const onLayout = (e) => {
     setContainerHeight(e.nativeEvent.layout.height);
