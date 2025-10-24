@@ -6,6 +6,7 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  ViewProps,
 } from "react-native";
 import IconFont from "./iconfont";
 import Checkbox from "expo-checkbox";
@@ -172,9 +173,20 @@ const data = [
   },
 ];
 
+interface AddressProps extends ViewProps {
+  name: string;
+  phone: string;
+  province: string;
+  city: string;
+  district: string;
+  street: string;
+  tag: string;
+  isDefault?: boolean;
+}
+
 const { width: screenWidth, height: screenHeight } = Dimensions.get("window");
 
-const Card = ({
+export const AddressCard = ({
   province,
   city,
   street,
@@ -183,12 +195,14 @@ const Card = ({
   phone,
   tag,
   isDefault,
-}) => {
+  style,
+  ...rest
+}: AddressProps) => {
   const onDelete = () => {};
   const onEdit = () => {};
   const onCopy = () => {};
   return (
-    <View style={styles.card}>
+    <View style={[styles.card, style]} {...rest}>
       <View style={styles.cardHeader}>
         <Text style={styles.bold}>{name}</Text>
         <Text style={styles.bold}>{phone}</Text>
@@ -303,7 +317,7 @@ const AddressSheet = ({
             }}
           >
             {data.map((item, index) => (
-              <Card key={index} {...item} />
+              <AddressCard key={index} {...item} />
             ))}
           </View>
         </ScrollView>
