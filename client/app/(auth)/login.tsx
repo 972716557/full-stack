@@ -19,7 +19,7 @@ import * as Yup from "yup";
 import request from "../../utils/request";
 import src from "../../assets/avatar.jpg";
 import { saveToken } from "../../utils/token";
-import FormErrorText from "../components/form-error-text";
+import FormErrorText from "../components/common/form-error-text";
 
 const styles = StyleSheet.create({
   container: {

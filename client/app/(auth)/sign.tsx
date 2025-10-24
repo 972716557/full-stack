@@ -17,8 +17,8 @@ import * as Yup from "yup";
 
 import request from "../../utils/request";
 import { Link } from "expo-router";
-import GradientText from "../components/gradient-text";
-import FormErrorText from "../components/form-error-text";
+import GradientText from "../components/common/gradient-text";
+import FormErrorText from "../components/common/form-error-text";
 
 const styles = StyleSheet.create({
   flex: {
