@@ -118,6 +118,35 @@ const data = [
   { id: 6, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: steamedBun },
   { id: 7, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: soybeanMilk },
   { id: 8, title: "瑞幸咖啡", desc: "茉莉花拿铁", price: 11, src: spiceHotPot },
+  {
+    id: 9,
+    title: "这可不是瑞幸",
+    desc: "拿什么贴",
+    price: 11,
+    dot: ".9",
+    src: milkTea,
+  },
+  {
+    id: 10,
+    title: "这个也不错",
+    desc: "拿什么贴",
+    price: 11,
+    src: steamedBun,
+  },
+  {
+    id: 11,
+    title: "这个错了",
+    desc: "拿什么贴",
+    price: 11,
+    src: soybeanMilk,
+  },
+  {
+    id: 12,
+    title: "这个对了",
+    desc: "拿什么贴",
+    price: 11,
+    src: spiceHotPot,
+  },
 ];
 const Card = ({
   title,
